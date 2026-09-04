@@ -31,7 +31,6 @@ export class TalkApp {
   private readonly targetPreview = el("target-preview");
   private readonly progressLabel = el("progress-label");
   private readonly progressFill = el("progress-fill");
-  private readonly gameNote = el("game-note");
   private readonly result = el("result-layer");
   private readonly resultTitle = el("result-title");
   private readonly resultDetail = el("result-detail");
@@ -64,7 +63,6 @@ export class TalkApp {
     el("mode-memory").addEventListener("click", () => this.startMode("memory"));
     el("btn-back").addEventListener("click", () => this.showTitle());
     el("btn-pause").addEventListener("click", () => this.pauseGame());
-    el("btn-restart").addEventListener("click", () => this.startMode(this.mode));
     el("btn-again").addEventListener("click", () => this.startMode(this.mode));
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
     el("btn-title-tutorial").addEventListener("click", () => this.showHowToPlay());
@@ -130,7 +128,6 @@ export class TalkApp {
     const tiles = createUnitBoard(this.targetCharacter.id, ALL_PIECES);
     this.setBoardSize(7);
     this.runMode.textContent = "Picture Pieces";
-    this.gameNote.textContent = "60 seconds · Finish faster to earn up to 1,500 points.";
     this.renderUnitPreview(this.targetCharacter);
     this.updateProgress(0, this.targetCharacter.pieces.length, `0 / ${this.targetCharacter.pieces.length} pieces`);
 
@@ -161,7 +158,6 @@ export class TalkApp {
   private startMontageRound(): void {
     this.setBoardSize(5, true);
     this.runMode.textContent = "Montage Hunt";
-    this.gameNote.textContent = "60 seconds · Find the exact character. A new board appears after every match.";
     this.renderNextMontage();
   }
 
@@ -196,7 +192,6 @@ export class TalkApp {
   private startMemoryRound(): void {
     this.setBoardSize(7);
     this.runMode.textContent = "Pair Memory";
-    this.gameNote.textContent = "The center star is free. Match the 24 pairs in the other 48 blocks.";
     this.targetPreview.replaceChildren();
     const badge = document.createElement("div");
     badge.className = "memory-target-badge";

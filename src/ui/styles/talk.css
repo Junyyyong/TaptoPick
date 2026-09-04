@@ -166,14 +166,14 @@
 .pick-target {
   display: grid;
   place-items: center;
-  min-height: 240px;
+  min-height: 280px;
   padding: 4px 0;
 }
 
 .target-preview {
   display: grid;
-  width: min(82vw, 300px);
-  height: 224px;
+  width: min(86vw, 340px);
+  height: 264px;
   place-items: center;
   overflow: visible;
 }
@@ -182,8 +182,8 @@
 .assembled-preview { display: grid; width: 224px; overflow: hidden; grid-template-columns: repeat(3, 1fr); background: #fff; }
 .assembled-preview img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
 .assembled-preview--12 { width: 168px; }
-.unit-reveal { position: relative; width: 224px; height: 224px; overflow: hidden; }
-.unit-reveal--12 { width: 168px; }
+.unit-reveal { position: relative; width: 264px; height: 264px; overflow: hidden; }
+.unit-reveal--12 { width: 198px; }
 .unit-reveal img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: fill; }
 .unit-reveal-base { filter: grayscale(1); opacity: .46; }
 .unit-reveal-color { opacity: 0; transition: opacity 220ms ease; }
@@ -263,10 +263,6 @@
 .memory-card.is-free { background: linear-gradient(145deg, #d1d4d8, #969ca4); }
 .memory-free { color: white; font-size: clamp(16px, 5vw, 28px); text-shadow: 0 2px 0 #737981; }
 
-.pick-controls { display: grid; grid-template-columns: 118px minmax(0, 1fr); gap: 10px; align-items: center; margin-top: auto; }
-.pick-screen.is-memory-mode .pick-controls { display: none; }
-.pick-controls .control-btn { height: 40px; min-height: 40px; }
-.pick-controls p { margin: 0; color: var(--ink-soft); font-size: 10px; font-weight: 700; line-height: 1.35; }
 .result-panel #result-detail { white-space: pre-line; color: var(--ink-soft); line-height: 1.55; }
 .pause-copy { padding: 28px 8px; text-align: center; }
 .pause-copy strong { font-family: "TAP Serif KR", serif; font-size: 24px; }
@@ -277,12 +273,11 @@
 
 @media (max-height: 700px) {
   .pick-screen { gap: 4px; }
-  .pick-target { min-height: 160px; padding: 2px 0; }
-  .target-preview { width: min(72vw, 220px); height: 152px; }
+  .pick-target { min-height: 190px; padding: 2px 0; }
+  .target-preview { width: min(76vw, 250px); height: 182px; }
   .assembled-preview { width: 152px; }
   .assembled-preview--12 { width: 114px; }
-  .unit-reveal { width: 152px; height: 152px; }
-  .unit-reveal--12 { width: 114px; }
+  .unit-reveal { width: 182px; height: 182px; }
+  .unit-reveal--12 { width: 136.5px; }
   .picture-board { width: min(100%, calc(var(--app-h, 100dvh) - 300px), 560px); }
-  .pick-controls .control-btn { height: 34px; min-height: 34px; }
 }
