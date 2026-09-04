@@ -1,0 +1,184 @@
+/* The collection: one picture per stage, plus the two mode high scores. */
+
+.gallery-screen {
+  position: relative; /* the full-size picture is pinned to this screen */
+}
+
+.gallery-title {
+  font-size: 22px;
+  font-weight: 800;
+  text-shadow: 0 2px 3px var(--slab);
+}
+
+.icon-spacer {
+  width: 44px;
+}
+
+.gallery-body {
+  flex: 1;
+  min-height: 0;
+  padding: 4px 14px 18px;
+  overflow-y: auto;
+}
+
+.record-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.record-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  padding: 14px 8px;
+  background: var(--recess);
+  border-radius: 12px;
+  box-shadow: inset 0 2px 6px var(--recess);
+}
+
+.record-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.record-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.gallery-heading {
+  margin: 22px 0 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+/* ── the collection ─────────────────────────────────────────────────
+   Ninety-nine squares. A stage that has not been finished shows only its
+   number: the picture is the reward, so showing it early would spend it. */
+.plate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.plate {
+  aspect-ratio: 1;
+  padding: 0;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  background: var(--recess);
+  background-position: center;
+  background-size: cover;
+  border: 1px solid var(--paper-edge);
+  border-radius: 10px;
+  transition: transform 160ms ease;
+}
+
+.plate:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.plate.locked {
+  color: var(--ink-faint);
+  cursor: default;
+  background: var(--recess);
+  border-color: var(--recess);
+}
+
+/* One picture, filling the screen, over everything else on the page. */
+.plate-view {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  background: var(--scrim);
+  backdrop-filter: blur(4px);
+}
+
+.plate-view.hidden {
+  display: none;
+}
+
+/* The picture with an arrow on each side. On a narrow phone the arrows sit
+   over the edges of the picture rather than pushing it smaller. */
+.plate-stage {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.plate-arrow {
+  display: grid;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  color: var(--ink);
+  cursor: pointer;
+  background: var(--recess);
+  border: 1px solid var(--paper-edge);
+  border-radius: 50%;
+  transition: opacity 160ms ease, transform 120ms ease;
+}
+
+.plate-arrow svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2.4;
+}
+
+.plate-arrow:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+/* Kept in place rather than removed: the picture must not jump sideways
+   when it reaches the end of the collection. */
+.plate-arrow:disabled {
+  cursor: default;
+  opacity: 0.18;
+}
+
+.plate-sub {
+  margin: -6px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(182, 169, 230, 0.7);
+}
+
+.plate-full {
+  flex: 0 1 auto;
+  width: min(72vw, 420px);
+  aspect-ratio: 1;
+  background-position: center;
+  background-size: cover;
+  border: 1px solid var(--paper-edge);
+  border-radius: 16px;
+}
+
+.plate-caption {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}

@@ -1,0 +1,216 @@
+/* Mode picker: wordmark, mode buttons, rules link. */
+/* title ─────────────────────────────────────────────────────── */
+
+/*
+ * The cover, matched to the width of the screen and centred.
+ *
+ * Not `contain`, which shrinks the picture to fit the shorter dimension and
+ * leaves it small on a tall phone. The artwork carries generous white margins
+ * above and below precisely so the width can always be filled: whatever the
+ * screen's height, the picture spans it edge to edge, sits centred, and any
+ * overflow is white margin being cropped rather than art.
+ */
+.studio-splash-screen,
+.splash-screen {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.studio-splash-screen {
+  align-items: center;
+  justify-content: center;
+  background: #1d2087;
+}
+
+.studio-splash-cover {
+  width: 42%;
+  height: auto;
+  flex: 0 0 auto;
+}
+
+.splash-screen {
+  background: #fff;
+}
+
+/*
+ * Pinned and translated rather than centred by the flex column: an auto
+ * margin gives up and snaps to the top the moment the item is taller than the
+ * box, which is exactly the case that matters — a short phone would crop the
+ * whole overflow off the bottom instead of half from each end.
+ */
+.splash-cover {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: auto;
+  transform: translateY(-50%);
+}
+
+.title-screen {
+  align-items: center;
+  /*
+   * Three bands, not one centred stack: the wordmark sits in the upper third,
+   * PLAY where the thumb is, and the links along the bottom edge. Centring
+   * everything left a long empty stretch under the links — and the mode list
+   * hid the modes behind a tap and left holes where its gaps were.
+   */
+  /*
+   * Everything is on screen at once, so the screen has to fit it: wordmark,
+   * three modes, links. It is laid out as one column that shares out whatever
+   * room the phone has rather than as fixed bands — a tall phone gets air
+   * between the groups, a short one gets none, and nothing is ever pushed off
+   * the bottom.
+   */
+  justify-content: space-evenly;
+  gap: 10px;
+  padding: max(3vh, 16px) 22px max(2.5vh, 14px);
+  background:
+    radial-gradient(58% 28% at 50% 24%, rgba(255, 181, 0, 0.14), transparent 75%),
+    linear-gradient(180deg, transparent, var(--recess));
+}
+
+.brand-block {
+  text-align: center;
+}
+
+/*
+ * The wordmark is drawn artwork, not type — TAPtoTALK-logo.svg. It is
+ * vector, so it is sized freely and stays sharp at any density, and it is
+ * trimmed to its own edges so the layout aligns to the letters rather than to
+ * a margin baked into the file. It is taller than it is wide, which is why
+ * the widths below are far smaller than the ones the old landscape mark used.
+ */
+.brand {
+  margin: 0;
+  line-height: 0;
+}
+
+.brand-mark {
+  display: block;
+  width: min(89.76vw, 330px);
+  height: auto;
+  /* A little of the night thrown back up at it, so it sits on the background
+     rather than on top of it. */
+  filter: drop-shadow(0 10px 24px var(--slab-hard));
+}
+
+.brand-version {
+  margin: 10px 0 0;
+  padding-left: .58em;
+  color: #131313;
+  font-family: "TAP Sans KR", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: .58em;
+  text-align: center;
+}
+
+.tagline {
+  margin: 14px 0 0;
+  font-size: 15px;
+  letter-spacing: 1px;
+  color: var(--ink-soft);
+}
+
+.mode-list {
+  display: flex;
+  width: min(340px, 100%);
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mode-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 20px;
+  font-family: inherit;
+  text-align: left;
+  color: var(--ink);
+  cursor: pointer;
+  /* A block, like everything else: a face over a slab, not a black pill. */
+  background: linear-gradient(180deg, var(--panel-lit), var(--panel-deep));
+  border: 1px solid var(--paper-edge);
+  border-radius: 16px;
+  box-shadow:
+    inset 0 1px 0 var(--cool-dim),
+    0 3px 0 var(--slab-hard);
+  transition: transform 120ms ease, background 160ms ease;
+}
+
+.mode-btn:active {
+  background: linear-gradient(180deg, var(--panel-lit), var(--panel-deep));
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 1px 0 var(--cool-dim),
+    0 1px 0 var(--slab-hard);
+}
+
+.mode-name {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--cool);
+}
+
+.mode-desc {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.text-btn {
+  padding: 8px 16px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--hot-deep);
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* ── game ──────────────────────────────────────────────────────── */
+
+/* One row along the bottom: a footer, not a second menu. Four of these only
+   fit on a narrow phone at this size, which is why they are set smaller than
+   the rest of the screen rather than matching it. */
+.title-links {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 2px 6px;
+  justify-content: center;
+}
+
+.title-links .text-btn {
+  padding: 8px 6px;
+  font-size: 14px;
+}
+
+/*
+ * Short screens. The wordmark gives way first — the three modes and the links
+ * are the screen's job, and it is the only thing here with room to spare.
+ */
+@media (max-height: 700px) {
+  .brand-mark {
+    width: min(76.56vw, 284px);
+  }
+
+  .mode-btn {
+    padding: 10px 18px;
+  }
+
+  .mode-list { gap: 7px; }
+  .mode-name { font-size: 19px; }
+  .mode-desc { font-size: 12px; }
+}
+
+@media (max-height: 580px) {
+  .brand-mark {
+    width: min(58.08vw, 218px);
+  }
+}

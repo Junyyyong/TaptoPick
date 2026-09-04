@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" href="./icon.svg" />
+    <title>TAP to TALK</title>
+  </head>
+  <body>
+    <main id="app">
+      <section class="screen studio-splash-screen" id="screen-studio-splash" aria-label="TapeeTepee tap dance studio">
+        <img class="studio-splash-cover" src="./assets/brand/tapeetepee-open-talk.png" alt="TapeeTepee" />
+      </section>
+      <section class="screen splash-screen hidden" id="screen-splash" aria-label="TAP to TALK">
+        <img class="splash-cover" src="./assets/brand/taptotalk-cover7.png" alt="TAP to TALK" />
+      </section>
+      <section class="screen title-screen hidden" id="screen-title">
+        <header class="brand-block">
+          <img class="brand-mark" src="./TAPtoTALK-logo2.svg" alt="TAP to TALK" />
+          <p class="brand-version">KOREAN</p>
+        </header>
+        <nav class="mode-list" aria-label="Game mode">
+          <button class="mode-btn" id="mode-alphabet"><span class="mode-name">Korean Alphabet</span><span class="mode-desc">Learn jamo in order.</span></button>
+          <button class="mode-btn" id="mode-free"><span class="mode-name">Word Challenge</span><span class="mode-desc">Complete three words.</span></button>
+          <button class="mode-btn" id="mode-sentence"><span class="mode-name">Sentence Copy</span><span class="mode-desc">Copy five Korean sentences.</span></button>
+        </nav>
+        <div class="title-links">
+          <button class="text-btn" id="btn-title-tutorial">How to play</button>
+          <button class="text-btn" id="btn-title-settings">Settings</button>
+          <button class="text-btn" id="btn-title-rules">Rules</button>
+        </div>
+      </section>
+      <section class="screen talk-screen hidden" id="screen-game">
+        <header class="hud">
+          <button class="icon-btn" id="btn-back" aria-label="Back to menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+          </button>
+          <div class="run-heading"><span id="run-mode">Sentence Copy</span><strong id="run-clock">00:00.0</strong></div>
+          <button class="icon-btn pause-btn" id="btn-pause" aria-label="Pause"><span aria-hidden="true"></span></button>
+        </header>
+        <section class="writing-card" aria-live="polite">
+          <div class="target-prompt">
+            <p class="target-label" id="target-label">TARGET</p><p class="target-text" id="target-text"></p>
+            <p class="target-hint" id="target-hint">Copy the sentence below.</p>
+          </div>
+          <p class="typed-text" id="typed-text" data-empty="Start typing below."></p>
+          <div class="writing-submit-row hidden" id="writing-submit-row">
+            <p class="writing-feedback" id="writing-feedback"></p>
+          </div>
+        </section>
+        <div class="letter-board" id="letter-board" aria-label="Hangul keyboard"></div>
+        <footer class="fixed-controls" aria-label="Typing tools">
+          <button class="control-btn space-control" id="btn-space" aria-label="Space"><svg viewBox="0 0 28 16" aria-hidden="true"><path d="M3 4v8h22V4"/></svg></button>
+          <button class="control-btn" id="btn-backspace" aria-label="Delete one input">⌫ Delete</button>
+        </footer>
+      </section>
+      <div class="cheer hidden" id="cheer" aria-hidden="true">
+        <div class="cheer-card" id="cheer-card">
+          <p class="cheer-headline" id="cheer-headline">COMPLETE</p>
+          <p class="cheer-score-label">SCORE</p>
+          <p class="cheer-score" id="cheer-score">0</p>
+        </div>
+        <div class="cheer-word" id="cheer-word">GREAT!</div>
+        <video class="cheer-clip hidden" id="cheer-clip" muted playsinline disablepictureinpicture preload="auto"></video>
+        <audio id="cheer-sound" preload="auto"></audio>
+        <p class="cheer-tap" id="cheer-tap">Tap to continue</p>
+      </div>
+      <div class="result-layer hidden" id="result-layer" role="dialog" aria-modal="true">
+        <div class="result-panel"><p class="result-kicker">FINISH</p><h2 id="result-title">Complete!</h2><p id="result-detail"></p>
+          <button class="wood-btn" id="btn-again">Play again</button><button class="text-btn" id="btn-result-menu">Menu</button>
+        </div>
+      </div>
+      <div class="help-layer hidden" id="help-layer" role="dialog" aria-modal="true" aria-labelledby="help-title">
+        <section class="help-panel">
+          <header class="help-head">
+            <button class="icon-btn" id="btn-help-close" aria-label="Close">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+            </button>
+            <h2 id="help-title">How to play</h2>
+            <span class="icon-spacer" aria-hidden="true"></span>
+          </header>
+          <div class="help-body" id="help-body"></div>
+          <footer class="tutorial-nav hidden" id="tutorial-nav">
+            <button class="text-btn" id="btn-tutorial-prev">Back</button>
+            <div class="tutorial-dots" id="tutorial-dots" aria-label="Tutorial progress"></div>
+            <button class="wood-btn" id="btn-tutorial-next">Next</button>
+          </footer>
+        </section>
+      </div>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

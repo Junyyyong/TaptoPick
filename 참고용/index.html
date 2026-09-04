@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#f2f3f5" />
+    <link rel="icon" href="./icon.svg" />
+    <title>TAP to TALK</title>
+  </head>
+  <body>
+    <main id="app">
+      <section class="screen splash-screen" id="screen-splash" aria-label="TAP to TALK">
+        <img class="splash-cover" src="./assets/brand/splash.webp" alt="TAP to TALK" />
+      </section>
+      <section class="screen title-screen hidden" id="screen-title">
+        <header class="brand-block"><img class="brand-mark" src="./assets/brand/logo.svg" alt="TAP to TALK" /></header>
+        <nav class="mode-list" aria-label="Game modes">
+          <button class="mode-btn" id="mode-sentence"><span class="mode-name">Copy the Sentence</span><span class="mode-desc">Complete the given sentence as fast as you can</span></button>
+          <button class="mode-btn" id="mode-free"><span class="mode-name">Write on a Topic</span><span class="mode-desc">Use the keyword to write a long sentence in 60 seconds</span></button>
+        </nav>
+        <p class="prototype-note">A prototype in progress — rules and layout still evolving.</p>
+      </section>
+      <section class="screen talk-screen hidden" id="screen-game">
+        <header class="hud">
+          <button class="icon-btn" id="btn-back" aria-label="Back to menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+          </button>
+          <div class="run-heading"><span id="run-mode">Copy the Sentence</span><strong id="run-clock">00:00.0</strong></div>
+          <span class="icon-spacer" aria-hidden="true"></span>
+        </header>
+        <section class="writing-card" aria-live="polite">
+          <p class="target-label">Target sentence</p><p class="target-text" id="target-text"></p>
+          <p class="typed-text" id="typed-text" data-empty="Tap the letters below to type"></p>
+          <div class="writing-submit-row hidden" id="writing-submit-row">
+            <p class="writing-feedback" id="writing-feedback"></p>
+            <button class="submit-btn" id="btn-submit">Submit</button>
+          </div>
+        </section>
+        <div class="letter-board" id="letter-board" aria-label="Cheonjiin letter board"></div>
+        <footer class="fixed-controls" aria-label="Fixed input keys">
+          <button class="control-btn" id="btn-backspace" aria-label="Delete last input">⌫</button>
+          <button class="control-btn" id="btn-space">Space</button>
+          <button class="control-btn vowel-control" id="btn-dot" aria-label="Cheonjiin dot">·</button>
+          <button class="control-btn stroke-control" id="btn-stroke">Stroke</button>
+          <button class="control-btn punctuation" data-value=".">.</button><button class="control-btn punctuation" data-value=",">,</button>
+          <button class="control-btn punctuation" data-value="!">!</button><button class="control-btn punctuation" data-value="?">?</button>
+        </footer>
+      </section>
+      <div class="result-layer hidden" id="result-layer" role="dialog" aria-modal="true">
+        <div class="result-panel"><p class="result-kicker">FINISH</p><h2 id="result-title">Sentence Complete!</h2><p id="result-detail"></p>
+          <button class="wood-btn" id="btn-again">Try Again</button><button class="text-btn" id="btn-result-menu">Menu</button>
+        </div>
+      </div>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

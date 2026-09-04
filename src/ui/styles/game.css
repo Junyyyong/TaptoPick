@@ -1,0 +1,651 @@
+/* Compact game layout based on the supplied purple mobile reference. */
+.game-screen {
+  background: linear-gradient(180deg, rgba(86, 53, 125, 0.08), transparent 34%);
+}
+
+.hud {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding: 10px 14px 2px;
+}
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--hot-deep);
+  cursor: pointer;
+  background: var(--panel-lit);
+  border: 1px solid var(--paper-edge);
+  border-radius: 12px;
+  box-shadow: inset 0 0 12px var(--recess);
+}
+
+.icon-btn svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.icon-btn:active { transform: translateY(1px); }
+
+.score-block {
+  justify-self: center;
+  min-width: 72px;
+  text-align: center;
+}
+
+.score-label,
+.score-best {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--ink-soft);
+}
+
+.score-best { margin-top: 2px; }
+
+.score {
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--marquee);
+  text-shadow: 0 0 10px rgba(255, 139, 0, 0.5);
+  font-variant-numeric: tabular-nums;
+}
+
+.sub-hud {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex: 0 0 auto;
+  padding: 7px 14px 9px;
+}
+
+.chip {
+  max-width: 48%;
+  overflow: hidden;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ink-soft);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: var(--panel-lit);
+  border: 1px solid var(--paper-edge);
+  border-radius: 999px;
+}
+
+.chip b { font-variant-numeric: tabular-nums; }
+.crown { color: var(--brass-bright); }
+
+.timer-bar {
+  flex: 0 0 6px;
+  height: 6px;
+  margin: 0 14px 6px;
+  overflow: hidden;
+  background: rgba(7, 1, 16, 0.68);
+  border-radius: 999px;
+}
+
+/* Story has no clock, but the bar keeps its room so the board sits at the same
+   height in all three modes — a mode change must not nudge the board. */
+.timer-bar.hidden { visibility: hidden; }
+
+.timer-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--cool-deep), var(--cool));
+  transform-origin: left center;
+}
+
+.timer-bar.urgent span { background: linear-gradient(90deg, #ffb53d, #e83f66); }
+
+/*
+ * Nothing around the board pans the page. A drag that begins a few pixels off
+ * a tile — in the frame's padding, on the score row, on the stage below — is
+ * still a drag, and without this the browser claims it as a scroll gesture and
+ * the board slides out from under the finger.
+ */
+.hud,
+.sub-hud,
+.timer-bar,
+.selection-sum,
+.notice,
+.actions {
+  touch-action: none;
+}
+
+.board-wrap {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Width determines tile size. Rows grow downward as story difficulty rises. */
+.game-screen > /*
+ * Nothing around the board pans the page. A drag that begins a few pixels off
+ * a tile — in the frame's padding, on the score row, on the stage below — is
+ * still a drag, and without this the browser claims it as a scroll gesture and
+ * the board slides out from under the finger.
+ */
+.hud,
+.sub-hud,
+.timer-bar,
+.selection-sum,
+.notice,
+.actions {
+  touch-action: none;
+}
+
+/*
+ * The board takes whatever room the chrome leaves, and nothing else competes
+ * for it.
+ *
+ * It used to be an aspect-ratio box that reserved its own height and left the
+ * rest to a character stage. That box is a flex item, so on a screen where the
+ * chrome grew — the stats row and the equation row both arrived — it shrank
+ * vertically, and an aspect-ratio box that loses height loses width with it.
+ * The blocks ended up in a column down the middle with margins either side.
+ * Sizing is left to layout(), which already fits the board to both directions.
+ */
+.board-wrap {
+  flex: 1 1 auto;
+  align-items: center;
+  width: calc(100% - 28px);
+  margin: 0 14px;
+}
+
+.board-wrap:not(.scrolls) {
+  touch-action: none;
+}
+
+.board-wrap.scrolls {
+  align-items: flex-start;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.board {
+  display: grid;
+  gap: var(--gap);
+  padding: 5px;
+  background: var(--stage-edge);
+  border: 1px solid var(--paper-edge);
+  border-radius: 12px;
+  box-shadow: 0 3px 16px var(--slab-hard);
+  touch-action: none;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tile, 38px);
+  height: var(--tile, 38px);
+  padding: 0;
+  font-family: inherit;
+  font-size: calc(var(--tile, 38px) * 0.54);
+  font-weight: 900;
+  line-height: 1;
+  /* White numerals on a coloured face, ringed in the night colour so the
+     block reads against the picture surfacing behind it. */
+  color: #fff;
+  text-shadow: 0 2px 0 var(--slab);
+  cursor: pointer;
+  background: linear-gradient(180deg, var(--face-lit, #7a8bd8), var(--face, #3d5be0));
+  border: 1px solid var(--slab);
+  border-radius: 6px;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -2px 3px var(--slab),
+    0 2px 0 var(--slab);
+  transition: transform 90ms ease, box-shadow 90ms ease, background 140ms ease;
+}
+
+.tile.cleared {
+  color: transparent;
+  cursor: default;
+  background: var(--recess);
+  border-color: var(--recess);
+  box-shadow: inset 0 1px 4px var(--recess);
+}
+
+.tile.sel {
+  z-index: 1;
+  background: linear-gradient(160deg, #ffffff, var(--tile-sel));
+  transform: scale(1.055);
+  box-shadow: 0 0 0 3px var(--ring-sel), 0 0 14px rgba(255, 139, 0, 0.55);
+}
+
+.board.ok .tile.sel { box-shadow: 0 0 0 3px var(--ring-ok), 0 0 14px rgba(22, 163, 74, 0.55); }
+.tile.hint { animation: hint-pulse 900ms ease-in-out 3; }
+.board.shake { animation: shake 260ms ease; }
+
+.pop {
+  position: absolute;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--marquee);
+  text-shadow: 0 0 10px rgba(255, 139, 0, 0.5);
+  pointer-events: none;
+  animation: pop-up 700ms ease-out forwards;
+}
+
+/* Intentionally empty until character art and reactions are added. */
+.notice {
+  flex: 0 0 24px;
+  min-height: 24px;
+  margin: 2px 14px 0;
+  font-size: 14px;
+  font-weight: 800;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.actions {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Hint and take-back sit together in the middle; SUM is pinned to the left
+     edge so adding or hiding a button never slides the pair off centre. */
+  gap: 20px;
+  flex: 0 0 auto;
+  padding: 4px 0 12px;
+}
+
+.selection-sum {
+  /* Its own row under the board, the width of the board: the equation grows
+     as blocks are added, and there is nothing beside it to push. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  margin: 8px 16px 0;
+  padding: 6px 12px;
+  color: var(--ink-soft);
+  background: var(--panel-lit);
+  border: 1px solid var(--paper-edge);
+  border-radius: 12px;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.selection-sum.ready {
+  background: #fff3cf;
+  border-color: var(--warm);
+}
+
+.selection-sum span { font-size: 13px; font-weight: 900; letter-spacing: 1px; }
+.selection-sum b { font-size: 26px; font-variant-numeric: tabular-nums; }
+.selection-sum.active { color: var(--marquee); transform: translateY(-2px); }
+.selection-sum.ready { color: var(--ring-ok); border-color: var(--ring-ok); }
+
+.round-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  font-size: 27px;
+  color: #fffdf4;
+  cursor: pointer;
+  background: linear-gradient(160deg, var(--warm), var(--warm-deep));
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.4), 0 4px 0 var(--slab);
+}
+
+.round-btn:active:not(:disabled) { transform: translateY(2px); }
+.round-btn:disabled { cursor: default; filter: grayscale(0.65); opacity: 0.5; }
+.round-btn .glyph { z-index: 1; line-height: 1; }
+
+.badge {
+  position: absolute;
+  z-index: 2;
+  top: -5px;
+  right: -5px;
+  min-width: 24px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #fff;
+  background: var(--hot);
+  border: 2px solid var(--house-deep);
+  border-radius: 999px;
+}
+
+.round-btn.urge { animation: hint-pulse 900ms ease-in-out infinite; }
+
+.overlay {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--scrim);
+  backdrop-filter: blur(5px);
+  animation: overlay-in 160ms ease both;
+}
+
+.overlay.hidden { display: none; }
+
+.panel {
+  width: min(360px, 100%);
+  padding: 28px 24px 24px;
+  text-align: center;
+  background: linear-gradient(160deg, #3a2062, #1d0a39);
+  border: 1px solid rgba(238, 181, 73, 0.68);
+  border-radius: 16px;
+  box-shadow: 0 14px 42px rgba(5, 1, 12, 0.62);
+  animation: panel-rise 260ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+@media (max-height: 660px) {
+  .hud { grid-template-columns: 38px 1fr 38px; padding-top: 5px; }
+  .icon-btn { width: 38px; height: 38px; font-size: 21px; }
+  .score { font-size: 29px; }
+  .score-label,
+  .score-best { font-size: 11px; }
+  .sub-hud { padding-top: 4px; padding-bottom: 6px; }
+  .chip { padding: 4px 10px; font-size: 11px; }
+    .notice { flex-basis: 20px; min-height: 20px; font-size: 12px; }
+  .actions { padding: 2px 0 6px; }
+  .round-btn { width: 52px; height: 52px; font-size: 23px; }
+  /* Landscape is the tightest case in the game: nine rows of blocks plus the
+     equation row. Everything around the board gives up what it can so the
+     blocks stay above the thumb floor. */
+  .selection-sum {
+    min-height: 26px;
+    margin: 2px 12px 0;
+    padding: 2px 8px;
+  }
+
+  .sum-terms {
+    min-height: 18px;
+  }
+
+  .sum-term {
+    min-width: 18px;
+    padding: 0 4px;
+    font-size: 13px;
+  }
+
+  .run-stats {
+    gap: 6px;
+    padding: 2px 12px 4px;
+  }
+
+  .run-stat {
+    padding: 2px 4px;
+  }
+
+  .run-stat-value {
+    font-size: 14px;
+  }
+
+  .run-stat-label {
+    font-size: 11px;
+  }
+
+  /* The equation row grew so it could be read on a phone held upright; in
+     landscape that growth is exactly what the blocks cannot spare. */
+  .sum-label {
+    font-size: 11px;
+  }
+
+  .selection-sum span {
+    font-size: 11px;
+  }
+
+  .selection-sum b {
+    font-size: 19px;
+  }
+}
+
+@media (max-height: 520px) {
+    .notice { display: none; }
+  /* Bottom of the barrel: the labels go, the numbers stay. Nine rows of
+     blocks need every pixel left over. */
+  .sum-label,
+  .run-stat-label { font-size: 10px; }
+  .selection-sum span { font-size: 10px; }
+  .selection-sum b { font-size: 17px; }
+  .selection-sum { min-height: 22px; margin: 0 12px; padding: 1px 8px; }
+  .run-stats { gap: 4px; padding: 1px 12px 2px; }
+  .run-stat { padding: 1px 4px; }
+  .run-stat-value { font-size: 13px; }
+  .hud { grid-template-columns: 34px 1fr 34px; padding: 2px 8px; }
+  .icon-btn { width: 34px; height: 34px; }
+  .score { font-size: 26px; }
+  .sub-hud { padding: 2px 8px 4px; }
+  .actions { padding: 2px 0 4px; }
+  .round-btn { width: 44px; height: 44px; }
+}
+
+/* ── the picture under the board ──────────────────────────────────────
+   Each cleared square carries its own slice of the stage's picture, cut to the
+   tile size in boardView. Slices rather than one big background, because the
+   uncovered picture should read as *blocks* — rounded, with the gap between
+   them staying dark — not as a hole torn in a sheet. */
+.board.reveal .tile.cleared {
+  background-color: transparent;
+  background-image: var(--plate);
+  background-repeat: no-repeat;
+  border-color: transparent;
+  box-shadow: inset 0 0 0 1px var(--slab-hard);
+  /* Uncovering is the reward, so it arrives rather than snapping. */
+  animation: uncover 420ms ease both;
+}
+
+/* The split item, waiting for a block to be picked. */
+.round-btn.armed {
+  border-color: var(--marquee);
+  box-shadow: 0 0 0 2px rgba(255, 181, 0, 0.55);
+}
+
+.board.splitting .tile:not(.cleared) {
+  cursor: pointer;
+  animation: offer 1400ms ease-in-out infinite;
+}
+
+/*
+ * A tool a mode does not have keeps its slot rather than closing it up, so the
+ * action row is the same row in all three modes — the hint sits where the hint
+ * sits, whether or not there is a take-back beside it.
+ */
+.round-btn.hidden {
+  visibility: hidden;
+}
+
+/* One family per item, the same three the wordmark uses: orange finds
+   something, cyan changes the board, pink undoes. Three gold circles told the
+   player nothing about which was which. */
+#btn-split {
+  background: linear-gradient(160deg, var(--cool), var(--cool-deep));
+}
+
+#btn-undo {
+  background: linear-gradient(160deg, var(--hot), var(--hot-deep));
+}
+
+/* ── the picture, finished ────────────────────────────────────────────
+   Sized and placed over the board from app.ts, because the board's size is
+   only known once it has been measured. The sliced squares stay underneath
+   and this settles on top of them, so a completed stage resolves from blocks
+   into one picture instead of cutting straight to a results panel. */
+.plate-done {
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 12px;
+  background-position: center;
+  background-size: cover;
+  border: 1px solid var(--paper-edge);
+  border-radius: 12px;
+  box-shadow: 0 10px 34px var(--slab-hard);
+  pointer-events: none;
+  animation: plate-settle 620ms ease both;
+}
+
+.plate-done.hidden {
+  display: none;
+}
+
+.plate-done-label {
+  padding: 7px 16px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: var(--slab);
+  border-radius: 999px;
+  animation: drift-up-settle 620ms ease 260ms both;
+}
+
+/* ── one colour per digit ──────────────────────────────────────────── */
+.tile[data-v="1"] { --face: var(--v1); }
+.tile[data-v="2"] { --face: var(--v2); }
+.tile[data-v="3"] { --face: var(--v3); }
+.tile[data-v="4"] { --face: var(--v4); }
+.tile[data-v="5"] { --face: var(--v5); }
+.tile[data-v="6"] { --face: var(--v6); }
+.tile[data-v="7"] { --face: var(--v7); }
+.tile[data-v="8"] { --face: var(--v8); }
+.tile[data-v="9"] { --face: var(--v9); }
+
+/* The lit top edge is the face again, lightened — one rule instead of
+   nine more colours to keep in step. */
+.tile:not(.cleared) {
+  --face-lit: color-mix(in srgb, var(--face) 72%, white);
+}
+
+/* Chosen: the block lifts and goes pale, whatever colour it was. */
+.tile.sel {
+  --face: var(--cool);
+  --face-lit: #eaf9ff;
+
+  color: var(--tile-ink);
+  text-shadow: none;
+}
+
+/* ── what the run is measured by ──────────────────────────────────────
+   Three slots, the same three in every mode; only the labels change. Fixed
+   widths so a ticking clock never nudges the ones beside it. */
+.run-title {
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: var(--hot-deep);
+}
+
+.run-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 8px 16px 10px;
+}
+
+.run-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+  padding: 6px 4px;
+  background: var(--panel-lit);
+  border: 1px solid var(--paper-edge);
+  border-radius: 10px;
+}
+
+.run-stat-label {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--ink-soft);
+}
+
+.run-stat-value {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── the equation ─────────────────────────────────────────────────────
+   The selection written out — 2 + 3 + 2 = ? — with each term in its own
+   digit colour, so the row and the board say the same thing. */
+.sum-label {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--ink-soft);
+}
+
+.sum-terms {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  min-height: 22px;
+}
+
+.sum-term {
+  min-width: 22px;
+  padding: 1px 5px;
+  font-size: 15px;
+  font-weight: 900;
+  color: #fff;
+  text-align: center;
+  background: var(--face, var(--cool-deep));
+  border-radius: 5px;
+}
+
+.sum-term[data-v="1"] { --face: var(--v1); }
+.sum-term[data-v="2"] { --face: var(--v2); }
+.sum-term[data-v="3"] { --face: var(--v3); }
+.sum-term[data-v="4"] { --face: var(--v4); }
+.sum-term[data-v="5"] { --face: var(--v5); }
+.sum-term[data-v="6"] { --face: var(--v6); }
+.sum-term[data-v="7"] { --face: var(--v7); }
+.sum-term[data-v="8"] { --face: var(--v8); }
+.sum-term[data-v="9"] { --face: var(--v9); }
+
+.sum-plus,
+.sum-eq {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ink-soft);
+}
+
+.sum-total {
+  min-width: 26px;
+  font-size: 17px;
+  font-weight: 900;
+  color: var(--ink-soft);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.selection-sum.ready .sum-total {
+  color: var(--warm);
+}

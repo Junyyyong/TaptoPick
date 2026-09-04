@@ -1,0 +1,30 @@
+{
+  "name": "taptotalk",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "cap:sync": "npm run build && cap sync android",
+    "android:bundle": "npm run cap:sync && cd android && ./gradlew bundleRelease",
+    "build:single": "npm run build && node scripts/build-single-file.mjs",
+    "test:layout": "node tests/browser/responsive.mjs",
+    "test:drag": "node tests/browser/drag.mjs",
+    "test:feedback": "node tests/browser/feedback.mjs"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/cli": "^8.5.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.3",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@capacitor/core": "^8.5.0"
+  }
+}

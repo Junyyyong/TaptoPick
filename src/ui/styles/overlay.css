@@ -1,0 +1,320 @@
+/* ── overlay ───────────────────────────────────────────────────── */
+
+.panel-title {
+  margin: 0 0 10px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  color: var(--hot-deep);
+  text-shadow: 0 0 12px rgba(255, 139, 0, 0.35);
+}
+
+.panel-body {
+  margin: 0 0 20px;
+  font-size: 15px;
+  line-height: 1.7;
+  white-space: pre-line;
+  color: var(--ink-soft);
+}
+
+.panel-body .rule-num {
+  display: block;
+  margin: 4px 0;
+  font-weight: 800;
+  color: var(--warm);
+}
+
+.panel-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+:root {
+  --btn-face: var(--go);
+  --btn-deep: var(--go-deep);
+}
+
+/*
+ * A panel button is a block like everything else: a lit face over a slab that
+ * it presses down into. Green carries on, blue chooses, red starts over.
+ */
+.wood-btn {
+  width: 100%;
+  padding: 14px;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 0 var(--slab);
+  cursor: pointer;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--btn-face) 78%, white), var(--btn-face));
+  border: 1px solid var(--slab);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 4px 0 var(--btn-deep);
+  transition: transform 110ms ease, box-shadow 110ms ease;
+}
+
+.wood-btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 1px 0 var(--btn-deep);
+}
+
+.wood-btn.ghost {
+  --btn-face: var(--pick);
+  --btn-deep: var(--pick-deep);
+}
+
+.wood-btn.danger {
+  --btn-face: var(--stop);
+  --btn-deep: var(--stop-deep);
+}
+
+/* ── the end-of-run flourish ────────────────────────────────────────
+   The board dims, one word lands over it, a character dances. It sits above
+   everything and takes no taps: it is a moment, not a screen. */
+.cheer {
+  --cheer-gap: 16px;
+  --cheer-top: clamp(56px, calc(var(--app-h, 100dvh) * 0.16), 150px);
+  --clip-width: min(86vw, 420px);
+  --clip-offset: 0px;
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  /*
+   * Rows sized by what is in them, not by a number picked in advance.
+   *
+   * The word's row was a flat `1.2em` — of this element's font size, about
+   * 19px — while the word itself is set at 11vw, around 43px. The text
+   * overflowed its own box and ran down into the clip, which is what put the
+   * dancer over the prompt. Nothing here is measured in `em`, `vh` or
+   * percentages any more: the word and the prompt take exactly the room they
+   * need, the clip takes everything left, and the three together are the box.
+   * Nothing can overflow because nothing is guessed.
+   *
+   * They still never move, which was the point of the fixed slots: all three
+   * are always present, hidden with `visibility` rather than `display`.
+   */
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  justify-items: center;
+  gap: var(--cheer-gap);
+  /*
+   * The word sat right against the top edge, which read as having slipped off
+   * rather than as being placed. It starts a good way down now — a share of
+   * the real visible height, so it lands in the same spot on a tall phone and
+   * a short one, with a floor and a ceiling so neither extreme goes silly.
+   * The clip's row is the flexible one, so this comes out of its slack and
+   * nothing else moves.
+   */
+  padding: var(--cheer-top) 0 24px;
+  pointer-events: auto;
+  /* Most of the way to black. The board is still there underneath — it is
+     what was just finished — but it has receded far enough that everything
+     bright on screen belongs to the word and the clip. */
+  background: rgba(0, 0, 0, 0.68);
+}
+
+/* Each score band has its own staging. The media paths are replaceable in
+   config/app.ts, so future clips can be tuned without changing game flow. */
+.cheer-layout-compact { --cheer-gap: 22px; --cheer-top: clamp(72px, 18vh, 164px); --clip-width: min(72vw, 350px); --clip-offset: 8px; }
+.cheer-layout-standard { --cheer-gap: 16px; --cheer-top: clamp(62px, 16vh, 150px); --clip-width: min(82vw, 400px); --clip-offset: 2px; }
+.cheer-layout-large { --cheer-gap: 10px; --cheer-top: clamp(52px, 14vh, 132px); --clip-width: min(88vw, 440px); --clip-offset: -4px; }
+.cheer-layout-hero { --cheer-gap: 4px; --cheer-top: clamp(42px, 12vh, 112px); --clip-width: min(94vw, 480px); --clip-offset: -10px; }
+
+.cheer.hidden {
+  display: none;
+}
+
+/*
+ * Once the clip has played out the screen starts taking taps — until then it
+ * lets them through, so a stray finger during the dance cannot skip it before
+ * the player has seen anything.
+ */
+.cheer-hold {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/*
+ * The first beat: what ended the run, in words, and what it was worth, in one
+ * big number. It fills the whole screen on its own — the word and the dance
+ * are the second beat and are not drawn yet.
+ */
+.cheer-card {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  justify-items: center;
+  gap: 6px;
+  padding: 0 18px;
+  text-align: center;
+  animation: cheer-card-in 420ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+.cheer-card.hidden {
+  display: none;
+}
+
+.cheer-headline {
+  margin: 0 0 6px;
+  font-size: clamp(26px, 9vw, 52px);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 1.12;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+}
+
+.cheer-score-label {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.28em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.cheer-score {
+  margin: 0;
+  font-size: clamp(56px, 22vw, 132px);
+  font-weight: 900;
+  line-height: 0.96;
+  color: var(--warm);
+  text-shadow:
+    0 4px 0 var(--hot-deep),
+    0 10px 26px rgba(0, 0, 0, 0.6);
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes cheer-card-in {
+  from { opacity: 0; transform: scale(0.82); }
+}
+
+/* While the card is up the second beat stays out of the way entirely. */
+.cheer-card:not(.hidden) ~ .cheer-word,
+.cheer-card:not(.hidden) ~ .cheer-clip,
+.cheer-card:not(.hidden) ~ .cheer-tap {
+  visibility: hidden;
+}
+
+.cheer-tap {
+  grid-column: 1;
+  grid-row: 3;
+  /* Reserved from the first frame and revealed in place, so the prompt
+     arriving does not shove the word and the clip upward. */
+  visibility: hidden;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.82);
+  text-transform: uppercase;
+  animation: cheer-blink 1.6s ease-in-out infinite;
+}
+
+.cheer-hold .cheer-tap {
+  visibility: visible;
+}
+
+@keyframes cheer-blink {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+.cheer-run {
+  animation: cheer-dim 260ms ease both;
+}
+
+@keyframes cheer-dim {
+  from { background: rgba(0, 0, 0, 0); }
+}
+
+/*
+ * The clip sits in the middle of the screen; the word sits above it.
+ *
+ * They used to share one grid cell and the word landed across the dancer's
+ * face. Two rows instead — the word takes what it needs, the clip takes the
+ * rest — and the pair is centred as a block.
+ */
+.cheer-clip {
+  grid-column: 1;
+  grid-row: 2;
+  align-self: start;
+  /* A video element paints its own ground where the picture is transparent.
+     Saying so explicitly costs nothing and rules it out as a suspect. */
+  background: transparent;
+  /* Fills its slot rather than sizing it: a clip of any shape lands in the
+     same place, and swapping one for another moves nothing. */
+  width: var(--clip-width);
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+  margin-top: var(--clip-offset);
+  object-fit: contain;
+}
+
+/* Out of sight, still holding its place. */
+.cheer-clip.hidden {
+  display: block;
+  visibility: hidden;
+}
+
+.cheer-word {
+  grid-column: 1;
+  grid-row: 1;
+  /* The row is a fixed 1.2em of this size, so the text sits in it rather than
+     setting it — the pop animation is a transform and never touches layout. */
+  line-height: 1.2;
+  max-width: 100%;
+  padding: 0 14px;
+  /* Sized for the longest word it ever shows — "GOOD TRY!" — so none of them
+     run off the edges. An italic 900 face is about 0.6em a letter, and nine of
+     those have to fit inside the screen. */
+  font-size: clamp(30px, 11vw, 68px);
+  white-space: nowrap;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  color: var(--warm);
+  text-shadow:
+    0 3px 0 var(--hot-deep),
+    0 7px 22px rgba(0, 0, 0, 0.6);
+  -webkit-text-stroke: 3px #2a0a06;
+  paint-order: stroke fill;
+}
+
+/* Lands hard, settles, and stays — it has a clip to sit over now, so it holds
+   rather than lifting away on a timer of its own. */
+.cheer-run .cheer-word {
+  animation: cheer-pop 620ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+.cheer-run .cheer-clip {
+  animation: cheer-fade 400ms ease both;
+}
+
+@keyframes cheer-pop {
+  0% { opacity: 0; transform: scale(0.3) rotate(-8deg); }
+  50% { opacity: 1; transform: scale(1.18) rotate(3deg); }
+  76% { transform: scale(0.96) rotate(-1deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes cheer-fade {
+  from { opacity: 0; transform: scale(0.86); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cheer-run .cheer-word,
+  .cheer-run .cheer-clip {
+    animation: cheer-fade 400ms ease both;
+  }
+}
