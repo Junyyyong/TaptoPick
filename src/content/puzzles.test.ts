@@ -21,6 +21,7 @@ describe("Picture Pieces scoring content", () => {
     expect(MONTAGE_CHARACTERS.map((character) => [character.name, character.variations.length])).toEqual([
       ["Jaepi", 16],
       ["Bbogles", 14],
+      ["Haepi", 17],
     ]);
     MONTAGE_CHARACTERS.forEach((character) => {
       expect(character.answer).toMatch(/answer.*\.webp/);

@@ -30,7 +30,11 @@ const pieceModules = import.meta.glob<string>(
 
 const unitPreviewModules = import.meta.glob<string>("/optimized/unit/*.webp", { eager: true, query: "?url", import: "default" });
 const montageModules = import.meta.glob<string>(
-  ["/optimized/montage/jaepi/*.webp", "/optimized/montage/bbogles/*.webp"],
+  [
+    "/optimized/montage/jaepi/*.webp",
+    "/optimized/montage/bbogles/*.webp",
+    "/optimized/montage/haepi/*.webp",
+  ],
   { eager: true, query: "?url", import: "default" },
 );
 
@@ -105,4 +109,5 @@ function montageCharacter(id: string, name: string, expectedVariations: number):
 export const MONTAGE_CHARACTERS: readonly MontageCharacter[] = [
   montageCharacter("jaepi", "Jaepi", 16),
   montageCharacter("bbogles", "Bbogles", 14),
+  montageCharacter("haepi", "Haepi", 17),
 ];
