@@ -1,129 +1,79 @@
-import { createLetterBoard, inputValueForTile, MIRROR_TRAP_TOKEN, type LetterTile, type MirrorAxis } from "../core/hangul/board";
-import { checkSequenceTap, createAlphabetBoard, createRandomAlphabetTargets, type AlphabetTile } from "../core/hangul/alphabetGame";
-import { composeTokens } from "../core/hangul/compose";
-import { CHEONJIIN_STROKES, CONSONANTS, PUNCTUATION_SYMBOLS, type BoardSymbol } from "../core/hangul/keys";
-import { isWordMatch, pickLessonTargets, wordCountLabel } from "../core/hangul/wordChallenge";
-import { lessonCheerFor, lessonScoreFromTime } from "../core/hangul/writing";
-import { materializeTargetTokens, targetCharacterProgress, targetToTokens } from "../core/hangul/target";
-import { ALPHABET_COURSES, SENTENCE_LEVELS, SENTENCE_PROMPTS, WORD_LEVELS, WORD_TARGETS, alphabetTargetNote, type AlphabetLevel, type SentencePrompt, type WordTarget } from "../content/prompts";
 import { APP_CONFIG } from "../config/app";
+import { ALL_PIECES, PUZZLE_CHARACTERS, type PuzzleCharacter } from "../content/puzzles";
+import { createMemoryBoard, createMontageBoard, createUnitBoard, montageScore, timeScore, type MemoryCard } from "../core/pick/game";
 import { el } from "./dom";
 import { feedback } from "./feedback";
-import { canAcceptInput } from "./inputCapacity";
 import { Cheer } from "./screens/cheer";
-import { loadSentenceProgress, saveSentenceProgress } from "./sentenceProgress";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
 
-type Mode = "alphabet" | "sentence" | "word";
-interface TypedToken { value: string; tileId?: number }
+type Mode = "unit" | "montage" | "memory";
 
-const formatTime = (ms: number): string => {
-  const tenths = Math.floor(ms / 100) % 10;
-  const seconds = Math.floor(ms / 1000) % 60;
-  const minutes = Math.floor(ms / 60_000);
+const MONTAGE_LIMIT_MS = 60_000;
+
+function formatTime(ms: number): string {
+  const safe = Math.max(0, ms);
+  const tenths = Math.floor(safe / 100) % 10;
+  const seconds = Math.floor(safe / 1000) % 60;
+  const minutes = Math.floor(safe / 60_000);
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${tenths}`;
-};
-
-/** Nine decorative colours repeat evenly across 81 positions, independently of jamo. */
-const boardColorAt = (index: number): number => ((index * 5 + Math.floor(index / 9) * 2) % 9) + 1;
-
-interface TutorialStep {
-  title: string;
-  body: string;
-  keys: readonly string[];
-  result: string;
-  decoys?: readonly { key: string; mirror: MirrorAxis }[];
 }
 
-const TUTORIAL_STEPS: readonly TutorialStep[] = [
-  { title: "Follow visible progress", body: "Blue jamo are done and red is next. In the game, Retry restarts only the current item. Tap ㄱ, ㄴ, ㄷ, then ㄹ.", keys: ["ㄱ", "ㄴ", "ㄷ", "ㄹ"], result: "ㄱ → ㄴ → ㄷ → ㄹ" },
-  { title: "Pick one consonant", body: "The nine colours are mixed. Tap ㅋ once; a used block turns grey.", keys: ["ㅋ"], result: "ㅋ" },
-  { title: "Build a syllable", body: "Tap ㅊ, then ㅣ and ㄴ.", keys: ["ㅊ", "ㅣ", "ㄴ"], result: "친" },
-  { title: "Make a vowel", body: "Use the square Cheonjiin dot with ㅣ and ㅡ. Tap ㅣ, then ㆍ.", keys: ["ㅣ", "ㆍ"], result: "ㅏ" },
-  { title: "Make a compound vowel", body: "Build 개 without a ready-made ㅐ block. Tap ㄱ, ㅣ, ㆍ, then ㅣ.", keys: ["ㄱ", "ㅣ", "ㆍ", "ㅣ"], result: "개" },
-  { title: "Add punctuation", body: "Only a small period, !, and ? are used. Tap the period.", keys: ["."], result: "." },
-  { title: "Avoid reversed traps", body: "Reversed consonants are traps. Try one, then tap the normal ㅇ.", keys: ["ㅇ"], result: "ㅇ · trap avoided", decoys: [{ key: "ㄱ", mirror: "horizontal" }, { key: "ㅂ", mirror: "vertical" }] },
-  { title: "Finish a word", body: "A correct target word is counted automatically.", keys: ["ㅅ", "ㅣ", "ㆍ", "ㄹ", "ㅣ", "ㆍ", "ㅇ"], result: "사랑 · 1 word" },
-];
-
-/** Thin UI coordinator. Hangul behavior stays in core/hangul. */
 export class TalkApp {
   private readonly cheer = new Cheer();
   private readonly studioSplash = el("screen-studio-splash");
   private readonly splash = el("screen-splash");
   private readonly title = el("screen-title");
   private readonly game = el("screen-game");
-  private readonly board = el("letter-board");
-  private readonly targetLabel = el("target-label");
-  private readonly targetPrompt = document.querySelector<HTMLElement>(".target-prompt")!;
-  private readonly targetText = el("target-text");
-  private readonly targetHint = el("target-hint");
-  private readonly typedText = el("typed-text");
+  private readonly board = el("picture-board");
   private readonly clock = el("run-clock");
   private readonly runMode = el("run-mode");
+  private readonly targetLabel = el("target-label");
+  private readonly targetName = el("target-name");
+  private readonly targetHint = el("target-hint");
+  private readonly targetPreview = el("target-preview");
+  private readonly progressLabel = el("progress-label");
+  private readonly progressFill = el("progress-fill");
+  private readonly gameNote = el("game-note");
   private readonly result = el("result-layer");
   private readonly resultTitle = el("result-title");
   private readonly resultDetail = el("result-detail");
-  private readonly submitRow = el("writing-submit-row");
-  private readonly writingFeedback = el("writing-feedback");
   private readonly help = el("help-layer");
   private readonly helpTitle = el("help-title");
   private readonly helpBody = el("help-body");
-  private readonly tutorialNav = el("tutorial-nav");
-  private readonly tutorialDots = el("tutorial-dots");
+
   private preferences: TalkPreferences = loadTalkPreferences();
-  private sentenceProgress = loadSentenceProgress();
-  private tutorialStep = 0;
-  private tutorialProgress = 0;
-  private tutorialSolved = false;
-  private mode: Mode = "sentence";
-  private prompt: SentencePrompt = SENTENCE_PROMPTS[0]!;
-  private wordTarget: WordTarget = WORD_TARGETS[0]!;
-  private wordCount = 0;
-  private wordLevel = 0;
-  private wordTargetIndex = 0;
-  private wordLessonTargets: readonly WordTarget[] = [];
-  private sentenceLevel = 0;
-  private sentenceIndex = 0;
-  private alphabetCourseIndex = 0;
-  private alphabetLevelIndex = 0;
-  private alphabetTargetIndex = 0;
-  private alphabetPartIndex = 0;
-  private alphabetTiles: AlphabetTile[] = [];
-  private alphabetSequence: readonly string[] = [];
-  private alphabetTapGroups: readonly (readonly string[])[] = [];
-  private alphabetWrong = false;
-  private alphabetTotalMs = 0;
-  private alphabetCourseComplete = false;
-  private inputLocked = true;
+  private mode: Mode = "unit";
+  private active = false;
   private paused = false;
-  private sentenceTimer?: number;
-  private tiles: LetterTile[] = [];
-  private used = new Set<number>();
-  private input: TypedToken[] = [];
   private startedAt = 0;
   private elapsedMs = 0;
   private frame?: number;
+  private mistakes = 0;
+  private targetCharacter = PUZZLE_CHARACTERS[0]!;
+  private unitFound = new Set<number>();
+  private montageFound = 0;
+  private memoryCards: MemoryCard[] = [];
+  private memoryOpen = new Set<number>();
+  private memoryMatched = new Set<number>();
+  private memoryBusy = false;
+  private memoryTimer?: number;
 
   constructor() {
-    el("mode-alphabet").addEventListener("click", () => this.showAlphabetCourses());
-    el("mode-sentence").addEventListener("click", () => this.showLevelSelect());
-    el("mode-free").addEventListener("click", () => this.showWordLevelSelect());
+    el("mode-unit").addEventListener("click", () => this.startMode("unit"));
+    el("mode-montage").addEventListener("click", () => this.startMode("montage"));
+    el("mode-memory").addEventListener("click", () => this.startMode("memory"));
     el("btn-back").addEventListener("click", () => this.showTitle());
     el("btn-pause").addEventListener("click", () => this.pauseGame());
-    this.setupBackspace();
-    el("btn-space").addEventListener("click", () => this.typeFixed(" "));
-    el("btn-again").addEventListener("click", () => this.continueFromResult());
+    el("btn-restart").addEventListener("click", () => this.startMode(this.mode));
+    el("btn-again").addEventListener("click", () => this.startMode(this.mode));
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
-    el("btn-title-tutorial").addEventListener("click", () => this.showTutorial());
+    el("btn-title-tutorial").addEventListener("click", () => this.showHowToPlay());
     el("btn-title-settings").addEventListener("click", () => this.showSettings());
     el("btn-title-rules").addEventListener("click", () => this.showRules());
-    el("btn-help-close").addEventListener("click", () => this.paused ? this.resumeGame() : this.closeHelp());
-    el("btn-tutorial-prev").addEventListener("click", () => this.moveTutorial(-1));
-    el("btn-tutorial-next").addEventListener("click", () => this.moveTutorial(1));
+    el("btn-help-close").addEventListener("click", () => this.closeHelp());
     document.addEventListener("pointerdown", () => { this.cheer.unlock(); feedback.unlock(); }, { capture: true });
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden && !this.game.classList.contains("hidden")) this.pauseGame();
+      if (document.hidden && this.active && !this.paused) this.pauseGame();
     });
     this.applyPreferences();
     window.setTimeout(() => this.showProductSplash(), APP_CONFIG.timing.studioSplashMs);
@@ -136,652 +86,364 @@ export class TalkApp {
   }
 
   private showTitle(): void {
-    window.clearTimeout(this.sentenceTimer);
-    this.inputLocked = true; this.paused = false;
-    this.stopClock(); this.cheer.stop();
-    this.result.classList.add("hidden"); this.help.classList.add("hidden"); this.studioSplash.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
-  }
-
-  private start(mode: Mode, keepLessonTime = false): void {
-    window.clearTimeout(this.sentenceTimer);
+    this.active = false;
+    this.paused = false;
+    this.stopClock();
+    window.clearTimeout(this.memoryTimer);
     this.cheer.stop();
-    this.inputLocked = false; this.paused = false;
-    this.game.classList.remove("is-input-locked");
-    this.targetPrompt.classList.remove("is-writing-complete");
-    this.mode = mode;
-    if (mode === "alphabet") { this.showAlphabetCourses(); return; }
-    if (mode === "sentence") this.prompt = SENTENCE_LEVELS[this.sentenceLevel]!.prompts[this.sentenceIndex]!;
-    else this.wordTarget = this.wordLessonTargets[this.wordTargetIndex] ?? WORD_TARGETS[0]!;
-    this.input = []; this.used.clear();
-    const requiredText = mode === "sentence" ? this.prompt.text : this.wordTarget.word;
-    this.tiles = createLetterBoard(requiredText);
-    this.targetLabel.textContent = mode === "sentence" ? `${SENTENCE_LEVELS[this.sentenceLevel]!.name} · ${this.sentenceIndex + 1}/5` : `${WORD_LEVELS[this.wordLevel]!.name} · ${this.wordTargetIndex + 1}/3`;
-    this.renderTranslatedTarget();
-    this.typedText.dataset.empty = mode === "sentence" ? "Your sentence appears here." : "Your word appears here.";
-    this.runMode.textContent = mode === "sentence" ? "Sentence Copy" : "Word Challenge";
-    this.game.classList.toggle("is-word-mode", mode === "word");
-    this.game.classList.remove("is-alphabet-mode");
-    this.submitRow.classList.add("hidden");
-    this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
-    this.renderBoard(); this.renderInput(); this.startClock(mode === "sentence" && keepLessonTime);
-  }
-
-  private renderTranslatedTarget(): void {
-    this.targetText.classList.remove("is-medium-sequence", "is-long-sequence");
-    if (this.mode === "word") {
-      const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = this.wordTarget.word;
-      const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = this.wordTarget.translation;
-      this.targetText.replaceChildren(korean, english);
-      this.targetHint.textContent = "Complete the target word.";
-      return;
-    }
-    this.targetText.textContent = this.prompt.text;
-    this.targetHint.textContent = this.prompt.translation;
-  }
-
-  private currentAlphabetLevel(): AlphabetLevel {
-    return ALPHABET_COURSES[this.alphabetCourseIndex]!.levels[this.alphabetLevelIndex]!;
-  }
-
-  private showAlphabetCourses(): void {
-    this.stopClock(); this.cheer.stop();
-    this.result.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
-    this.tutorialNav.classList.add("hidden");
-    this.openHelp("Korean Alphabet");
-    this.helpBody.innerHTML = `<p class="level-intro">Choose one course. Its levels must be completed in order.</p><div class="level-list" id="alphabet-course-list"></div>`;
-    const list = el("alphabet-course-list");
-    ALPHABET_COURSES.forEach((course, index) => {
-      const button = document.createElement("button");
-      button.type = "button"; button.className = "level-btn alphabet-course-btn";
-      button.innerHTML = `<strong>${course.name}</strong><span>${course.description}</span><small>START</small>`;
-      button.addEventListener("click", () => this.startAlphabetCourse(index));
-      list.append(button);
-    });
-  }
-
-  private startAlphabetCourse(courseIndex: number): void {
-    this.alphabetCourseIndex = courseIndex;
-    this.alphabetLevelIndex = 0;
-    this.alphabetTotalMs = 0;
-    this.alphabetCourseComplete = false;
     this.help.classList.add("hidden");
-    this.startAlphabetLevel();
+    this.result.classList.add("hidden");
+    this.studioSplash.classList.add("hidden");
+    this.splash.classList.add("hidden");
+    this.game.classList.add("hidden");
+    this.title.classList.remove("hidden");
   }
 
-  private startAlphabetLevel(): void {
-    window.clearTimeout(this.sentenceTimer);
+  private startMode(mode: Mode): void {
+    this.mode = mode;
+    this.active = true;
+    this.paused = false;
+    this.elapsedMs = 0;
+    this.mistakes = 0;
+    this.unitFound.clear();
+    this.montageFound = 0;
+    this.memoryOpen.clear();
+    this.memoryMatched.clear();
+    this.memoryBusy = false;
+    window.clearTimeout(this.memoryTimer);
     this.cheer.stop();
-    this.mode = "alphabet";
-    this.inputLocked = false; this.paused = false;
-    this.game.classList.remove("is-input-locked");
-    this.alphabetTargetIndex = 0; this.alphabetPartIndex = 0; this.elapsedMs = 0;
-    el("btn-again").textContent = "Play again";
-    this.result.classList.add("hidden"); this.title.classList.add("hidden"); this.splash.classList.add("hidden"); this.game.classList.remove("hidden");
-    this.game.classList.remove("is-word-mode"); this.game.classList.add("is-alphabet-mode");
-    this.submitRow.classList.add("hidden");
-    this.loadAlphabetLevel();
+    this.result.classList.add("hidden");
+    this.help.classList.add("hidden");
+    this.title.classList.add("hidden");
+    this.splash.classList.add("hidden");
+    this.game.classList.remove("hidden", "is-input-locked");
+
+    if (mode === "unit") this.startUnitRound();
+    if (mode === "montage") this.startMontageRound();
+    if (mode === "memory") this.startMemoryRound();
     this.startClock();
   }
 
-  private loadAlphabetLevel(): void {
-    const course = ALPHABET_COURSES[this.alphabetCourseIndex]!;
-    const level = this.currentAlphabetLevel();
-    this.alphabetTargetIndex = 0; this.alphabetPartIndex = 0;
-    this.alphabetWrong = false;
-    this.targetPrompt.classList.remove("is-alphabet-complete");
-    this.used.clear();
-    this.alphabetSequence = level.randomizeTargets
-      ? createRandomAlphabetTargets(level.sequence.map((target) => target.length), level.pool)
-      : level.sequence;
-    this.alphabetTapGroups = level.randomizeTargets
-      ? this.alphabetSequence.map((target) => [...target])
-      : level.tapGroups;
-    this.alphabetTiles = createAlphabetBoard(this.alphabetTapGroups.flat(), level.pool, 81, Math.random, level.trapChance, level.trapPool);
-    this.runMode.textContent = `${course.name} · Lv.${level.number}`;
-    this.targetLabel.textContent = `Lv.${level.number} · 1 / ${this.alphabetSequence.length}`;
-    this.renderAlphabetBoard();
-    this.renderAlphabetProgress();
-  }
+  private startUnitRound(): void {
+    this.targetCharacter = PUZZLE_CHARACTERS[Math.floor(Math.random() * PUZZLE_CHARACTERS.length)]!;
+    const tiles = createUnitBoard(this.targetCharacter.id, ALL_PIECES);
+    this.setBoardSize(7);
+    this.runMode.textContent = "조각 찾기";
+    this.targetLabel.textContent = "WHOLE PICTURE";
+    this.targetName.textContent = this.targetCharacter.name;
+    this.targetHint.textContent = "완성 그림에 속한 조각을 모두 찾으세요.";
+    this.gameNote.textContent = "오답 없이 빠르게 찾을수록 높은 점수를 얻어요.";
+    this.renderCharacterPreview(this.targetCharacter);
+    this.updateProgress(0, this.targetCharacter.pieces.length, `0 / ${this.targetCharacter.pieces.length} 조각`);
 
-  private renderAlphabetBoard(): void {
     const fragment = document.createDocumentFragment();
-    this.alphabetTiles.forEach((tile, index) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = `letter-tile letter-tile--alphabet letter-tile--color-${boardColorAt(index)}`;
-      if (tile.mirror) button.classList.add(`letter-tile--flip-${tile.mirror === "horizontal" ? "x" : "y"}`);
-      button.dataset.tileId = String(tile.id);
-      button.setAttribute("aria-label", tile.value);
-      const glyph = document.createElement("span"); glyph.className = "letter-glyph"; glyph.textContent = tile.value === "ㆍ" || tile.value === "." ? "" : tile.value;
-      button.append(glyph);
-      if (tile.value === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
-      if (tile.value === ".") button.classList.add("letter-tile--period");
-      button.addEventListener("click", () => this.tapAlphabetTile(tile, button));
+    tiles.forEach((tile) => {
+      const button = this.imageButton(tile.src, `${tile.characterId} 이미지 조각`);
+      button.addEventListener("click", () => {
+        if (!this.active || this.paused || this.unitFound.has(tile.id)) return;
+        if (!tile.target) {
+          this.mistakes += 1;
+          feedback.reject();
+          this.flashWrong(button);
+          return;
+        }
+        this.unitFound.add(tile.id);
+        button.classList.add("is-found");
+        button.disabled = true;
+        feedback.pick(this.unitFound.size);
+        this.updateProgress(this.unitFound.size, this.targetCharacter.pieces.length, `${this.unitFound.size} / ${this.targetCharacter.pieces.length} 조각`);
+        if (this.unitFound.size === this.targetCharacter.pieces.length) this.finishUnit();
+      });
       fragment.append(button);
     });
     this.board.replaceChildren(fragment);
   }
 
-  private tapAlphabetTile(tile: AlphabetTile, button: HTMLButtonElement): void {
-    if (this.inputLocked || this.paused || this.used.has(tile.id)) return;
-    if (tile.mirror) {
-      feedback.reject();
-      button.classList.remove("is-wrong-pick"); void button.offsetWidth; button.classList.add("is-wrong-pick");
-      window.setTimeout(() => button.classList.remove("is-wrong-pick"), 360);
-      return;
-    }
-    const tapGroup = this.alphabetTapGroups[this.alphabetTargetIndex]!;
-    const result = checkSequenceTap(tapGroup, this.alphabetPartIndex, tile.value);
-    if (!result.correct) {
-      feedback.reject();
-      this.alphabetWrong = true; this.renderAlphabetProgress();
-      button.classList.remove("is-wrong-pick");
-      void button.offsetWidth;
-      button.classList.add("is-wrong-pick");
-      window.setTimeout(() => { button.classList.remove("is-wrong-pick"); this.alphabetWrong = false; this.renderAlphabetProgress(); }, 360);
-      return;
-    }
-    feedback.pick(this.alphabetTargetIndex + result.nextIndex);
-    this.used.add(tile.id); button.disabled = true;
-    this.alphabetPartIndex = result.nextIndex;
-    if (result.complete) {
-      this.inputLocked = true;
-      this.targetPrompt.classList.add("is-alphabet-complete");
-      this.renderAlphabetProgress();
-      window.setTimeout(() => {
-        this.targetPrompt.classList.remove("is-alphabet-complete");
-        this.alphabetTargetIndex += 1; this.alphabetPartIndex = 0;
-        if (this.alphabetTargetIndex === this.alphabetSequence.length) this.completeAlphabetLevel();
-        else { this.inputLocked = false; this.renderAlphabetProgress(); }
-      }, 340);
-      return;
-    }
-    this.renderAlphabetProgress();
+  private startMontageRound(): void {
+    this.setBoardSize(9);
+    this.runMode.textContent = "몽타주 찾기";
+    this.targetLabel.textContent = "MONTAGE";
+    this.targetHint.textContent = "81명 중 몽타주와 완전히 같은 한 명을 찾으세요.";
+    this.gameNote.textContent = "제한 시간 60초 · 찾을 때마다 새 몽타주가 나와요.";
+    this.renderNextMontage();
   }
 
-  private renderAlphabetProgress(): void {
-    const level = this.currentAlphabetLevel();
-    const course = ALPHABET_COURSES[this.alphabetCourseIndex]!;
-    this.targetLabel.textContent = `Lv.${level.number} · ${Math.min(this.alphabetTargetIndex + 1, this.alphabetSequence.length)} / ${this.alphabetSequence.length}`;
-    const target = this.alphabetSequence[this.alphabetTargetIndex] ?? "✓";
-    const korean = document.createElement("span"); korean.className = "target-korean"; korean.textContent = target;
-    const note = document.createElement("span"); note.className = "alphabet-target-note"; note.textContent = alphabetTargetNote(course.id, target);
-    this.targetText.replaceChildren(korean, note);
-    const targetLength = target.length;
-    this.targetText.classList.toggle("is-medium-sequence", targetLength > 4 && targetLength <= 8);
-    this.targetText.classList.toggle("is-long-sequence", targetLength > 8);
-    const preview = this.alphabetSequence.slice(this.alphabetTargetIndex, this.alphabetTargetIndex + 6).join(" → ");
-    const parts = this.alphabetTapGroups[this.alphabetTargetIndex] ?? [];
-    const progress = document.createElement("span"); progress.className = "alphabet-part-progress";
-    parts.forEach((part, index) => {
-      const glyph = document.createElement("span"); glyph.textContent = part === "ㆍ" ? "" : part;
-      glyph.className = index < this.alphabetPartIndex ? "is-done" : index === this.alphabetPartIndex ? "is-current" : "is-pending";
-      if (part === "ㆍ") { glyph.classList.add("is-cheonjiin-dot"); glyph.setAttribute("aria-label", "모음천"); }
-      if (this.alphabetWrong && index === this.alphabetPartIndex) glyph.classList.add("is-wrong");
-      progress.append(glyph);
-    });
-    const count = document.createElement("small"); count.textContent = `${this.alphabetTargetIndex} / ${this.alphabetSequence.length}`;
-    this.typedText.replaceChildren(progress, count);
-    this.typedText.dataset.empty = "";
-    this.typedText.classList.remove("is-empty", "is-wrong", "is-correct");
-    this.targetHint.textContent = `${preview}${this.alphabetTargetIndex + 6 < this.alphabetSequence.length ? " → …" : ""}`;
-  }
+  private renderNextMontage(): void {
+    this.targetCharacter = PUZZLE_CHARACTERS[Math.floor(Math.random() * PUZZLE_CHARACTERS.length)]!;
+    this.targetName.textContent = `${this.targetCharacter.name} 몽타주`;
+    this.renderCharacterPreview(this.targetCharacter);
+    this.updateProgress(this.montageFound, Math.max(1, this.montageFound + 1), `${this.montageFound}명 발견`);
 
-  private completeAlphabetLevel(): void {
-    this.inputLocked = true;
-    this.stopClock();
-    this.alphabetTotalMs += this.elapsedMs;
-    feedback.complete();
-    const course = ALPHABET_COURSES[this.alphabetCourseIndex]!;
-    if (this.alphabetLevelIndex === course.levels.length - 1) {
-      const availableMs = course.levels.reduce((total, level) => total + level.durationMs, 0);
-      const remaining = Math.max(0, availableMs - this.alphabetTotalMs);
-      const score = Math.max(1, Math.round(1500 * remaining / availableMs));
-      this.alphabetCourseComplete = true;
-      el("btn-again").textContent = "Play course again";
-      this.showResult(`${course.name} complete!`, `Lv.${course.levels[0]!.number}–${course.levels.at(-1)!.number} · ${formatTime(this.alphabetTotalMs)}`, score);
-      return;
-    }
-    this.sentenceTimer = window.setTimeout(() => {
-      this.alphabetLevelIndex += 1;
-      this.startAlphabetLevel();
-    }, 520);
-  }
-
-  private finishAlphabetChallenge(): void {
-    this.stopClock(); this.inputLocked = true; feedback.fail();
-    const level = this.currentAlphabetLevel();
-    this.alphabetCourseComplete = false;
-    el("btn-again").textContent = "Retry level";
-    this.showResult("Time is up!", `Lv.${level.number} · ${this.alphabetTargetIndex} / ${this.alphabetSequence.length}`);
-  }
-
-  private renderBoard(): void {
     const fragment = document.createDocumentFragment();
-    this.tiles.forEach((tile, index) => {
-      const button = document.createElement("button");
-      const color = boardColorAt(index);
-      button.className = `letter-tile letter-tile--color-${color}`; button.type = "button";
-      const glyph = document.createElement("span");
-      glyph.className = "letter-glyph";
-      glyph.textContent = tile.symbol === "ㆍ" ? "━" : tile.symbol;
-      button.append(glyph);
-      if (CONSONANTS.includes(tile.symbol as never)) button.classList.add("letter-tile--consonant");
-      else if (CHEONJIIN_STROKES.includes(tile.symbol as never)) button.classList.add("letter-tile--vowel");
-      else button.classList.add("letter-tile--punctuation");
-      if (tile.symbol === "ㆍ") button.classList.add("letter-tile--cheonjiin-dot");
-      if (tile.symbol === ".") button.classList.add("letter-tile--period");
-      if (tile.mirror) button.classList.add(`letter-tile--flip-${tile.mirror === "horizontal" ? "x" : "y"}`);
-      button.dataset.tileId = String(tile.id); button.setAttribute("aria-label", tile.symbol === "ㆍ" ? "Cheonjiin dot" : tile.symbol);
-      button.addEventListener("click", () => inputValueForTile(tile) === MIRROR_TRAP_TOKEN ? this.typeTrapTile(tile.id) : this.typeTile(tile.id, tile.symbol)); fragment.append(button);
+    createMontageBoard(this.targetCharacter.id).forEach((tile) => {
+      const button = this.montageButton(this.targetCharacter, tile.transform, tile.filter);
+      button.addEventListener("click", () => {
+        if (!this.active || this.paused) return;
+        if (!tile.exact) {
+          this.mistakes += 1;
+          feedback.reject();
+          this.flashWrong(button);
+          return;
+        }
+        this.montageFound += 1;
+        feedback.clear(1);
+        button.classList.add("is-found");
+        window.setTimeout(() => { if (this.active && this.mode === "montage") this.renderNextMontage(); }, 180);
+      });
+      fragment.append(button);
     });
     this.board.replaceChildren(fragment);
   }
 
-  private typeTile(tileId: number, value: BoardSymbol): void {
-    if (this.inputLocked || this.paused) return;
-    const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
-    if (!canAcceptInput(this.input.length, target)) return;
-    if (this.used.has(tileId)) return;
-    feedback.pick(this.input.length + 1);
-    this.used.add(tileId); this.input.push({ value, tileId });
-    this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${tileId}"]`)!.disabled = true;
-    this.renderInput();
-  }
-  private typeTrapTile(tileId: number): void {
-    if (this.inputLocked || this.paused || this.used.has(tileId)) return;
-    const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
-    if (!canAcceptInput(this.input.length, target)) return;
-    feedback.reject();
-    this.used.add(tileId); this.input.push({ value: MIRROR_TRAP_TOKEN, tileId });
-    this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${tileId}"]`)!.disabled = true;
-    this.renderInput();
-  }
-  private typeFixed(value: string): void {
-    if (this.inputLocked || this.paused) return;
-    const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
-    if (!canAcceptInput(this.input.length, target)) return;
-    feedback.tap(); this.input.push({ value }); this.renderInput();
-  }
-  private backspace(): void {
-    if (this.inputLocked || this.paused) return;
-    const removed = this.input.pop();
-    if (removed?.tileId !== undefined) {
-      this.used.delete(removed.tileId);
-      const button = this.board.querySelector<HTMLButtonElement>(`[data-tile-id="${removed.tileId}"]`)!;
-      button.disabled = false;
-    }
-    feedback.tap(); this.renderInput();
+  private startMemoryRound(): void {
+    this.setBoardSize(7);
+    this.runMode.textContent = "페어 메모리";
+    this.targetLabel.textContent = "MEMORY";
+    this.targetName.textContent = "같은 그림 찾기";
+    this.targetHint.textContent = "두 장씩 뒤집어 같은 이미지 조각을 맞추세요.";
+    this.gameNote.textContent = "가운데 별은 보너스 칸이에요. 나머지 48장에는 24쌍이 있어요.";
+    this.targetPreview.replaceChildren();
+    const badge = document.createElement("div");
+    badge.className = "memory-target-badge";
+    badge.innerHTML = "<strong>24</strong><span>PAIRS</span>";
+    this.targetPreview.append(badge);
+    this.memoryCards = createMemoryBoard(ALL_PIECES);
+    this.updateProgress(0, 24, "0 / 24 페어");
+    this.renderMemoryBoard();
   }
 
-  private setupBackspace(): void {
-    const button = el<HTMLButtonElement>("btn-backspace");
-    let delay: number | undefined;
-    let repeat: number | undefined;
-    let repeated = false;
-    const stop = (): void => {
-      if (delay !== undefined) window.clearTimeout(delay);
-      if (repeat !== undefined) window.clearInterval(repeat);
-      delay = undefined; repeat = undefined;
-    };
-    button.addEventListener("pointerdown", (event) => {
-      repeated = false;
-      button.setPointerCapture?.(event.pointerId);
-      delay = window.setTimeout(() => {
-        repeated = true; this.backspace();
-        repeat = window.setInterval(() => this.backspace(), 90);
-      }, 420);
-    });
-    button.addEventListener("pointerup", stop);
-    button.addEventListener("pointercancel", stop);
-    button.addEventListener("lostpointercapture", stop);
-    button.addEventListener("click", () => {
-      if (repeated) { repeated = false; return; }
-      this.backspace();
-    });
-  }
-
-  private renderInput(): void {
-    const text = composeTokens(this.input.map((token) => token.value));
-    const target = this.mode === "sentence" ? this.prompt.text : this.wordTarget.word;
-    const expected = materializeTargetTokens(targetToTokens(target));
-    const wrongIndex = this.input.findIndex((token, index) => token.value !== expected[index]);
-    const targetNodes = targetCharacterProgress(target, this.input.map((token) => token.value)).map(({ character, state }) => {
-      const glyph = document.createElement("span"); glyph.className = `target-character is-${state}`; glyph.textContent = character;
-      return glyph;
-    });
-    if (this.mode === "word") {
-      const korean = document.createElement("span"); korean.className = "target-korean"; korean.append(...targetNodes);
-      const english = document.createElement("span"); english.className = "target-translation-inline"; english.textContent = this.wordTarget.translation;
-      this.targetText.replaceChildren(korean, english);
-    } else this.targetText.replaceChildren(...targetNodes);
-    const composed = document.createElement("span"); composed.className = `composed-input${text ? "" : " is-empty"}`; composed.textContent = text; composed.dataset.empty = this.typedText.dataset.empty;
-    const count = document.createElement("small"); count.className = "writing-token-count"; count.textContent = `${Math.min(this.input.length, expected.length)} / ${expected.length}`;
-    this.typedText.replaceChildren(composed, count);
-    this.typedText.classList.toggle("is-empty", text.length === 0);
-    this.typedText.classList.toggle("is-correct", this.input.length > 0 && wrongIndex < 0);
-    this.typedText.classList.toggle("is-wrong", wrongIndex >= 0);
-    if (this.mode === "sentence" && text === this.prompt.text) this.finishSentence();
-    if (this.mode === "word") {
-      this.clearWordFeedback();
-      if (isWordMatch(text, this.wordTarget.word)) this.completeWord();
-    }
-  }
-
-  private startClock(resume = false): void {
-    this.stopClock();
-    this.startedAt = resume ? performance.now() - this.elapsedMs : performance.now();
-    const update = (): void => {
-      this.elapsedMs = performance.now() - this.startedAt;
-      if (this.mode === "word" || this.mode === "alphabet") {
-        const duration = this.mode === "word" ? WORD_LEVELS[this.wordLevel]!.durationMs : this.currentAlphabetLevel().durationMs;
-        const remaining = Math.max(0, duration - this.elapsedMs); this.clock.textContent = formatTime(remaining);
-        if (remaining === 0) {
-          if (this.mode === "word") this.finishWordChallenge();
-          else this.finishAlphabetChallenge();
-          return;
-        }
-      } else this.clock.textContent = formatTime(this.elapsedMs);
-      this.frame = requestAnimationFrame(update);
-    };
-    update();
-  }
-  private stopClock(): void { if (this.frame !== undefined) cancelAnimationFrame(this.frame); this.frame = undefined; }
-  private finishSentence(): void {
-    if (this.frame === undefined || this.inputLocked) return;
-    this.inputLocked = true;
-    this.game.classList.add("is-input-locked");
-    this.targetPrompt.classList.add("is-writing-complete");
-    this.stopClock();
-    feedback.complete();
-    const level = SENTENCE_LEVELS[this.sentenceLevel]!;
-    const finalSentence = this.sentenceIndex === level.prompts.length - 1;
-    if (finalSentence) {
-      const score = lessonScoreFromTime(this.elapsedMs, level.targetMs);
-      const previousBest = this.sentenceProgress.bestScores[level.id] ?? 0;
-      this.sentenceProgress.bestScores[level.id] = Math.max(previousBest, score);
-      saveSentenceProgress(this.sentenceProgress);
-      el("btn-again").textContent = "Choose level";
-      this.showResult("Level complete!", `${score.toLocaleString()} / 1,500 · ${formatTime(this.elapsedMs)} · Best ${this.sentenceProgress.bestScores[level.id]!.toLocaleString()}`, score);
-    } else {
-      this.sentenceTimer = window.setTimeout(() => {
-        this.targetPrompt.classList.remove("is-writing-complete");
-        this.sentenceIndex += 1;
-        this.start("sentence", true);
-      }, 520);
-    }
-  }
-
-  private continueFromResult(): void {
-    this.result.classList.add("hidden");
-    if (this.mode === "sentence") {
-      this.showLevelSelect(); return;
-    }
-    if (this.mode === "alphabet") {
-      if (this.alphabetCourseComplete) {
-        this.alphabetLevelIndex = 0; this.alphabetTotalMs = 0; this.alphabetCourseComplete = false;
-      }
-      this.startAlphabetLevel();
-    }
-    else this.showWordLevelSelect();
-  }
-  private clearWordFeedback(): void {
-    this.writingFeedback.textContent = "";
-    this.writingFeedback.classList.remove("needs-work");
-    this.submitRow.classList.add("hidden");
-  }
-  private completeWord(): void {
-    this.clearWordFeedback();
-    this.inputLocked = true; this.targetPrompt.classList.add("is-writing-complete");
-    feedback.clear(this.input.length);
-    window.setTimeout(() => {
-      this.targetPrompt.classList.remove("is-writing-complete");
-      this.wordCount += 1;
-      if (this.wordCount === this.wordLessonTargets.length) {
-        this.stopClock();
-        const level = WORD_LEVELS[this.wordLevel]!;
-        const score = lessonScoreFromTime(this.elapsedMs, level.durationMs);
-        el("btn-again").textContent = "Choose level";
-        this.showResult(`${level.name} complete!`, `3 / 3 words · ${formatTime(this.elapsedMs)}`, score);
-        return;
-      }
-      this.inputLocked = false; this.startNextWord();
-    }, 340);
-  }
-  private startNextWord(): void {
-    this.wordTargetIndex += 1;
-    this.wordTarget = this.wordLessonTargets[this.wordTargetIndex] ?? WORD_TARGETS[0]!;
-    this.input = []; this.used.clear();
-    this.tiles = createLetterBoard(this.wordTarget.word);
-    this.targetLabel.textContent = `${WORD_LEVELS[this.wordLevel]!.name} · ${this.wordTargetIndex + 1}/3`;
-    this.renderTranslatedTarget();
-    this.targetHint.textContent = `${wordCountLabel(this.wordCount)} complete · ${3 - this.wordCount} left.`;
-    this.renderBoard(); this.renderInput();
-  }
-  private finishWordChallenge(): void {
-    this.stopClock(); this.inputLocked = true;
-    el("btn-again").textContent = "Choose level";
-    const label = wordCountLabel(this.wordCount);
-    if (this.wordCount > 0) {
-      feedback.complete();
-      const tierScore = this.wordCount >= 10 ? 900 : this.wordCount >= 7 ? 650 : this.wordCount >= 4 ? 350 : 0;
-      this.showResult("Time is up!", `${label} completed`, this.wordCount, tierScore);
-    } else {
-      feedback.fail();
-      this.showResult("Time is up!", "0 words completed");
-    }
-  }
-
-  private showWordLevelSelect(): void {
-    this.stopClock(); this.cheer.stop();
-    this.result.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
-    this.tutorialNav.classList.add("hidden");
-    this.openHelp("Word Challenge");
-    this.helpBody.innerHTML = `<p class="level-intro">Choose a lesson and complete three Korean words.</p><div class="level-list" id="word-level-list"></div>`;
-    const list = el("word-level-list");
-    WORD_LEVELS.forEach((level, index) => {
+  private renderMemoryBoard(): void {
+    const fragment = document.createDocumentFragment();
+    this.memoryCards.forEach((card) => {
       const button = document.createElement("button");
-      button.type = "button"; button.className = "level-btn";
-      button.innerHTML = `<strong>${level.name}</strong><span>${level.description}</span><em>3 words · ${Math.round(level.durationMs / 1000)} seconds</em><small>START</small>`;
-      button.addEventListener("click", () => this.startWordLevel(index));
-      list.append(button);
+      button.type = "button";
+      button.className = "picture-tile memory-card";
+      button.setAttribute("aria-label", card.free ? "보너스 칸" : "뒤집힌 이미지 카드");
+      if (card.free) {
+        button.classList.add("is-free", "is-matched");
+        button.innerHTML = "<span class=memory-free>★</span>";
+        button.disabled = true;
+      } else {
+        const open = this.memoryOpen.has(card.id) || this.memoryMatched.has(card.pairId);
+        if (open) button.classList.add("is-open");
+        if (this.memoryMatched.has(card.pairId)) button.classList.add("is-matched");
+        const back = document.createElement("span");
+        back.className = "memory-back";
+        back.textContent = "?";
+        const image = document.createElement("img");
+        image.src = card.src;
+        image.alt = "";
+        button.append(back, image);
+        button.disabled = this.memoryMatched.has(card.pairId);
+        button.addEventListener("click", () => this.flipMemoryCard(card));
+      }
+      fragment.append(button);
     });
+    this.board.replaceChildren(fragment);
   }
 
-  private startWordLevel(index: number): void {
-    this.wordLevel = index; this.wordTargetIndex = 0; this.wordCount = 0; this.elapsedMs = 0;
-    this.wordLessonTargets = pickLessonTargets(WORD_LEVELS[index]!.targets, 3);
-    this.help.classList.add("hidden");
-    el("btn-again").textContent = "Choose level";
-    this.start("word");
+  private flipMemoryCard(card: MemoryCard): void {
+    if (!this.active || this.paused || this.memoryBusy || this.memoryOpen.has(card.id) || this.memoryMatched.has(card.pairId)) return;
+    this.memoryOpen.add(card.id);
+    feedback.tap();
+    this.renderMemoryBoard();
+    if (this.memoryOpen.size < 2) return;
+
+    const openCards = this.memoryCards.filter((entry) => this.memoryOpen.has(entry.id));
+    const matched = openCards[0]?.pairId === openCards[1]?.pairId;
+    this.memoryBusy = true;
+    this.memoryTimer = window.setTimeout(() => {
+      if (matched && openCards[0]) {
+        this.memoryMatched.add(openCards[0].pairId);
+        feedback.clear(2);
+      } else {
+        this.mistakes += 1;
+        feedback.reject();
+      }
+      this.memoryOpen.clear();
+      this.memoryBusy = false;
+      this.updateProgress(this.memoryMatched.size, 24, `${this.memoryMatched.size} / 24 페어`);
+      this.renderMemoryBoard();
+      if (this.memoryMatched.size === 24) this.finishMemory();
+    }, matched ? 360 : 720);
   }
-  private showResult(title: string, detail: string, score?: number, tierScore = score): void {
-    const reveal = (): void => {
-      this.resultTitle.textContent = title;
+
+  private imageButton(src: string, label: string): HTMLButtonElement {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "picture-tile";
+    button.setAttribute("aria-label", label);
+    const image = document.createElement("img");
+    image.src = src;
+    image.alt = "";
+    button.append(image);
+    return button;
+  }
+
+  private montageButton(character: PuzzleCharacter, transform: string, filter: string): HTMLButtonElement {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "picture-tile";
+    button.setAttribute("aria-label", `${character.name} 몽타주 후보`);
+    let visual: HTMLElement;
+    if (character.preview) {
+      const image = document.createElement("img");
+      image.src = character.preview;
+      image.alt = "";
+      visual = image;
+    } else {
+      const composite = document.createElement("span");
+      composite.className = "montage-composite";
+      character.pieces.forEach((src) => {
+        const image = document.createElement("img");
+        image.src = src;
+        image.alt = "";
+        composite.append(image);
+      });
+      visual = composite;
+    }
+    visual.style.transform = transform;
+    visual.style.filter = filter;
+    button.append(visual);
+    return button;
+  }
+
+  private renderCharacterPreview(character: PuzzleCharacter): void {
+    if (character.preview) {
+      this.renderImagePreview(character.preview, `${character.name} 완성 이미지`);
+      return;
+    }
+    const grid = document.createElement("div");
+    grid.className = `assembled-preview assembled-preview--${character.pieces.length}`;
+    character.pieces.forEach((src) => {
+      const image = document.createElement("img");
+      image.src = src;
+      image.alt = "";
+      grid.append(image);
+    });
+    grid.setAttribute("aria-label", `${character.name} 완성 이미지`);
+    this.targetPreview.replaceChildren(grid);
+  }
+
+  private renderImagePreview(src: string, alt: string): void {
+    const image = document.createElement("img");
+    image.src = src;
+    image.alt = alt;
+    this.targetPreview.replaceChildren(image);
+  }
+
+  private setBoardSize(size: 7 | 9): void {
+    this.board.classList.toggle("picture-board--7", size === 7);
+    this.board.classList.toggle("picture-board--9", size === 9);
+    this.board.classList.toggle("is-montage", size === 9);
+  }
+
+  private updateProgress(value: number, total: number, label: string): void {
+    this.progressLabel.textContent = label;
+    this.progressFill.style.width = `${Math.min(100, total ? value / total * 100 : 0)}%`;
+  }
+
+  private flashWrong(button: HTMLButtonElement): void {
+    button.classList.remove("is-wrong");
+    void button.offsetWidth;
+    button.classList.add("is-wrong");
+  }
+
+  private startClock(): void {
+    this.stopClock();
+    this.startedAt = performance.now() - this.elapsedMs;
+    const tick = (): void => {
+      if (!this.active || this.paused) return;
+      this.elapsedMs = performance.now() - this.startedAt;
+      if (this.mode === "montage") {
+        const remaining = Math.max(0, MONTAGE_LIMIT_MS - this.elapsedMs);
+        this.clock.textContent = formatTime(remaining);
+        this.progressFill.style.width = `${remaining / MONTAGE_LIMIT_MS * 100}%`;
+        if (remaining <= 0) { this.finishMontage(); return; }
+      } else {
+        this.clock.textContent = formatTime(this.elapsedMs);
+      }
+      this.frame = requestAnimationFrame(tick);
+    };
+    this.frame = requestAnimationFrame(tick);
+  }
+
+  private stopClock(): void {
+    if (this.frame !== undefined) cancelAnimationFrame(this.frame);
+    this.frame = undefined;
+  }
+
+  private finishUnit(): void {
+    const score = timeScore(this.elapsedMs, this.mistakes);
+    this.finishGame("PUZZLE COMPLETE", `${this.targetCharacter.name}의 모든 조각을 찾았습니다.\n${formatTime(this.elapsedMs)} · 오답 ${this.mistakes}회 · ${score.toLocaleString()}점`, score);
+  }
+
+  private finishMontage(): void {
+    const score = montageScore(this.montageFound, this.mistakes);
+    this.finishGame("TIME UP", `60초 동안 ${this.montageFound}명을 찾았습니다.\n오답 ${this.mistakes}회 · ${score.toLocaleString()}점`, score);
+  }
+
+  private finishMemory(): void {
+    const score = timeScore(this.elapsedMs, this.mistakes, 8000);
+    this.finishGame("ALL PAIRS FOUND", `24쌍을 모두 맞췄습니다.\n${formatTime(this.elapsedMs)} · 실패 ${this.mistakes}회 · ${score.toLocaleString()}점`, score);
+  }
+
+  private finishGame(headline: string, detail: string, score: number): void {
+    if (!this.active) return;
+    this.active = false;
+    this.stopClock();
+    window.clearTimeout(this.memoryTimer);
+    this.game.classList.add("is-input-locked");
+    feedback.complete();
+    this.cheer.play(headline, score, "NICE PICK!", () => {
+      this.resultTitle.textContent = headline;
       this.resultDetail.textContent = detail;
       this.result.classList.remove("hidden");
-    };
-    if (score !== undefined) this.cheer.play(title, score, lessonCheerFor(tierScore ?? score), reveal, tierScore);
-    else this.cheer.playFailure(title, "TRY AGAIN!", reveal);
-  }
-
-  private openHelp(title: string): void {
-    feedback.tap();
-    this.helpTitle.textContent = title;
-    this.help.classList.remove("hidden");
-  }
-
-  private showLevelSelect(): void {
-    this.stopClock(); this.cheer.stop();
-    this.result.classList.add("hidden"); this.game.classList.add("hidden"); this.title.classList.remove("hidden");
-    this.tutorialNav.classList.add("hidden");
-    this.openHelp("Sentence Copy");
-    this.helpBody.innerHTML = `<p class="level-intro">Complete five phrases for up to 1,500 points. Your fastest run becomes the level high score.</p><div class="level-list" id="level-list"></div>`;
-    const list = el("level-list");
-    SENTENCE_LEVELS.forEach((level, index) => {
-      const best = this.sentenceProgress.bestScores[level.id] ?? 0;
-      const button = document.createElement("button");
-      button.type = "button"; button.className = "level-btn";
-      button.innerHTML = `<strong>${level.name}</strong><span>${level.description}</span><em>5 phrases · Top tier ${Math.round(level.targetMs / 1000)}s</em><small>${best ? `BEST ${best.toLocaleString()}` : "NEW"}</small>`;
-      button.addEventListener("click", () => this.startSentenceLevel(index));
-      list.append(button);
-    });
-  }
-
-  private startSentenceLevel(index: number): void {
-    this.sentenceLevel = index; this.sentenceIndex = 0; this.elapsedMs = 0;
-    this.help.classList.add("hidden");
-    this.start("sentence");
+    }, score);
   }
 
   private pauseGame(): void {
-    if (this.inputLocked || this.paused || this.game.classList.contains("hidden")) return;
-    this.paused = true; this.stopClock();
-    this.tutorialNav.classList.add("hidden");
-    this.openHelp("Paused");
-    this.helpBody.innerHTML = `<div class="pause-card"><p>Take a break. The clock is stopped.</p><button class="wood-btn" id="btn-resume">Resume</button><button class="text-btn" id="btn-pause-menu">Main menu</button></div>`;
-    el("btn-resume").addEventListener("click", () => this.resumeGame());
-    el("btn-pause-menu").addEventListener("click", () => this.showTitle());
-  }
-
-  private resumeGame(): void {
-    if (!this.paused) return;
-    this.paused = false; this.help.classList.add("hidden");
-    this.startClock(true);
-    feedback.tap();
+    if (!this.active || this.paused) return;
+    this.paused = true;
+    this.stopClock();
+    this.game.classList.add("is-input-locked");
+    this.openHelp("일시정지", "<div class=pause-copy><strong>잠시 쉬어가도 좋아요.</strong><p>닫기 버튼을 누르면 타이머가 이어서 시작됩니다.</p></div>");
   }
 
   private closeHelp(): void {
-    feedback.tap();
     this.help.classList.add("hidden");
-  }
-
-  private showTutorial(): void {
-    this.tutorialStep = 0;
-    this.tutorialProgress = 0;
-    this.tutorialSolved = false;
-    this.tutorialNav.classList.remove("hidden");
-    this.openHelp("How to play");
-    this.renderTutorial();
-  }
-
-  private renderTutorial(): void {
-    const step = TUTORIAL_STEPS[this.tutorialStep]!;
-    this.helpBody.innerHTML = `<article class="tutorial-card"><p class="help-kicker">STEP ${this.tutorialStep + 1} / ${TUTORIAL_STEPS.length}</p><h3>${step.title}</h3><p>${step.body}</p><div class="tutorial-practice"><p class="tutorial-output is-empty" id="tutorial-output" aria-live="polite"></p><div class="tutorial-keys" id="tutorial-keys"></div></div></article>`;
-    const keys = el("tutorial-keys");
-    [...new Set(step.keys)].forEach((key) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      const category = PUNCTUATION_SYMBOLS.includes(key as never) ? "feature" : ["ㅣ", "ㅡ", "ㆍ"].includes(key) ? "vowel" : "consonant";
-      button.className = `tutorial-key tutorial-key--${category}`;
-      button.dataset.tutorialKey = key;
-      const glyph = document.createElement("span");
-      glyph.className = "tutorial-glyph";
-      glyph.textContent = key;
-      button.append(glyph);
-      if (key === ".") button.classList.add("tutorial-key--period");
-      button.addEventListener("click", () => this.playTutorialKey(key));
-      keys.append(button);
-    });
-    step.decoys?.forEach(({ key, mirror }) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = `tutorial-key tutorial-key--consonant tutorial-key--flip-${mirror === "horizontal" ? "x" : "y"}`;
-      button.dataset.tutorialDecoy = key;
-      const glyph = document.createElement("span");
-      glyph.className = "tutorial-glyph"; glyph.textContent = key;
-      button.append(glyph);
-      button.addEventListener("click", () => {
-        feedback.reject();
-        button.disabled = true; button.classList.add("is-used");
-        const output = el("tutorial-output");
-        output.textContent = "× Trap! Choose the normal block.";
-        output.classList.remove("is-empty");
-      });
-      keys.prepend(button);
-    });
-    this.updateTutorialKeys();
-    this.tutorialDots.replaceChildren(...TUTORIAL_STEPS.map((_, index) => {
-      const dot = document.createElement("span");
-      dot.className = `dot${index === this.tutorialStep ? " now" : index < this.tutorialStep ? " done" : ""}`;
-      return dot;
-    }));
-    el<HTMLButtonElement>("btn-tutorial-prev").disabled = this.tutorialStep === 0;
-    el<HTMLButtonElement>("btn-tutorial-next").disabled = !this.tutorialSolved;
-    el("btn-tutorial-next").textContent = this.tutorialStep === TUTORIAL_STEPS.length - 1 ? "Start" : "Next";
-  }
-
-  private playTutorialKey(key: string): void {
-    const step = TUTORIAL_STEPS[this.tutorialStep]!;
-    if (key !== step.keys[this.tutorialProgress]) {
-      feedback.reject();
-      el("tutorial-output").textContent = "Tap the glowing key.";
-      return;
+    if (this.paused && this.active) {
+      this.paused = false;
+      this.game.classList.remove("is-input-locked");
+      this.startClock();
     }
-    feedback.tap();
-    this.tutorialProgress += 1;
-    const entered = step.keys.slice(0, this.tutorialProgress);
-    let output = entered.join(" → ");
-    if (this.tutorialProgress === step.keys.length) {
-      this.tutorialSolved = true;
-      output = step.result;
-      feedback.complete();
-      el<HTMLButtonElement>("btn-tutorial-next").disabled = false;
-    }
-    const outputEl = el("tutorial-output");
-    outputEl.textContent = output;
-    outputEl.classList.toggle("is-empty", !output);
-    this.updateTutorialKeys();
   }
 
-  private updateTutorialKeys(): void {
-    const step = TUTORIAL_STEPS[this.tutorialStep]!;
-    this.helpBody.querySelectorAll<HTMLButtonElement>("[data-tutorial-key]").forEach((button) => {
-      const key = button.dataset.tutorialKey;
-      const usedBefore = step.keys.slice(0, this.tutorialProgress).includes(key as never);
-      const neededAgain = step.keys.slice(this.tutorialProgress).includes(key as never);
-      const used = usedBefore && !neededAgain;
-      button.disabled = used;
-      button.classList.toggle("is-used", used);
-      button.classList.toggle("is-next", !this.tutorialSolved && key === step.keys[this.tutorialProgress]);
-    });
+  private openHelp(title: string, html: string): void {
+    this.helpTitle.textContent = title;
+    this.helpBody.innerHTML = html;
+    this.help.classList.remove("hidden");
   }
 
-  private moveTutorial(direction: number): void {
-    feedback.tap();
-    if (direction > 0 && this.tutorialStep === TUTORIAL_STEPS.length - 1) {
-      this.preferences.tutorialDone = true;
-      saveTalkPreferences(this.preferences);
-      this.closeHelp();
-      return;
-    }
-    this.tutorialStep = Math.max(0, Math.min(TUTORIAL_STEPS.length - 1, this.tutorialStep + direction));
-    this.tutorialProgress = 0;
-    this.tutorialSolved = false;
-    this.renderTutorial();
+  private showHowToPlay(): void {
+    this.openHelp("게임 방법", `<div class="rules-list"><p><b>1. 조각 찾기</b><span>위의 완성 이미지를 보고 7×7 보드에서 그 캐릭터를 이루는 모든 조각을 찾습니다.</span></p><p><b>2. 몽타주 찾기</b><span>위에 제시된 몽타주와 완전히 같은 이미지를 9×9 후보 중 찾습니다. 제한 시간은 60초입니다.</span></p><p><b>3. 페어 메모리</b><span>7×7 카드를 두 장씩 뒤집어 같은 이미지 24쌍을 모두 맞춥니다. 중앙 별은 보너스 칸입니다.</span></p></div>`);
   }
 
   private showRules(): void {
-    this.tutorialNav.classList.add("hidden");
-    this.openHelp("Rules");
-    this.helpBody.innerHTML = `<div class="rules-list"><p><b>Korean Alphabet</b><span>Choose Consonants, Vowels, or Syllables. Each course starts at its first level and every level must be completed in order.</span></p><p><b>Sound guide</b><span>Simple IPA shows how each jamo sounds. A slash such as [k] / [ɡ] separates sounds used in different positions.</span></p><p><b>Visible progress</b><span>Blue jamo are complete, red is the next tap, and a completed target turns blue.</span></p><p><b>Sentence Copy</b><span>Complete five phrases. The full run is worth up to 1,500 points and your best score is saved.</span></p><p><b>Word Challenge</b><span>Choose one of five lessons and complete three words before its timer ends.</span></p><p><b>Nine mixed colours</b><span>Colours do not belong to a particular letter. A used block turns grey.</span></p><p><b>Vowels</b><span>Use ㆍ, ㅡ, and ㅣ for simple and compound vowels. Symbol traps are mixed into the board.</span></p><p><b>Syllables</b><span>Build useful one-syllable words about people, the body, daily life, nature, and more.</span></p><p><b>Reversed traps</b><span>Mirrored consonants are traps from Lv.1. They never count as the original consonant.</span></p></div>`;
+    this.openHelp("점수 규칙", `<div class="rules-list"><p><b>빠른 발견</b><span>조각 찾기와 페어 메모리는 완료 시간이 짧을수록 점수가 높습니다.</span></p><p><b>정확한 선택</b><span>틀린 조각이나 서로 다른 페어를 고르면 점수가 줄어듭니다.</span></p><p><b>60초 도전</b><span>몽타주는 정답 1명당 500점이며 오답 1회당 25점이 감점됩니다.</span></p></div>`);
   }
 
   private showSettings(): void {
-    this.tutorialNav.classList.add("hidden");
-    this.openHelp("Settings");
-    const canVibrate = typeof navigator.vibrate === "function";
-    this.helpBody.innerHTML = `<div class="switch-list"><button class="switch-row" id="talk-sound"><span class="switch-text"><b>Sound</b><small>Button sounds and finish sounds</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><span class="switch-knob"></span></span></button><button class="switch-row" id="talk-haptics"><span class="switch-text"><b>Vibration</b><small>Short feedback when you tap</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><span class="switch-knob"></span></span></button>${canVibrate ? "" : '<p class="settings-note">Vibration may not work in this browser.</p>'}</div>`;
-    el("talk-sound").addEventListener("click", () => this.changePreference("soundOn"));
-    el("talk-haptics").addEventListener("click", () => this.changePreference("hapticsOn"));
-  }
-
-  private changePreference(key: "soundOn" | "hapticsOn"): void {
-    this.preferences[key] = !this.preferences[key];
-    saveTalkPreferences(this.preferences);
-    this.applyPreferences();
-    this.showSettings();
-    feedback.item();
+    this.openHelp("설정", `<div class="switch-list"><button class="switch-row" data-setting="sound"><span class="switch-text"><b>효과음</b><small>선택과 성공 소리를 재생합니다.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><i class="switch-knob"></i></span></button><button class="switch-row" data-setting="haptics"><span class="switch-text"><b>진동</b><small>지원하는 기기에서 터치 진동을 사용합니다.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><i class="switch-knob"></i></span></button></div>`);
+    this.helpBody.querySelectorAll<HTMLButtonElement>("[data-setting]").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (button.dataset.setting === "sound") this.preferences.soundOn = !this.preferences.soundOn;
+        if (button.dataset.setting === "haptics") this.preferences.hapticsOn = !this.preferences.hapticsOn;
+        saveTalkPreferences(this.preferences);
+        this.applyPreferences();
+        this.showSettings();
+      });
+    });
   }
 
   private applyPreferences(): void {

@@ -43,13 +43,11 @@ const FAILURE_MOVIE = {
  * Keep the public paths stable and a redesign only needs new asset files.
  */
 export const APP_CONFIG = {
-  name: "TAP to TALK",
-  board: { columns: 9, rows: 9 },
-  timing: { studioSplashMs: 3_000, productSplashMs: 4_000 },
+  name: "TAP to PICK",
+  board: { columns: 7, rows: 7 },
+  timing: { studioSplashMs: 1_800, productSplashMs: 2_200 },
   assets: {
     studioSplash: new URL("../../public/assets/brand/tapeetepee-open-talk.png", import.meta.url).href,
-    logo: new URL("../../TAPtoTALK-logo2.svg", import.meta.url).href,
-    splash: new URL("../../public/assets/brand/taptotalk-cover7.png", import.meta.url).href,
     celebrationVideo: CELEBRATION_MOVIES[0]!.video,
     celebrationAudio: CELEBRATION_MOVIES[0]!.sound,
     failureCelebration: FAILURE_MOVIE,

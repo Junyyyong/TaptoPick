@@ -75,6 +75,47 @@
   text-align: center;
 }
 
+.brand-wordmark,
+.pick-splash-mark {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: .08em;
+  margin: 0;
+  font-family: "TAP Sans KR", sans-serif;
+  font-size: clamp(52px, 15vw, 76px);
+  font-weight: 900;
+  line-height: .9;
+  letter-spacing: -.09em;
+  filter: drop-shadow(0 8px 18px var(--slab-hard));
+}
+
+.brand-wordmark span,
+.pick-splash-mark span { color: var(--cool); }
+.brand-wordmark strong,
+.pick-splash-mark strong { color: var(--hot); }
+.brand-wordmark small,
+.pick-splash-mark small { color: var(--warm-deep); font-size: .34em; font-style: italic; letter-spacing: -.05em; }
+
+.pick-splash-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  flex-wrap: wrap;
+  width: 100%;
+  transform: translate(-50%, -50%);
+}
+
+.pick-splash-mark em {
+  flex-basis: 100%;
+  margin-top: 18px;
+  color: var(--ink);
+  font-size: 12px;
+  font-style: normal;
+  letter-spacing: .48em;
+  text-align: center;
+}
+
 /*
  * The wordmark is drawn artwork, not type — TAPtoTALK-logo.svg. It is
  * vector, so it is sized freely and stays sharp at any density, and it is

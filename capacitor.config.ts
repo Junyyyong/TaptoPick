@@ -1,13 +1,13 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: "io.github.junyyyong.taptotalk",
-  appName: "TAP to TALK",
+  appId: "io.github.junyyyong.taptopick",
+  appName: "TAP to PICK",
   webDir: "dist",
-  // Matches --wood-mid so the window never flashes white behind the WebView.
-  backgroundColor: "#7a4f24",
+  // Matches the warm paper skin so the WebView never flashes behind the app.
+  backgroundColor: "#fff6e9",
   android: {
-    backgroundColor: "#7a4f24",
+    backgroundColor: "#fff6e9",
   },
 };
 

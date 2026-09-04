@@ -4,7 +4,7 @@ export interface TalkPreferences {
   tutorialDone: boolean;
 }
 
-const KEY = "taptotalk.preferences.v1";
+const KEY = "taptopick.preferences.v1";
 const DEFAULTS: TalkPreferences = { soundOn: true, hapticsOn: true, tutorialDone: false };
 
 export function loadTalkPreferences(): TalkPreferences {
