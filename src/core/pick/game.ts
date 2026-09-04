@@ -14,11 +14,6 @@ export interface UnitTile extends SourcePiece {
 export interface MontageTile {
   id: number;
   exact: boolean;
-  mutations: readonly MontageMutation[];
-}
-
-export interface MontageMutation {
-  pieceIndex: number;
   transform: string;
   filter: string;
 }
@@ -53,31 +48,29 @@ export function createUnitBoard(targetId: string, pieces: readonly SourcePiece[]
 
 const MONTAGE_VARIANTS = [
   ["scaleX(-1)", "none"],
-  ["translateX(15%) scale(1.08)", "none"],
-  ["translateY(-15%) scale(1.08)", "none"],
-  ["rotate(12deg) scale(1.14)", "none"],
-  ["scale(1)", "hue-rotate(85deg) saturate(1.45)"],
-  ["scale(1)", "hue-rotate(-105deg) saturate(1.4)"],
+  ["scaleY(-1)", "none"],
+  ["rotate(-12deg) scale(.9)", "none"],
+  ["rotate(12deg) scale(.9)", "none"],
+  ["translateX(-10%) scale(1.08)", "none"],
+  ["translateX(10%) scale(1.08)", "none"],
+  ["scale(.82)", "none"],
+  ["scale(1.18)", "none"],
+  ["scale(1)", "hue-rotate(70deg) saturate(1.45)"],
+  ["scale(1)", "hue-rotate(-100deg) saturate(1.5)"],
+  ["scaleX(-1)", "hue-rotate(145deg) saturate(1.4)"],
   ["scale(1)", "grayscale(1) contrast(1.25)"],
   ["scale(1)", "sepia(1) saturate(2.2) contrast(1.15)"],
+  ["scale(1)", "brightness(.7) contrast(1.35)"],
+  ["rotate(-8deg) scale(1.05)", "hue-rotate(45deg)"],
+  ["rotate(8deg) scale(1.05)", "hue-rotate(-45deg)"],
 ] as const;
 
-export function createMontageBoard(pieceIndices: readonly number[], size = 49, random: Random = Math.random): MontageTile[] {
-  if (!pieceIndices.length) throw new Error("Montage mode needs at least one feature piece");
+export function createMontageBoard(size = 25, random: Random = Math.random): MontageTile[] {
   const exactIndex = Math.floor(random() * size);
   return Array.from({ length: size }, (_, id) => {
-    if (id === exactIndex) return { id, exact: true, mutations: [] };
-    const variantIndex = (id + exactIndex) % MONTAGE_VARIANTS.length;
-    const variant = MONTAGE_VARIANTS[variantIndex]!;
-    const primaryPiece = pieceIndices[(id * 5 + exactIndex) % pieceIndices.length]!;
-    const mutations: MontageMutation[] = [{ pieceIndex: primaryPiece, transform: variant[0], filter: variant[1] }];
-
-    if ((id + exactIndex) % 3 === 0 && pieceIndices.length > 1) {
-      const secondaryPiece = pieceIndices[(id * 5 + exactIndex + 1) % pieceIndices.length]!;
-      const secondaryVariant = MONTAGE_VARIANTS[(variantIndex + 4) % MONTAGE_VARIANTS.length]!;
-      mutations.push({ pieceIndex: secondaryPiece, transform: secondaryVariant[0], filter: secondaryVariant[1] });
-    }
-    return { id, exact: false, mutations };
+    if (id === exactIndex) return { id, exact: true, transform: "scale(1)", filter: "none" };
+    const variant = MONTAGE_VARIANTS[(id + exactIndex) % MONTAGE_VARIANTS.length]!;
+    return { id, exact: false, transform: variant[0], filter: variant[1] };
   });
 }
 

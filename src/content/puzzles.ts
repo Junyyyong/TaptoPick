@@ -4,7 +4,6 @@ export interface PuzzleCharacter {
   folder: string;
   preview?: string;
   pieces: readonly string[];
-  montagePieces: readonly number[];
   columns: 3;
   rows: 3 | 4;
 }
@@ -24,7 +23,7 @@ const assetModules = import.meta.glob<string>(
 
 const natural = new Intl.Collator("en", { numeric: true });
 
-function character(id: string, name: string, folder: string, montagePieces: readonly number[]): PuzzleCharacter {
+function character(id: string, name: string, folder: string): PuzzleCharacter {
   const files = Object.entries(assetModules)
     .filter(([path]) => path.startsWith(`/${folder}/`))
     .sort(([a], [b]) => natural.compare(a, b));
@@ -40,20 +39,19 @@ function character(id: string, name: string, folder: string, montagePieces: read
     folder,
     preview: files.find(([path]) => path.toLowerCase().endsWith(".png"))?.[1],
     pieces,
-    montagePieces,
     columns: 3,
     rows: pieces.length === 9 ? 3 : 4,
   };
 }
 
 export const PUZZLE_CHARACTERS: readonly PuzzleCharacter[] = [
-  character("bb", "BB", "Bb", [0, 1, 3, 4]),
-  character("ha", "Ha", "Ha", [0, 1, 2, 3, 4, 5]),
-  character("hoo", "Hoo", "Hoo", [3, 4, 5, 6, 7]),
-  character("ja", "Ja", "Ja", [0, 1, 3, 4, 5]),
-  character("pino", "Pino", "Pino", [0, 1, 2, 3, 4, 5]),
-  character("tapee", "Tapee", "Tapee", [0, 1, 2, 3, 4, 5]),
-  character("tepee", "Tepee", "Tepee", [0, 1, 2, 3, 4, 5]),
+  character("bb", "BB", "Bb"),
+  character("ha", "Ha", "Ha"),
+  character("hoo", "Hoo", "Hoo"),
+  character("ja", "Ja", "Ja"),
+  character("pino", "Pino", "Pino"),
+  character("tapee", "Tapee", "Tapee"),
+  character("tepee", "Tepee", "Tepee"),
 ];
 
 export const ALL_PIECES = PUZZLE_CHARACTERS.flatMap((entry) =>

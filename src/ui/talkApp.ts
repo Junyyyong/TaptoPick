@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "../config/app";
 import { ALL_PIECES, PUZZLE_CHARACTERS, type PuzzleCharacter } from "../content/puzzles";
-import { createMemoryBoard, createMontageBoard, createUnitBoard, montageScore, timeScore, type MemoryCard, type MontageMutation } from "../core/pick/game";
+import { createMemoryBoard, createMontageBoard, createUnitBoard, montageScore, timeScore, type MemoryCard } from "../core/pick/game";
 import { el } from "./dom";
 import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
@@ -155,7 +155,7 @@ export class TalkApp {
   }
 
   private startMontageRound(): void {
-    this.setBoardSize(7, true);
+    this.setBoardSize(5, true);
     this.runMode.textContent = "Montage Hunt";
     this.gameNote.textContent = "60 seconds · A new montage appears after every match.";
     this.renderNextMontage();
@@ -167,8 +167,8 @@ export class TalkApp {
     this.updateProgress(this.montageFound, Math.max(1, this.montageFound + 1), `${this.montageFound} found`);
 
     const fragment = document.createDocumentFragment();
-    createMontageBoard(this.targetCharacter.montagePieces).forEach((tile) => {
-      const button = this.montageButton(this.targetCharacter, tile.mutations);
+    createMontageBoard().forEach((tile) => {
+      const button = this.montageButton(this.targetCharacter, tile.transform, tile.filter);
       button.addEventListener("click", () => {
         if (!this.active || this.paused) return;
         if (!tile.exact) {
@@ -269,30 +269,28 @@ export class TalkApp {
     return button;
   }
 
-  private montageButton(character: PuzzleCharacter, mutations: readonly MontageMutation[]): HTMLButtonElement {
+  private montageButton(character: PuzzleCharacter, transform: string, filter: string): HTMLButtonElement {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "picture-tile";
     button.setAttribute("aria-label", `${character.name} montage candidate`);
-    button.append(this.createCleanMontage(character, mutations));
+    const visual = this.createCleanMontage(character);
+    visual.classList.add("montage-candidate-visual");
+    visual.style.transform = transform;
+    visual.style.filter = filter;
+    button.append(visual);
     return button;
   }
 
-  private createCleanMontage(character: PuzzleCharacter, mutations: readonly MontageMutation[] = []): HTMLElement {
+  private createCleanMontage(character: PuzzleCharacter): HTMLElement {
     const composite = document.createElement("span");
     composite.className = `montage-composite montage-composite--${character.pieces.length}`;
-    character.pieces.forEach((src, pieceIndex) => {
+    character.pieces.forEach((src) => {
       const cell = document.createElement("span");
       cell.className = "montage-piece";
       const image = document.createElement("img");
       image.src = src;
       image.alt = "";
-      const mutation = mutations.find((entry) => entry.pieceIndex === pieceIndex);
-      if (mutation) {
-        cell.classList.add("is-mutated");
-        image.style.setProperty("--piece-transform", mutation.transform);
-        image.style.filter = mutation.filter;
-      }
       cell.append(image);
       composite.append(cell);
     });
@@ -300,6 +298,10 @@ export class TalkApp {
   }
 
   private renderMontagePreview(character: PuzzleCharacter): void {
+    if (character.preview) {
+      this.renderImagePreview(character.preview, `${character.name} exact montage`);
+      return;
+    }
     const composite = this.createCleanMontage(character);
     composite.classList.add("montage-composite--preview");
     composite.setAttribute("aria-label", `${character.name} exact montage`);
@@ -330,7 +332,8 @@ export class TalkApp {
     this.targetPreview.replaceChildren(image);
   }
 
-  private setBoardSize(size: 7 | 9, montage = false): void {
+  private setBoardSize(size: 5 | 7 | 9, montage = false): void {
+    this.board.classList.toggle("picture-board--5", size === 5);
     this.board.classList.toggle("picture-board--7", size === 7);
     this.board.classList.toggle("picture-board--9", size === 9);
     this.board.classList.toggle("is-montage", montage);
@@ -424,7 +427,7 @@ export class TalkApp {
   }
 
   private showHowToPlay(): void {
-    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Study the complete character above, then find every piece that belongs to it on the 7×7 board.</span></p><p><b>2. Montage Hunt</b><span>Find the one image that exactly matches the character above among 49 candidates. You have 60 seconds.</span></p><p><b>3. Pair Memory</b><span>Flip two cards at a time and match all 24 pairs. The center star is a free block.</span></p></div>`);
+    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Study the complete character above, then find every piece that belongs to it on the 7×7 board.</span></p><p><b>2. Montage Hunt</b><span>Find the one image that exactly matches the character above among 25 candidates. You have 60 seconds.</span></p><p><b>3. Pair Memory</b><span>Flip two cards at a time and match all 24 pairs. The center star is a free block.</span></p></div>`);
   }
 
   private showRules(): void {
