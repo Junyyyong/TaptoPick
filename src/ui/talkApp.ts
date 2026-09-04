@@ -1,5 +1,5 @@
 import { APP_CONFIG } from "../config/app";
-import { ALL_PIECES, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS, PUZZLE_CHARACTERS, type PuzzleCharacter } from "../content/puzzles";
+import { ALL_PIECES, MEMORY_REVEAL_DELAY_MS, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS, PUZZLE_CHARACTERS, type PuzzleCharacter } from "../content/puzzles";
 import { createMemoryBoard, createMontageBoard, createUnitBoard, montageScore, tieredTimeScore, timeScore, type MemoryCard } from "../core/pick/game";
 import { el } from "./dom";
 import { feedback } from "./feedback";
@@ -258,7 +258,7 @@ export class TalkApp {
       this.updateProgress(this.memoryMatched.size, 24, `${this.memoryMatched.size} / 24 pairs`);
       this.renderMemoryBoard();
       if (this.memoryMatched.size === 24) this.finishMemory();
-    }, matched ? 360 : 720);
+    }, matched ? MEMORY_REVEAL_DELAY_MS.match : MEMORY_REVEAL_DELAY_MS.mismatch);
   }
 
   private imageButton(src: string, label: string): HTMLButtonElement {

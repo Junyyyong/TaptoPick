@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS } from "./puzzles";
+import { MEMORY_REVEAL_DELAY_MS, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS } from "./puzzles";
 
 describe("Picture Pieces scoring content", () => {
   it("defines five score bands ending at 60 seconds", () => {
@@ -11,5 +11,9 @@ describe("Picture Pieces scoring content", () => {
       { maxMs: 45_000, score: 600 },
       { maxMs: 60_000, score: 300 },
     ]);
+  });
+
+  it("keeps memory reveals readable without a long input lock", () => {
+    expect(MEMORY_REVEAL_DELAY_MS).toEqual({ match: 250, mismatch: 450 });
   });
 });

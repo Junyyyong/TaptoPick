@@ -79,3 +79,8 @@ export const PICTURE_PIECES_SCORE_BANDS = [
   { maxMs: 45_000, score: 600 },
   { maxMs: PICTURE_PIECES_TIME_LIMIT_MS, score: 300 },
 ] as const;
+
+export const MEMORY_REVEAL_DELAY_MS = {
+  match: 250,
+  mismatch: 450,
+} as const;

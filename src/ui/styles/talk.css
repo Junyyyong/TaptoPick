@@ -259,8 +259,8 @@
 .memory-back { position: absolute; z-index: 1; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.88); font: 900 clamp(14px, 5vw, 26px)/1 "TAP Serif KR", serif; text-shadow: 0 2px 0 rgba(0,0,0,.18); }
 .memory-card.is-open .memory-back,
 .memory-card.is-matched .memory-back { opacity: 0; }
-.memory-card.is-free { background: linear-gradient(145deg, var(--warm), var(--hot)); }
-.memory-free { color: white; font-size: clamp(16px, 5vw, 28px); text-shadow: 0 2px 0 var(--hot-deep); }
+.memory-card.is-free { background: linear-gradient(145deg, #d1d4d8, #969ca4); }
+.memory-free { color: white; font-size: clamp(16px, 5vw, 28px); text-shadow: 0 2px 0 #737981; }
 
 .pick-controls { display: grid; grid-template-columns: 118px minmax(0, 1fr); gap: 10px; align-items: center; margin-top: auto; }
 .pick-screen.is-memory-mode .pick-controls { display: none; }
