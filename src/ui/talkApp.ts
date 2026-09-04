@@ -154,7 +154,7 @@ export class TalkApp {
   }
 
   private startMontageRound(): void {
-    this.setBoardSize(9);
+    this.setBoardSize(7, true);
     this.runMode.textContent = "Montage Hunt";
     this.gameNote.textContent = "60 seconds · A new montage appears after every match.";
     this.renderNextMontage();
@@ -320,10 +320,10 @@ export class TalkApp {
     this.targetPreview.replaceChildren(image);
   }
 
-  private setBoardSize(size: 7 | 9): void {
+  private setBoardSize(size: 7 | 9, montage = false): void {
     this.board.classList.toggle("picture-board--7", size === 7);
     this.board.classList.toggle("picture-board--9", size === 9);
-    this.board.classList.toggle("is-montage", size === 9);
+    this.board.classList.toggle("is-montage", montage);
   }
 
   private updateProgress(value: number, total: number, label: string): void {
@@ -414,7 +414,7 @@ export class TalkApp {
   }
 
   private showHowToPlay(): void {
-    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Study the complete character above, then find every piece that belongs to it on the 7×7 board.</span></p><p><b>2. Montage Hunt</b><span>Find the one image that exactly matches the character above among 81 candidates. You have 60 seconds.</span></p><p><b>3. Pair Memory</b><span>Flip two cards at a time and match all 24 pairs. The center star is a free block.</span></p></div>`);
+    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Study the complete character above, then find every piece that belongs to it on the 7×7 board.</span></p><p><b>2. Montage Hunt</b><span>Find the one image that exactly matches the character above among 49 candidates. You have 60 seconds.</span></p><p><b>3. Pair Memory</b><span>Flip two cards at a time and match all 24 pairs. The center star is a free block.</span></p></div>`);
   }
 
   private showRules(): void {

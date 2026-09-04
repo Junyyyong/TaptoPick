@@ -11,8 +11,8 @@ describe("TAP to PICK game rules", () => {
   });
 
   it("creates one exact montage match", () => {
-    const board = createMontageBoard("target.jpg", 81, () => 0.5);
-    expect(board).toHaveLength(81);
+    const board = createMontageBoard("target.jpg", undefined, () => 0.5);
+    expect(board).toHaveLength(49);
     expect(board.filter((tile) => tile.exact)).toHaveLength(1);
   });
 

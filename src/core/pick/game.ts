@@ -54,7 +54,7 @@ const MONTAGE_VARIANTS = [
   ["none", "hue-rotate(-18deg) saturate(.82)"], ["none", "brightness(.86) sepia(.12)"],
 ] as const;
 
-export function createMontageBoard(src: string, size = 81, random: Random = Math.random): MontageTile[] {
+export function createMontageBoard(src: string, size = 49, random: Random = Math.random): MontageTile[] {
   const exactIndex = Math.floor(random() * size);
   return Array.from({ length: size }, (_, id) => {
     if (id === exactIndex) return { id, src, exact: true, transform: "none", filter: "none" };
