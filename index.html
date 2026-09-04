@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
@@ -20,31 +20,28 @@
           <h1 class="brand-wordmark"><span>TAP</span><small>to</small><strong>PICK</strong></h1>
           <p class="brand-version">PICTURE</p>
         </header>
-        <nav class="mode-list" aria-label="게임 모드">
-          <button class="mode-btn" id="mode-unit"><span class="mode-name">조각 찾기</span><span class="mode-desc">49칸에서 캐릭터의 모든 조각을 찾아요.</span></button>
-          <button class="mode-btn" id="mode-montage"><span class="mode-name">몽타주 찾기</span><span class="mode-desc">60초 동안 똑같은 멤버를 찾아요.</span></button>
-          <button class="mode-btn" id="mode-memory"><span class="mode-name">페어 메모리</span><span class="mode-desc">49개 블록을 뒤집어 같은 그림을 맞춰요.</span></button>
+        <nav class="mode-list" aria-label="Game modes">
+          <button class="mode-btn" id="mode-unit"><span class="mode-name">Picture Pieces</span><span class="mode-desc">Find every piece of the character on a 7×7 board.</span></button>
+          <button class="mode-btn" id="mode-montage"><span class="mode-name">Montage Hunt</span><span class="mode-desc">Find as many exact matches as you can in 60 seconds.</span></button>
+          <button class="mode-btn" id="mode-memory"><span class="mode-name">Pair Memory</span><span class="mode-desc">Flip the 7×7 blocks and match every pair.</span></button>
         </nav>
         <div class="title-links">
-          <button class="text-btn" id="btn-title-tutorial">게임 방법</button>
-          <button class="text-btn" id="btn-title-settings">설정</button>
-          <button class="text-btn" id="btn-title-rules">규칙</button>
+          <button class="text-btn" id="btn-title-tutorial">How to play</button>
+          <button class="text-btn" id="btn-title-settings">Settings</button>
+          <button class="text-btn" id="btn-title-rules">Rules</button>
         </div>
       </section>
 
       <section class="screen talk-screen pick-screen hidden" id="screen-game">
         <header class="hud">
-          <button class="icon-btn" id="btn-back" aria-label="메뉴로 돌아가기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
-          <div class="run-heading"><span id="run-mode">조각 찾기</span><strong id="run-clock">00:00.0</strong></div>
-          <button class="icon-btn pause-btn" id="btn-pause" aria-label="일시정지"><span aria-hidden="true"></span></button>
+          <button class="icon-btn" id="btn-back" aria-label="Back to menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
+          <div class="run-heading"><span id="run-mode">Picture Pieces</span><strong id="run-clock">00:00.0</strong></div>
+          <button class="icon-btn pause-btn" id="btn-pause" aria-label="Pause"><span aria-hidden="true"></span></button>
         </header>
-        <section class="pick-target" aria-live="polite">
-          <div class="pick-target-copy"><p class="target-label" id="target-label">TARGET</p><h2 id="target-name">캐릭터</h2><p id="target-hint">완성 그림과 같은 조각을 찾으세요.</p></div>
-          <div class="target-preview" id="target-preview"></div>
-        </section>
+        <section class="pick-target" aria-live="polite"><div class="target-preview" id="target-preview"></div></section>
         <div class="pick-progress"><span id="progress-label">0 / 0</span><div class="progress-track"><i id="progress-fill"></i></div></div>
-        <div class="picture-board picture-board--7" id="picture-board" aria-label="이미지 퍼즐 보드"></div>
-        <footer class="pick-controls"><button class="control-btn" id="btn-restart">↻ 다시 시작</button><p id="game-note">빠르게 찾을수록 높은 점수를 얻어요.</p></footer>
+        <div class="picture-board picture-board--7" id="picture-board" aria-label="Picture puzzle board"></div>
+        <footer class="pick-controls"><button class="control-btn" id="btn-restart">↻ Restart</button><p id="game-note">Find them quickly for a higher score.</p></footer>
       </section>
 
       <div class="cheer hidden" id="cheer" aria-hidden="true">
@@ -55,10 +52,10 @@
         <p class="cheer-tap" id="cheer-tap">Tap to continue</p>
       </div>
       <div class="result-layer hidden" id="result-layer" role="dialog" aria-modal="true">
-        <div class="result-panel"><p class="result-kicker">FINISH</p><h2 id="result-title">완료!</h2><p id="result-detail"></p><button class="wood-btn" id="btn-again">다시 하기</button><button class="text-btn" id="btn-result-menu">메뉴</button></div>
+        <div class="result-panel"><p class="result-kicker">FINISH</p><h2 id="result-title">Complete!</h2><p id="result-detail"></p><button class="wood-btn" id="btn-again">Play again</button><button class="text-btn" id="btn-result-menu">Menu</button></div>
       </div>
       <div class="help-layer hidden" id="help-layer" role="dialog" aria-modal="true" aria-labelledby="help-title">
-        <section class="help-panel"><header class="help-head"><button class="icon-btn" id="btn-help-close" aria-label="닫기"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg></button><h2 id="help-title">게임 방법</h2><span class="icon-spacer" aria-hidden="true"></span></header><div class="help-body" id="help-body"></div></section>
+        <section class="help-panel"><header class="help-head"><button class="icon-btn" id="btn-help-close" aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg></button><h2 id="help-title">How to play</h2><span class="icon-spacer" aria-hidden="true"></span></header><div class="help-body" id="help-body"></div></section>
       </div>
     </main>
     <script type="module" src="/src/main.ts"></script>

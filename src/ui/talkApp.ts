@@ -27,9 +27,6 @@ export class TalkApp {
   private readonly board = el("picture-board");
   private readonly clock = el("run-clock");
   private readonly runMode = el("run-mode");
-  private readonly targetLabel = el("target-label");
-  private readonly targetName = el("target-name");
-  private readonly targetHint = el("target-hint");
   private readonly targetPreview = el("target-preview");
   private readonly progressLabel = el("progress-label");
   private readonly progressFill = el("progress-fill");
@@ -128,17 +125,14 @@ export class TalkApp {
     this.targetCharacter = PUZZLE_CHARACTERS[Math.floor(Math.random() * PUZZLE_CHARACTERS.length)]!;
     const tiles = createUnitBoard(this.targetCharacter.id, ALL_PIECES);
     this.setBoardSize(7);
-    this.runMode.textContent = "조각 찾기";
-    this.targetLabel.textContent = "WHOLE PICTURE";
-    this.targetName.textContent = this.targetCharacter.name;
-    this.targetHint.textContent = "완성 그림에 속한 조각을 모두 찾으세요.";
-    this.gameNote.textContent = "오답 없이 빠르게 찾을수록 높은 점수를 얻어요.";
-    this.renderUnitReference(this.targetCharacter);
-    this.updateProgress(0, this.targetCharacter.pieces.length, `0 / ${this.targetCharacter.pieces.length} 조각`);
+    this.runMode.textContent = "Picture Pieces";
+    this.gameNote.textContent = "Find them quickly and avoid wrong picks for a higher score.";
+    this.renderCharacterPreview(this.targetCharacter);
+    this.updateProgress(0, this.targetCharacter.pieces.length, `0 / ${this.targetCharacter.pieces.length} pieces`);
 
     const fragment = document.createDocumentFragment();
     tiles.forEach((tile) => {
-      const button = this.imageButton(tile.src, `${tile.characterId} 이미지 조각`);
+      const button = this.imageButton(tile.src, `${tile.characterId} picture piece`);
       button.addEventListener("click", () => {
         if (!this.active || this.paused || this.unitFound.has(tile.id)) return;
         if (!tile.target) {
@@ -150,9 +144,8 @@ export class TalkApp {
         this.unitFound.add(tile.id);
         button.classList.add("is-found");
         button.disabled = true;
-        this.revealUnitPiece(tile.pieceIndex);
         feedback.pick(this.unitFound.size);
-        this.updateProgress(this.unitFound.size, this.targetCharacter.pieces.length, `${this.unitFound.size} / ${this.targetCharacter.pieces.length} 조각`);
+        this.updateProgress(this.unitFound.size, this.targetCharacter.pieces.length, `${this.unitFound.size} / ${this.targetCharacter.pieces.length} pieces`);
         if (this.unitFound.size === this.targetCharacter.pieces.length) this.finishUnit();
       });
       fragment.append(button);
@@ -162,18 +155,15 @@ export class TalkApp {
 
   private startMontageRound(): void {
     this.setBoardSize(9);
-    this.runMode.textContent = "몽타주 찾기";
-    this.targetLabel.textContent = "MONTAGE";
-    this.targetHint.textContent = "81명 중 몽타주와 완전히 같은 한 명을 찾으세요.";
-    this.gameNote.textContent = "제한 시간 60초 · 찾을 때마다 새 몽타주가 나와요.";
+    this.runMode.textContent = "Montage Hunt";
+    this.gameNote.textContent = "60 seconds · A new montage appears after every match.";
     this.renderNextMontage();
   }
 
   private renderNextMontage(): void {
     this.targetCharacter = PUZZLE_CHARACTERS[Math.floor(Math.random() * PUZZLE_CHARACTERS.length)]!;
-    this.targetName.textContent = `${this.targetCharacter.name} 몽타주`;
     this.renderCharacterPreview(this.targetCharacter);
-    this.updateProgress(this.montageFound, Math.max(1, this.montageFound + 1), `${this.montageFound}명 발견`);
+    this.updateProgress(this.montageFound, Math.max(1, this.montageFound + 1), `${this.montageFound} found`);
 
     const fragment = document.createDocumentFragment();
     createMontageBoard(this.targetCharacter.id).forEach((tile) => {
@@ -198,18 +188,15 @@ export class TalkApp {
 
   private startMemoryRound(): void {
     this.setBoardSize(7);
-    this.runMode.textContent = "페어 메모리";
-    this.targetLabel.textContent = "MEMORY";
-    this.targetName.textContent = "같은 그림 찾기";
-    this.targetHint.textContent = "두 장씩 뒤집어 같은 이미지 조각을 맞추세요.";
-    this.gameNote.textContent = "가운데 별은 보너스 칸이에요. 나머지 48장에는 24쌍이 있어요.";
+    this.runMode.textContent = "Pair Memory";
+    this.gameNote.textContent = "The center star is free. Match the 24 pairs in the other 48 blocks.";
     this.targetPreview.replaceChildren();
     const badge = document.createElement("div");
     badge.className = "memory-target-badge";
     badge.innerHTML = "<strong>24</strong><span>PAIRS</span>";
     this.targetPreview.append(badge);
     this.memoryCards = createMemoryBoard(ALL_PIECES);
-    this.updateProgress(0, 24, "0 / 24 페어");
+    this.updateProgress(0, 24, "0 / 24 pairs");
     this.renderMemoryBoard();
   }
 
@@ -219,7 +206,7 @@ export class TalkApp {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "picture-tile memory-card";
-      button.setAttribute("aria-label", card.free ? "보너스 칸" : "뒤집힌 이미지 카드");
+      button.setAttribute("aria-label", card.free ? "Free center block" : "Face-down picture card");
       if (card.free) {
         button.classList.add("is-free", "is-matched");
         button.innerHTML = "<span class=memory-free>★</span>";
@@ -263,7 +250,7 @@ export class TalkApp {
       }
       this.memoryOpen.clear();
       this.memoryBusy = false;
-      this.updateProgress(this.memoryMatched.size, 24, `${this.memoryMatched.size} / 24 페어`);
+      this.updateProgress(this.memoryMatched.size, 24, `${this.memoryMatched.size} / 24 pairs`);
       this.renderMemoryBoard();
       if (this.memoryMatched.size === 24) this.finishMemory();
     }, matched ? 360 : 720);
@@ -285,7 +272,7 @@ export class TalkApp {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "picture-tile";
-    button.setAttribute("aria-label", `${character.name} 몽타주 후보`);
+    button.setAttribute("aria-label", `${character.name} montage candidate`);
     let visual: HTMLElement;
     if (character.preview) {
       const image = document.createElement("img");
@@ -311,7 +298,7 @@ export class TalkApp {
 
   private renderCharacterPreview(character: PuzzleCharacter): void {
     if (character.preview) {
-      this.renderImagePreview(character.preview, `${character.name} 완성 이미지`);
+      this.renderImagePreview(character.preview, `${character.name} complete picture`);
       return;
     }
     const grid = document.createElement("div");
@@ -322,49 +309,8 @@ export class TalkApp {
       image.alt = "";
       grid.append(image);
     });
-    grid.setAttribute("aria-label", `${character.name} 완성 이미지`);
+    grid.setAttribute("aria-label", `${character.name} complete picture`);
     this.targetPreview.replaceChildren(grid);
-  }
-
-  private renderUnitReference(character: PuzzleCharacter): void {
-    const stage = document.createElement("div");
-    stage.className = "unit-reference";
-    stage.style.aspectRatio = `${character.columns} / ${character.rows}`;
-
-    if (character.preview) {
-      const image = document.createElement("img");
-      image.src = character.preview;
-      image.alt = `${character.name} 완성 이미지`;
-      stage.append(image);
-    } else {
-      const grid = document.createElement("div");
-      grid.className = "unit-reference-grid";
-      grid.style.gridTemplateRows = `repeat(${character.rows}, 1fr)`;
-      character.pieces.forEach((src) => {
-        const image = document.createElement("img");
-        image.src = src;
-        image.alt = "";
-        grid.append(image);
-      });
-      stage.append(grid);
-      stage.setAttribute("aria-label", `${character.name} 완성 이미지`);
-    }
-
-    const mask = document.createElement("div");
-    mask.className = "unit-reference-mask";
-    mask.style.gridTemplateColumns = `repeat(${character.columns}, 1fr)`;
-    mask.style.gridTemplateRows = `repeat(${character.rows}, 1fr)`;
-    character.pieces.forEach((_, pieceIndex) => {
-      const cell = document.createElement("span");
-      cell.dataset.pieceIndex = String(pieceIndex);
-      mask.append(cell);
-    });
-    stage.append(mask);
-    this.targetPreview.replaceChildren(stage);
-  }
-
-  private revealUnitPiece(pieceIndex: number): void {
-    this.targetPreview.querySelector<HTMLElement>(`[data-piece-index="${pieceIndex}"]`)?.classList.add("is-revealed");
   }
 
   private renderImagePreview(src: string, alt: string): void {
@@ -417,17 +363,17 @@ export class TalkApp {
 
   private finishUnit(): void {
     const score = timeScore(this.elapsedMs, this.mistakes);
-    this.finishGame("PUZZLE COMPLETE", `${this.targetCharacter.name}의 모든 조각을 찾았습니다.\n${formatTime(this.elapsedMs)} · 오답 ${this.mistakes}회 · ${score.toLocaleString()}점`, score);
+    this.finishGame("PUZZLE COMPLETE", `You found every ${this.targetCharacter.name} piece.\n${formatTime(this.elapsedMs)} · ${this.mistakes} wrong picks · ${score.toLocaleString()} points`, score);
   }
 
   private finishMontage(): void {
     const score = montageScore(this.montageFound, this.mistakes);
-    this.finishGame("TIME UP", `60초 동안 ${this.montageFound}명을 찾았습니다.\n오답 ${this.mistakes}회 · ${score.toLocaleString()}점`, score);
+    this.finishGame("TIME UP", `You found ${this.montageFound} exact matches in 60 seconds.\n${this.mistakes} wrong picks · ${score.toLocaleString()} points`, score);
   }
 
   private finishMemory(): void {
     const score = timeScore(this.elapsedMs, this.mistakes, 8000);
-    this.finishGame("ALL PAIRS FOUND", `24쌍을 모두 맞췄습니다.\n${formatTime(this.elapsedMs)} · 실패 ${this.mistakes}회 · ${score.toLocaleString()}점`, score);
+    this.finishGame("ALL PAIRS FOUND", `You matched all 24 pairs.\n${formatTime(this.elapsedMs)} · ${this.mistakes} misses · ${score.toLocaleString()} points`, score);
   }
 
   private finishGame(headline: string, detail: string, score: number): void {
@@ -449,7 +395,7 @@ export class TalkApp {
     this.paused = true;
     this.stopClock();
     this.game.classList.add("is-input-locked");
-    this.openHelp("일시정지", "<div class=pause-copy><strong>잠시 쉬어가도 좋아요.</strong><p>닫기 버튼을 누르면 타이머가 이어서 시작됩니다.</p></div>");
+    this.openHelp("Paused", "<div class=pause-copy><strong>Take your time.</strong><p>Close this panel to resume the timer.</p></div>");
   }
 
   private closeHelp(): void {
@@ -468,15 +414,15 @@ export class TalkApp {
   }
 
   private showHowToPlay(): void {
-    this.openHelp("게임 방법", `<div class="rules-list"><p><b>1. 조각 찾기</b><span>위의 완성 이미지를 보고 7×7 보드에서 그 캐릭터를 이루는 모든 조각을 찾습니다.</span></p><p><b>2. 몽타주 찾기</b><span>위에 제시된 몽타주와 완전히 같은 이미지를 9×9 후보 중 찾습니다. 제한 시간은 60초입니다.</span></p><p><b>3. 페어 메모리</b><span>7×7 카드를 두 장씩 뒤집어 같은 이미지 24쌍을 모두 맞춥니다. 중앙 별은 보너스 칸입니다.</span></p></div>`);
+    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Study the complete character above, then find every piece that belongs to it on the 7×7 board.</span></p><p><b>2. Montage Hunt</b><span>Find the one image that exactly matches the character above among 81 candidates. You have 60 seconds.</span></p><p><b>3. Pair Memory</b><span>Flip two cards at a time and match all 24 pairs. The center star is a free block.</span></p></div>`);
   }
 
   private showRules(): void {
-    this.openHelp("점수 규칙", `<div class="rules-list"><p><b>빠른 발견</b><span>조각 찾기와 페어 메모리는 완료 시간이 짧을수록 점수가 높습니다.</span></p><p><b>정확한 선택</b><span>틀린 조각이나 서로 다른 페어를 고르면 점수가 줄어듭니다.</span></p><p><b>60초 도전</b><span>몽타주는 정답 1명당 500점이며 오답 1회당 25점이 감점됩니다.</span></p></div>`);
+    this.openHelp("Scoring rules", `<div class="rules-list"><p><b>Find faster</b><span>Picture Pieces and Pair Memory award more points for a faster finish.</span></p><p><b>Pick carefully</b><span>Wrong pieces and missed pairs reduce your score.</span></p><p><b>60-second hunt</b><span>Each correct montage is worth 500 points. Each wrong pick costs 25 points.</span></p></div>`);
   }
 
   private showSettings(): void {
-    this.openHelp("설정", `<div class="switch-list"><button class="switch-row" data-setting="sound"><span class="switch-text"><b>효과음</b><small>선택과 성공 소리를 재생합니다.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><i class="switch-knob"></i></span></button><button class="switch-row" data-setting="haptics"><span class="switch-text"><b>진동</b><small>지원하는 기기에서 터치 진동을 사용합니다.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><i class="switch-knob"></i></span></button></div>`);
+    this.openHelp("Settings", `<div class="switch-list"><button class="switch-row" data-setting="sound"><span class="switch-text"><b>Sound effects</b><small>Play sounds for picks and completed games.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><i class="switch-knob"></i></span></button><button class="switch-row" data-setting="haptics"><span class="switch-text"><b>Haptics</b><small>Use touch feedback on supported devices.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><i class="switch-knob"></i></span></button></div>`);
     this.helpBody.querySelectorAll<HTMLButtonElement>("[data-setting]").forEach((button) => {
       button.addEventListener("click", () => {
         if (button.dataset.setting === "sound") this.preferences.soundOn = !this.preferences.soundOn;

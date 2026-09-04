@@ -165,26 +165,19 @@
 
 .pick-target {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 104px;
-  gap: 12px;
-  align-items: center;
-  min-height: 116px;
-  padding: 10px 12px;
+  place-items: center;
+  min-height: 180px;
+  padding: 8px 12px;
   border: 1px solid var(--paper-edge);
   border-radius: 16px;
   background: var(--panel-lit);
   box-shadow: inset 0 1px 0 #fff, 0 3px 0 var(--slab);
 }
 
-.pick-target-copy { min-width: 0; }
-.pick-target .target-label { margin: 0 0 3px; padding: 0; color: var(--accent); background: transparent; font-size: 10px; font-weight: 900; letter-spacing: .15em; }
-.pick-target h2 { margin: 0; font-family: "TAP Serif KR", serif; font-size: clamp(20px, 6vw, 28px); line-height: 1.15; }
-.pick-target-copy > p:last-child { margin: 6px 0 0; color: var(--ink-soft); font-size: 12px; font-weight: 650; line-height: 1.4; }
-
 .target-preview {
   display: grid;
-  width: 104px;
-  height: 96px;
+  width: min(68vw, 220px);
+  height: 164px;
   place-items: center;
   overflow: hidden;
   border: 1px solid var(--paper-edge);
@@ -194,18 +187,9 @@
 }
 
 .target-preview > img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.assembled-preview { display: grid; width: 72px; overflow: hidden; grid-template-columns: repeat(3, 1fr); background: #fff; }
+.assembled-preview { display: grid; width: 154px; overflow: hidden; grid-template-columns: repeat(3, 1fr); background: #fff; }
 .assembled-preview img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
-.assembled-preview--12 { width: 68px; }
-.unit-reference { position: relative; height: 92px; overflow: hidden; background: #fff; }
-.unit-reference > img,
-.unit-reference-grid { display: block; width: 100%; height: 100%; }
-.unit-reference > img { object-fit: fill; }
-.unit-reference-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
-.unit-reference-grid img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.unit-reference-mask { position: absolute; inset: 0; display: grid; }
-.unit-reference-mask span { border: .5px solid rgba(58,15,10,.14); background: rgba(255,246,233,.74); transition: background 180ms ease, border-color 180ms ease; }
-.unit-reference-mask span.is-revealed { border-color: transparent; background: transparent; }
+.assembled-preview--12 { width: 116px; }
 
 .memory-target-badge { display: grid; place-items: center; color: var(--hot); line-height: 1; }
 .memory-target-badge strong { font-size: 43px; font-weight: 900; }
@@ -221,19 +205,17 @@
   display: grid;
   flex: 0 1 auto;
   align-self: center;
-  width: min(100%, calc(var(--app-h, 100dvh) - 255px), 560px);
+  width: min(100%, calc(var(--app-h, 100dvh) - 330px), 560px);
   aspect-ratio: 1;
   min-height: 0;
   grid-template-columns: repeat(var(--board-columns), minmax(0, 1fr));
-  gap: 2px;
-  padding: 3px;
-  border: 1px solid var(--paper-edge);
-  border-radius: 12px;
-  background: var(--paper-edge);
-  box-shadow: 0 4px 0 var(--slab-hard), 0 10px 24px rgba(58,15,10,.12);
+  gap: clamp(3px, 1vw, 5px);
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 
-.picture-board--9 { --board-columns: 9; gap: 1px; padding: 2px; }
+.picture-board--9 { --board-columns: 9; gap: clamp(2px, .75vw, 4px); }
 .picture-board.is-montage .picture-tile img { object-position: center 18%; }
 .montage-composite { display: grid; width: 100%; height: 100%; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(4, 1fr); transition: transform 160ms ease, filter 160ms ease; }
 .montage-composite img { width: 100%; height: 100%; object-fit: cover; }
@@ -244,20 +226,21 @@
   min-height: 0;
   overflow: hidden;
   padding: 0;
-  border: 0;
-  border-radius: 4px;
+  border: 1px solid var(--slab);
+  border-radius: 6px;
   background: #fff;
-  box-shadow: inset 0 0 0 1px rgba(58,15,10,.13);
+  box-shadow: inset 0 2px 0 rgba(255,255,255,.85), inset 0 -2px 3px var(--slab), 0 2px 0 var(--slab);
   cursor: pointer;
   touch-action: manipulation;
 }
 
-.picture-board--9 .picture-tile { border-radius: 2px; }
-.picture-tile img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 160ms ease, filter 160ms ease, opacity 160ms ease; }
-.picture-tile:active { transform: scale(.92); }
+.picture-board--9 .picture-tile { border-radius: 6px; }
+.picture-tile::before { position: absolute; z-index: 2; inset: 1px 8% auto; height: 42%; border-radius: inherit; content: ""; pointer-events: none; background: linear-gradient(180deg,rgba(255,255,255,.3),rgba(255,255,255,0)); }
+.picture-tile img { display: block; width: 100%; height: 100%; border-radius: 5px; object-fit: cover; transition: transform 160ms ease, filter 160ms ease, opacity 160ms ease; }
+.picture-tile:active { transform: translateY(1px); }
 .picture-tile.is-found { pointer-events: none; background: var(--go); animation: found-pop 260ms ease both; }
 .picture-tile.is-found img { opacity: .18; }
-.picture-tile.is-found::after { position: absolute; inset: 0; display: grid; place-items: center; content: "✓"; color: white; font-size: clamp(17px, 6vw, 34px); font-weight: 900; }
+.picture-tile.is-found::after { position: absolute; z-index: 3; inset: 0; display: grid; place-items: center; content: "✓"; color: white; font-size: clamp(17px, 6vw, 34px); font-weight: 900; }
 .picture-tile.is-wrong { animation: image-wrong 340ms ease; box-shadow: inset 0 0 0 3px var(--ring-bad); }
 .pick-screen.is-input-locked .picture-board { pointer-events: none; filter: saturate(.6); }
 
@@ -285,8 +268,10 @@
 
 @media (max-height: 700px) {
   .pick-screen { gap: 4px; }
-  .pick-target { grid-template-columns: minmax(0, 1fr) 82px; min-height: 88px; padding: 6px 10px; }
-  .target-preview { width: 82px; height: 76px; }
-  .picture-board { width: min(100%, calc(var(--app-h, 100dvh) - 210px), 560px); }
+  .pick-target { min-height: 124px; padding: 4px 10px; }
+  .target-preview { width: min(58vw, 160px); height: 116px; }
+  .assembled-preview { width: 108px; }
+  .assembled-preview--12 { width: 81px; }
+  .picture-board { width: min(100%, calc(var(--app-h, 100dvh) - 250px), 560px); }
   .pick-controls .control-btn { height: 34px; min-height: 34px; }
 }

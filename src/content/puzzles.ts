@@ -45,13 +45,13 @@ function character(id: string, name: string, folder: string): PuzzleCharacter {
 }
 
 export const PUZZLE_CHARACTERS: readonly PuzzleCharacter[] = [
-  character("bb", "비비", "Bb"),
-  character("ha", "해피", "Ha"),
-  character("hoo", "후피", "Hoo"),
-  character("ja", "재피", "Ja"),
-  character("pino", "피노", "Pino"),
-  character("tapee", "태피", "Tapee"),
-  character("tepee", "티피", "Tepee"),
+  character("bb", "BB", "Bb"),
+  character("ha", "Ha", "Ha"),
+  character("hoo", "Hoo", "Hoo"),
+  character("ja", "Ja", "Ja"),
+  character("pino", "Pino", "Pino"),
+  character("tapee", "Tapee", "Tapee"),
+  character("tepee", "Tepee", "Tepee"),
 ];
 
 export const ALL_PIECES = PUZZLE_CHARACTERS.flatMap((entry) =>
