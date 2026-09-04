@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "../config/app";
 import { ALL_PIECES, PUZZLE_CHARACTERS, type PuzzleCharacter } from "../content/puzzles";
-import { createMemoryBoard, createMontageBoard, createUnitBoard, montageScore, timeScore, type MemoryCard } from "../core/pick/game";
+import { createMemoryBoard, createMontageBoard, createUnitBoard, montageScore, timeScore, type MemoryCard, type MontageMutation } from "../core/pick/game";
 import { el } from "./dom";
 import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
@@ -163,12 +163,12 @@ export class TalkApp {
 
   private renderNextMontage(): void {
     this.targetCharacter = PUZZLE_CHARACTERS[Math.floor(Math.random() * PUZZLE_CHARACTERS.length)]!;
-    this.renderCharacterPreview(this.targetCharacter);
+    this.renderMontagePreview(this.targetCharacter);
     this.updateProgress(this.montageFound, Math.max(1, this.montageFound + 1), `${this.montageFound} found`);
 
     const fragment = document.createDocumentFragment();
-    createMontageBoard(this.targetCharacter.id).forEach((tile) => {
-      const button = this.montageButton(this.targetCharacter, tile.transform, tile.filter);
+    createMontageBoard(this.targetCharacter.montagePieces).forEach((tile) => {
+      const button = this.montageButton(this.targetCharacter, tile.mutations);
       button.addEventListener("click", () => {
         if (!this.active || this.paused) return;
         if (!tile.exact) {
@@ -269,32 +269,41 @@ export class TalkApp {
     return button;
   }
 
-  private montageButton(character: PuzzleCharacter, transform: string, filter: string): HTMLButtonElement {
+  private montageButton(character: PuzzleCharacter, mutations: readonly MontageMutation[]): HTMLButtonElement {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "picture-tile";
     button.setAttribute("aria-label", `${character.name} montage candidate`);
-    let visual: HTMLElement;
-    if (character.preview) {
-      const image = document.createElement("img");
-      image.src = character.preview;
-      image.alt = "";
-      visual = image;
-    } else {
-      const composite = document.createElement("span");
-      composite.className = "montage-composite";
-      character.pieces.forEach((src) => {
-        const image = document.createElement("img");
-        image.src = src;
-        image.alt = "";
-        composite.append(image);
-      });
-      visual = composite;
-    }
-    visual.style.transform = transform;
-    visual.style.filter = filter;
-    button.append(visual);
+    button.append(this.createCleanMontage(character, mutations));
     return button;
+  }
+
+  private createCleanMontage(character: PuzzleCharacter, mutations: readonly MontageMutation[] = []): HTMLElement {
+    const composite = document.createElement("span");
+    composite.className = `montage-composite montage-composite--${character.pieces.length}`;
+    character.pieces.forEach((src, pieceIndex) => {
+      const cell = document.createElement("span");
+      cell.className = "montage-piece";
+      const image = document.createElement("img");
+      image.src = src;
+      image.alt = "";
+      const mutation = mutations.find((entry) => entry.pieceIndex === pieceIndex);
+      if (mutation) {
+        cell.classList.add("is-mutated");
+        image.style.setProperty("--piece-transform", mutation.transform);
+        image.style.filter = mutation.filter;
+      }
+      cell.append(image);
+      composite.append(cell);
+    });
+    return composite;
+  }
+
+  private renderMontagePreview(character: PuzzleCharacter): void {
+    const composite = this.createCleanMontage(character);
+    composite.classList.add("montage-composite--preview");
+    composite.setAttribute("aria-label", `${character.name} exact montage`);
+    this.targetPreview.replaceChildren(composite);
   }
 
   private renderCharacterPreview(character: PuzzleCharacter): void {

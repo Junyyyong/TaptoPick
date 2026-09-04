@@ -13,8 +13,12 @@ export interface UnitTile extends SourcePiece {
 
 export interface MontageTile {
   id: number;
-  src: string;
   exact: boolean;
+  mutations: readonly MontageMutation[];
+}
+
+export interface MontageMutation {
+  pieceIndex: number;
   transform: string;
   filter: string;
 }
@@ -48,19 +52,32 @@ export function createUnitBoard(targetId: string, pieces: readonly SourcePiece[]
 }
 
 const MONTAGE_VARIANTS = [
-  ["scaleX(-1)", "none"], ["scaleY(-1)", "none"], ["rotate(-4deg) scale(1.05)", "none"],
-  ["rotate(4deg) scale(1.05)", "none"], ["scale(.92)", "brightness(1.08)"],
-  ["scale(1.12)", "contrast(1.12)"], ["none", "hue-rotate(18deg) saturate(1.18)"],
-  ["none", "hue-rotate(-18deg) saturate(.82)"], ["none", "brightness(.86) sepia(.12)"],
+  ["scaleX(-1)", "none"],
+  ["translateX(15%) scale(1.08)", "none"],
+  ["translateY(-15%) scale(1.08)", "none"],
+  ["rotate(12deg) scale(1.14)", "none"],
+  ["scale(1)", "hue-rotate(85deg) saturate(1.45)"],
+  ["scale(1)", "hue-rotate(-105deg) saturate(1.4)"],
+  ["scale(1)", "grayscale(1) contrast(1.25)"],
+  ["scale(1)", "sepia(1) saturate(2.2) contrast(1.15)"],
 ] as const;
 
-export function createMontageBoard(src: string, size = 49, random: Random = Math.random): MontageTile[] {
+export function createMontageBoard(pieceIndices: readonly number[], size = 49, random: Random = Math.random): MontageTile[] {
+  if (!pieceIndices.length) throw new Error("Montage mode needs at least one feature piece");
   const exactIndex = Math.floor(random() * size);
   return Array.from({ length: size }, (_, id) => {
-    if (id === exactIndex) return { id, src, exact: true, transform: "none", filter: "none" };
-    const variant = MONTAGE_VARIANTS[(id + exactIndex) % MONTAGE_VARIANTS.length]!;
-    const nudge = ((id % 5) - 2) * 0.6;
-    return { id, src, exact: false, transform: variant[0] === "none" ? `translate(${nudge}px, ${-nudge}px)` : variant[0], filter: variant[1] };
+    if (id === exactIndex) return { id, exact: true, mutations: [] };
+    const variantIndex = (id + exactIndex) % MONTAGE_VARIANTS.length;
+    const variant = MONTAGE_VARIANTS[variantIndex]!;
+    const primaryPiece = pieceIndices[(id * 5 + exactIndex) % pieceIndices.length]!;
+    const mutations: MontageMutation[] = [{ pieceIndex: primaryPiece, transform: variant[0], filter: variant[1] }];
+
+    if ((id + exactIndex) % 3 === 0 && pieceIndices.length > 1) {
+      const secondaryPiece = pieceIndices[(id * 5 + exactIndex + 1) % pieceIndices.length]!;
+      const secondaryVariant = MONTAGE_VARIANTS[(variantIndex + 4) % MONTAGE_VARIANTS.length]!;
+      mutations.push({ pieceIndex: secondaryPiece, transform: secondaryVariant[0], filter: secondaryVariant[1] });
+    }
+    return { id, exact: false, mutations };
   });
 }
 
