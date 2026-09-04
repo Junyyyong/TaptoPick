@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "../config/app";
-import { ALL_PIECES, PUZZLE_CHARACTERS, type PuzzleCharacter } from "../content/puzzles";
-import { createMemoryBoard, createMontageBoard, createUnitBoard, montageScore, timeScore, type MemoryCard } from "../core/pick/game";
+import { ALL_PIECES, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS, PUZZLE_CHARACTERS, type PuzzleCharacter } from "../content/puzzles";
+import { createMemoryBoard, createMontageBoard, createUnitBoard, montageScore, tieredTimeScore, timeScore, type MemoryCard } from "../core/pick/game";
 import { el } from "./dom";
 import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
@@ -128,7 +128,7 @@ export class TalkApp {
     const tiles = createUnitBoard(this.targetCharacter.id, ALL_PIECES);
     this.setBoardSize(7);
     this.runMode.textContent = "Picture Pieces";
-    this.gameNote.textContent = "Find them quickly and avoid wrong picks for a higher score.";
+    this.gameNote.textContent = "60 seconds · Finish faster to earn up to 1,500 points.";
     this.renderUnitPreview(this.targetCharacter);
     this.updateProgress(0, this.targetCharacter.pieces.length, `0 / ${this.targetCharacter.pieces.length} pieces`);
 
@@ -352,11 +352,16 @@ export class TalkApp {
     const tick = (): void => {
       if (!this.active || this.paused) return;
       this.elapsedMs = performance.now() - this.startedAt;
-      if (this.mode === "montage") {
-        const remaining = Math.max(0, MONTAGE_LIMIT_MS - this.elapsedMs);
+      if (this.mode === "unit" || this.mode === "montage") {
+        const limit = this.mode === "unit" ? PICTURE_PIECES_TIME_LIMIT_MS : MONTAGE_LIMIT_MS;
+        const remaining = Math.max(0, limit - this.elapsedMs);
         this.clock.textContent = formatTime(remaining);
-        this.progressFill.style.width = `${remaining / MONTAGE_LIMIT_MS * 100}%`;
-        if (remaining <= 0) { this.finishMontage(); return; }
+        if (this.mode === "montage") this.progressFill.style.width = `${remaining / limit * 100}%`;
+        if (remaining <= 0) {
+          if (this.mode === "unit") this.finishUnitTimeout();
+          else this.finishMontage();
+          return;
+        }
       } else {
         this.clock.textContent = formatTime(this.elapsedMs);
       }
@@ -371,8 +376,16 @@ export class TalkApp {
   }
 
   private finishUnit(): void {
-    const score = timeScore(this.elapsedMs, this.mistakes);
+    if (this.elapsedMs > PICTURE_PIECES_TIME_LIMIT_MS) {
+      this.finishUnitTimeout();
+      return;
+    }
+    const score = tieredTimeScore(this.elapsedMs, PICTURE_PIECES_SCORE_BANDS);
     this.finishGame("PUZZLE COMPLETE", `You found every ${this.targetCharacter.name} piece.\n${formatTime(this.elapsedMs)} · ${this.mistakes} wrong picks · ${score.toLocaleString()} points`, score);
+  }
+
+  private finishUnitTimeout(): void {
+    this.finishGame("TIME UP", `You found ${this.unitFound.size} of ${this.targetCharacter.pieces.length} ${this.targetCharacter.name} pieces.\n60 seconds · 0 points`, 0);
   }
 
   private finishMontage(): void {
@@ -423,11 +436,11 @@ export class TalkApp {
   }
 
   private showHowToPlay(): void {
-    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Study the complete character above, then find every piece that belongs to it on the 7×7 board.</span></p><p><b>2. Montage Hunt</b><span>Find the one image that exactly matches the character above among 25 candidates. You have 60 seconds.</span></p><p><b>3. Pair Memory</b><span>Flip two cards at a time and match all 24 pairs. The center star is a free block.</span></p></div>`);
+    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Find every piece that belongs to the character on the 7×7 board before the 60-second timer runs out.</span></p><p><b>2. Montage Hunt</b><span>Find the one image that exactly matches the character above among 25 candidates. You have 60 seconds.</span></p><p><b>3. Pair Memory</b><span>Flip two cards at a time and match all 24 pairs. The center star is a free block.</span></p></div>`);
   }
 
   private showRules(): void {
-    this.openHelp("Scoring rules", `<div class="rules-list"><p><b>Find faster</b><span>Picture Pieces and Pair Memory award more points for a faster finish.</span></p><p><b>Pick carefully</b><span>Wrong pieces and missed pairs reduce your score.</span></p><p><b>60-second hunt</b><span>Each correct montage is worth 500 points. Each wrong pick costs 25 points.</span></p></div>`);
+    this.openHelp("Scoring rules", `<div class="rules-list"><p><b>Picture Pieces</b><span>Up to 10 sec: 1,500 · 20 sec: 1,200 · 30 sec: 900 · 45 sec: 600 · 60 sec: 300 points.</span></p><p><b>Pair Memory</b><span>Finish faster and avoid missed pairs for a higher score.</span></p><p><b>60-second hunt</b><span>Each correct montage is worth 500 points. Each wrong pick costs 25 points.</span></p></div>`);
   }
 
   private showSettings(): void {

@@ -89,6 +89,15 @@ export function timeScore(elapsedMs: number, mistakes = 0, base = 5000): number 
   return Math.max(100, Math.round(base - elapsedMs / 25 - mistakes * 100));
 }
 
+export interface TimeScoreBand {
+  maxMs: number;
+  score: number;
+}
+
+export function tieredTimeScore(elapsedMs: number, bands: readonly TimeScoreBand[]): number {
+  return bands.find((band) => elapsedMs <= band.maxMs)?.score ?? 0;
+}
+
 export function montageScore(found: number, mistakes = 0): number {
   return Math.max(0, found * 500 - mistakes * 25);
 }
