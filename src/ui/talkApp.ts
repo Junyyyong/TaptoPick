@@ -129,21 +129,22 @@ export class TalkApp {
     this.setBoardSize(7);
     this.runMode.textContent = "Picture Pieces";
     this.gameNote.textContent = "Find them quickly and avoid wrong picks for a higher score.";
-    this.renderCharacterPreview(this.targetCharacter);
+    this.renderUnitPreview(this.targetCharacter);
     this.updateProgress(0, this.targetCharacter.pieces.length, `0 / ${this.targetCharacter.pieces.length} pieces`);
 
     const fragment = document.createDocumentFragment();
     tiles.forEach((tile) => {
       const button = this.imageButton(tile.src, `${tile.characterId} picture piece`);
       button.addEventListener("click", () => {
-        if (!this.active || this.paused || this.unitFound.has(tile.id)) return;
+        if (!this.active || this.paused || this.unitFound.has(tile.pieceIndex)) return;
         if (!tile.target) {
           this.mistakes += 1;
           feedback.reject();
           this.flashWrong(button);
           return;
         }
-        this.unitFound.add(tile.id);
+        this.unitFound.add(tile.pieceIndex);
+        this.revealUnitPiece(tile.pieceIndex);
         button.classList.add("is-found");
         button.disabled = true;
         feedback.pick(this.unitFound.size);
@@ -291,21 +292,33 @@ export class TalkApp {
     this.renderImagePreview(character.montage, `${character.name} exact montage`);
   }
 
-  private renderCharacterPreview(character: PuzzleCharacter): void {
-    if (character.preview) {
-      this.renderImagePreview(character.preview, `${character.name} complete picture`);
-      return;
-    }
-    const grid = document.createElement("div");
-    grid.className = `assembled-preview assembled-preview--${character.pieces.length}`;
-    character.pieces.forEach((src) => {
-      const image = document.createElement("img");
-      image.src = src;
-      image.alt = "";
-      grid.append(image);
+  private renderUnitPreview(character: PuzzleCharacter): void {
+    const reveal = document.createElement("div");
+    reveal.className = `unit-reveal unit-reveal--${character.pieces.length}`;
+    reveal.setAttribute("aria-label", `${character.name} picture progress`);
+
+    const grayscale = document.createElement("img");
+    grayscale.className = "unit-reveal-base";
+    grayscale.src = character.preview;
+    grayscale.alt = "";
+    reveal.append(grayscale);
+
+    character.pieces.forEach((_, pieceIndex) => {
+      const row = Math.floor(pieceIndex / character.columns);
+      const column = pieceIndex % character.columns;
+      const color = document.createElement("img");
+      color.className = "unit-reveal-color";
+      color.src = character.preview;
+      color.alt = "";
+      color.dataset.pieceIndex = String(pieceIndex);
+      color.style.clipPath = `inset(${row / character.rows * 100}% ${(character.columns - column - 1) / character.columns * 100}% ${(character.rows - row - 1) / character.rows * 100}% ${column / character.columns * 100}%)`;
+      reveal.append(color);
     });
-    grid.setAttribute("aria-label", `${character.name} complete picture`);
-    this.targetPreview.replaceChildren(grid);
+    this.targetPreview.replaceChildren(reveal);
+  }
+
+  private revealUnitPiece(pieceIndex: number): void {
+    this.targetPreview.querySelector<HTMLElement>(`[data-piece-index="${pieceIndex}"]`)?.classList.add("is-revealed");
   }
 
   private renderImagePreview(src: string, alt: string): void {

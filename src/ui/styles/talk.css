@@ -182,6 +182,12 @@
 .assembled-preview { display: grid; width: 224px; overflow: hidden; grid-template-columns: repeat(3, 1fr); background: #fff; }
 .assembled-preview img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
 .assembled-preview--12 { width: 168px; }
+.unit-reveal { position: relative; width: 224px; height: 224px; overflow: hidden; }
+.unit-reveal--12 { width: 168px; }
+.unit-reveal img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: fill; }
+.unit-reveal-base { filter: grayscale(1); opacity: .46; }
+.unit-reveal-color { opacity: 0; transition: opacity 220ms ease; }
+.unit-reveal-color.is-revealed { opacity: 1; }
 
 .memory-target-badge { display: grid; place-items: center; color: var(--hot); line-height: 1; }
 .memory-target-badge strong { font-size: 43px; font-weight: 900; }
@@ -274,6 +280,8 @@
   .target-preview { width: min(72vw, 220px); height: 152px; }
   .assembled-preview { width: 152px; }
   .assembled-preview--12 { width: 114px; }
+  .unit-reveal { width: 152px; height: 152px; }
+  .unit-reveal--12 { width: 114px; }
   .picture-board { width: min(100%, calc(var(--app-h, 100dvh) - 300px), 560px); }
   .pick-controls .control-btn { height: 34px; min-height: 34px; }
 }
