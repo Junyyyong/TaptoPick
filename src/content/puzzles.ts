@@ -111,3 +111,10 @@ export const MONTAGE_CHARACTERS: readonly MontageCharacter[] = [
   montageCharacter("bbogles", "Bbogles", 14),
   montageCharacter("haepi", "Haepi", 17),
 ];
+
+export const GAME_IMAGE_URLS = [
+  ...PUZZLE_CHARACTERS.map((character) => character.preview),
+  ...MONTAGE_CHARACTERS.map((character) => character.answer),
+  ...ALL_PIECES.map((piece) => piece.src),
+  ...MONTAGE_CHARACTERS.flatMap((character) => character.variations),
+] as const;

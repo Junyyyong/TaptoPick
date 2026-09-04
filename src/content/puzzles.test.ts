@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS } from "./puzzles";
+import { GAME_IMAGE_URLS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS } from "./puzzles";
 
 describe("Picture Pieces scoring content", () => {
   it("defines five score bands ending at 60 seconds", () => {
@@ -28,5 +28,11 @@ describe("Picture Pieces scoring content", () => {
       expect(new Set(character.variations)).toHaveLength(character.variations.length);
       expect(character.variations).not.toContain(character.answer);
     });
+  });
+
+  it("exposes every active game image once for splash-screen preloading", () => {
+    expect(GAME_IMAGE_URLS).toHaveLength(132);
+    expect(new Set(GAME_IMAGE_URLS)).toHaveLength(GAME_IMAGE_URLS.length);
+    expect(GAME_IMAGE_URLS.every((url) => url.includes(".webp"))).toBe(true);
   });
 });
