@@ -1,5 +1,5 @@
 import { APP_CONFIG } from "../config/app";
-import { ALL_PIECES, MEMORY_REVEAL_DELAY_MS, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS, PUZZLE_CHARACTERS, type PuzzleCharacter } from "../content/puzzles";
+import { ALL_PIECES, MEMORY_REVEAL_DELAY_MS, MONTAGE_JAEPI, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS, PUZZLE_CHARACTERS, type PuzzleCharacter } from "../content/puzzles";
 import { createMemoryBoard, createMontageBoard, createUnitBoard, montageScore, tieredTimeScore, timeScore, type MemoryCard } from "../core/pick/game";
 import { el } from "./dom";
 import { feedback } from "./feedback";
@@ -159,18 +159,18 @@ export class TalkApp {
   private startMontageRound(): void {
     this.setBoardSize(5, true);
     this.runMode.textContent = "Montage Hunt";
-    this.gameNote.textContent = "60 seconds · A new montage appears after every match.";
+    this.gameNote.textContent = "60 seconds · Find the exact Jaepi. A new board appears after every match.";
     this.renderNextMontage();
   }
 
   private renderNextMontage(): void {
-    this.targetCharacter = PUZZLE_CHARACTERS[Math.floor(Math.random() * PUZZLE_CHARACTERS.length)]!;
-    this.renderMontagePreview(this.targetCharacter);
+    this.renderImagePreview(MONTAGE_JAEPI.answer, `${MONTAGE_JAEPI.name} exact montage`);
     this.updateProgress(this.montageFound, Math.max(1, this.montageFound + 1), `${this.montageFound} found`);
 
     const fragment = document.createDocumentFragment();
-    createMontageBoard().forEach((tile) => {
-      const button = this.montageButton(this.targetCharacter, tile.transform, tile.filter);
+    createMontageBoard(MONTAGE_JAEPI.variations.length).forEach((tile) => {
+      const src = tile.exact ? MONTAGE_JAEPI.answer : MONTAGE_JAEPI.variations[tile.variationIndex]!;
+      const button = this.montageButton(src);
       button.addEventListener("click", () => {
         if (!this.active || this.paused) return;
         if (!tile.exact) {
@@ -273,23 +273,17 @@ export class TalkApp {
     return button;
   }
 
-  private montageButton(character: PuzzleCharacter, transform: string, filter: string): HTMLButtonElement {
+  private montageButton(src: string): HTMLButtonElement {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "picture-tile";
-    button.setAttribute("aria-label", `${character.name} montage candidate`);
+    button.setAttribute("aria-label", `${MONTAGE_JAEPI.name} montage candidate`);
     const image = document.createElement("img");
     image.className = "montage-candidate-image";
-    image.src = character.montage;
+    image.src = src;
     image.alt = "";
-    image.style.transform = transform;
-    image.style.filter = filter;
     button.append(image);
     return button;
-  }
-
-  private renderMontagePreview(character: PuzzleCharacter): void {
-    this.renderImagePreview(character.montage, `${character.name} exact montage`);
   }
 
   private renderUnitPreview(character: PuzzleCharacter): void {
@@ -436,7 +430,7 @@ export class TalkApp {
   }
 
   private showHowToPlay(): void {
-    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Find every piece that belongs to the character on the 7×7 board before the 60-second timer runs out.</span></p><p><b>2. Montage Hunt</b><span>Find the one image that exactly matches the character above among 25 candidates. You have 60 seconds.</span></p><p><b>3. Pair Memory</b><span>Flip two cards at a time and match all 24 pairs. The center star is a free block.</span></p></div>`);
+    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Find every piece that belongs to the character on the 7×7 board before the 60-second timer runs out.</span></p><p><b>2. Montage Hunt</b><span>Find the one Jaepi image that exactly matches the picture above among 25 candidates. You have 60 seconds.</span></p><p><b>3. Pair Memory</b><span>Flip two cards at a time and match all 24 pairs. The center star is a free block.</span></p></div>`);
   }
 
   private showRules(): void {

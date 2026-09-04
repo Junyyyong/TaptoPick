@@ -14,8 +14,7 @@ export interface UnitTile extends SourcePiece {
 export interface MontageTile {
   id: number;
   exact: boolean;
-  transform: string;
-  filter: string;
+  variationIndex: number;
 }
 
 export interface MemoryCard {
@@ -46,32 +45,14 @@ export function createUnitBoard(targetId: string, pieces: readonly SourcePiece[]
   );
 }
 
-const MONTAGE_VARIANTS = [
-  ["scaleX(-1)", "none"],
-  ["scaleY(-1)", "none"],
-  ["rotate(-12deg) scale(.9)", "none"],
-  ["rotate(12deg) scale(.9)", "none"],
-  ["translateX(-10%) scale(1.08)", "none"],
-  ["translateX(10%) scale(1.08)", "none"],
-  ["scale(.82)", "none"],
-  ["scale(1.18)", "none"],
-  ["scale(1)", "hue-rotate(70deg) saturate(1.45)"],
-  ["scale(1)", "hue-rotate(-100deg) saturate(1.5)"],
-  ["scaleX(-1)", "hue-rotate(145deg) saturate(1.4)"],
-  ["scale(1)", "grayscale(1) contrast(1.25)"],
-  ["scale(1)", "sepia(1) saturate(2.2) contrast(1.15)"],
-  ["scale(1)", "brightness(.7) contrast(1.35)"],
-  ["rotate(-8deg) scale(1.05)", "hue-rotate(45deg)"],
-  ["rotate(8deg) scale(1.05)", "hue-rotate(-45deg)"],
-] as const;
-
-export function createMontageBoard(size = 25, random: Random = Math.random): MontageTile[] {
+export function createMontageBoard(variationCount: number, size = 25, random: Random = Math.random): MontageTile[] {
+  if (variationCount < 1) throw new Error("Montage mode needs at least one variation");
   const exactIndex = Math.floor(random() * size);
-  return Array.from({ length: size }, (_, id) => {
-    if (id === exactIndex) return { id, exact: true, transform: "scale(1)", filter: "none" };
-    const variant = MONTAGE_VARIANTS[(id + exactIndex) % MONTAGE_VARIANTS.length]!;
-    return { id, exact: false, transform: variant[0], filter: variant[1] };
-  });
+  const variationIndices = shuffle(Array.from({ length: size - 1 }, (_, index) => index % variationCount), random);
+  let variationCursor = 0;
+  return Array.from({ length: size }, (_, id) => id === exactIndex
+    ? { id, exact: true, variationIndex: -1 }
+    : { id, exact: false, variationIndex: variationIndices[variationCursor++]! });
 }
 
 export function createMemoryBoard(pieces: readonly SourcePiece[], random: Random = Math.random): MemoryCard[] {

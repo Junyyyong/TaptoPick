@@ -11,10 +11,11 @@ describe("TAP to PICK game rules", () => {
   });
 
   it("creates one exact montage match", () => {
-    const board = createMontageBoard(undefined, () => 0.5);
+    const board = createMontageBoard(16, 25, () => 0.5);
     expect(board).toHaveLength(25);
     expect(board.filter((tile) => tile.exact)).toHaveLength(1);
-    expect(board.filter((tile) => !tile.exact).every((tile) => tile.transform !== "scale(1)" || tile.filter !== "none")).toBe(true);
+    expect(new Set(board.filter((tile) => !tile.exact).map((tile) => tile.variationIndex))).toEqual(new Set(Array.from({ length: 16 }, (_, index) => index)));
+    expect(board.filter((tile) => !tile.exact)).toHaveLength(24);
   });
 
   it("creates 24 pairs and one center free tile", () => {

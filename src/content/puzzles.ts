@@ -3,7 +3,6 @@ export interface PuzzleCharacter {
   name: string;
   folder: string;
   preview: string;
-  montage: string;
   pieces: readonly string[];
   columns: 3;
   rows: 3 | 4;
@@ -23,8 +22,8 @@ const pieceModules = import.meta.glob<string>(
 );
 
 const unitPreviewModules = import.meta.glob<string>("/optimized/unit/*.webp", { eager: true, query: "?url", import: "default" });
-const montageModules = import.meta.glob<string>(
-  "/optimized/montage/*.webp",
+const jaepiMontageModules = import.meta.glob<string>(
+  "/optimized/montage/jaepi/*.webp",
   { eager: true, query: "?url", import: "default" },
 );
 
@@ -40,16 +39,13 @@ function character(id: string, name: string, folder: string): PuzzleCharacter {
     throw new Error(`${folder} must contain either 9 or 12 numbered JPG pieces`);
   }
   const preview = unitPreviewModules[`/optimized/unit/${folder}.webp`];
-  const montage = montageModules[`/optimized/montage/${folder}.webp`];
   if (!preview) throw new Error(`Missing unit preview: ${folder}.webp`);
-  if (!montage) throw new Error(`Missing montage image: ${folder}.webp`);
 
   return {
     id,
     name,
     folder,
     preview,
-    montage,
     pieces,
     columns: 3,
     rows: pieces.length === 9 ? 3 : 4,
@@ -83,4 +79,20 @@ export const PICTURE_PIECES_SCORE_BANDS = [
 export const MEMORY_REVEAL_DELAY_MS = {
   match: 250,
   mismatch: 450,
+} as const;
+
+const jaepiAnswer = jaepiMontageModules["/optimized/montage/jaepi/answer.webp"];
+const jaepiVariations = Object.entries(jaepiMontageModules)
+  .filter(([path]) => path.includes("/variation-"))
+  .sort(([a], [b]) => natural.compare(a, b))
+  .map(([, url]) => url);
+
+if (!jaepiAnswer || jaepiVariations.length !== 16) {
+  throw new Error("Montage Hunt requires one Jaepi answer and 16 variations");
+}
+
+export const MONTAGE_JAEPI = {
+  name: "Jaepi",
+  answer: jaepiAnswer,
+  variations: jaepiVariations,
 } as const;
