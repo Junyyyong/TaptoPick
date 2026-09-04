@@ -33,6 +33,13 @@ export function shuffle<T>(values: readonly T[], random: Random = Math.random): 
   return result;
 }
 
+export function pickDifferentIndex(previousIndex: number, itemCount: number, random: Random = Math.random): number {
+  if (itemCount < 1) throw new Error("At least one item is required");
+  if (itemCount === 1 || previousIndex < 0 || previousIndex >= itemCount) return Math.floor(random() * itemCount);
+  const offset = 1 + Math.floor(random() * (itemCount - 1));
+  return (previousIndex + offset) % itemCount;
+}
+
 export function createUnitBoard(targetId: string, pieces: readonly SourcePiece[], size = 49, random: Random = Math.random): UnitTile[] {
   const targets = pieces.filter((piece) => piece.characterId === targetId);
   const decoys = shuffle(pieces.filter((piece) => piece.characterId !== targetId), random);

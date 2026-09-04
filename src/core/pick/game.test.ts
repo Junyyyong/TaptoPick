@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createMemoryBoard, createMontageBoard, createUnitBoard, montageScore, tieredTimeScore, timeScore, type SourcePiece } from "./game";
+import { createMemoryBoard, createMontageBoard, createUnitBoard, montageScore, pickDifferentIndex, tieredTimeScore, timeScore, type SourcePiece } from "./game";
 
 const pieces: SourcePiece[] = Array.from({ length: 75 }, (_, index) => ({ characterId: `c${Math.floor(index / 12)}`, pieceIndex: index, src: `${index}.jpg` }));
 
@@ -16,6 +16,13 @@ describe("TAP to PICK game rules", () => {
     expect(board.filter((tile) => tile.exact)).toHaveLength(1);
     expect(new Set(board.filter((tile) => !tile.exact).map((tile) => tile.variationIndex))).toEqual(new Set(Array.from({ length: 16 }, (_, index) => index)));
     expect(board.filter((tile) => !tile.exact)).toHaveLength(24);
+  });
+
+  it("never picks the same montage character twice in a row", () => {
+    expect(pickDifferentIndex(-1, 3, () => 0)).toBe(0);
+    expect(pickDifferentIndex(0, 3, () => 0)).toBe(1);
+    expect(pickDifferentIndex(0, 3, () => 0.999)).toBe(2);
+    expect(pickDifferentIndex(2, 3, () => 0.999)).toBe(1);
   });
 
   it("creates 24 pairs and one center free tile", () => {

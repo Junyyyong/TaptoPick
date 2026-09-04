@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "../config/app";
 import { ALL_PIECES, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS, PUZZLE_CHARACTERS, type MontageCharacter, type PuzzleCharacter } from "../content/puzzles";
-import { createMemoryBoard, createMontageBoard, createUnitBoard, montageScore, tieredTimeScore, timeScore, type MemoryCard } from "../core/pick/game";
+import { createMemoryBoard, createMontageBoard, createUnitBoard, montageScore, pickDifferentIndex, tieredTimeScore, timeScore, type MemoryCard } from "../core/pick/game";
 import { el } from "./dom";
 import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
@@ -49,6 +49,7 @@ export class TalkApp {
   private mistakes = 0;
   private targetCharacter = PUZZLE_CHARACTERS[0]!;
   private montageCharacter: MontageCharacter = MONTAGE_CHARACTERS[0]!;
+  private montageCharacterIndex = -1;
   private unitFound = new Set<number>();
   private montageFound = 0;
   private memoryCards: MemoryCard[] = [];
@@ -165,7 +166,8 @@ export class TalkApp {
   }
 
   private renderNextMontage(): void {
-    this.montageCharacter = MONTAGE_CHARACTERS[Math.floor(Math.random() * MONTAGE_CHARACTERS.length)]!;
+    this.montageCharacterIndex = pickDifferentIndex(this.montageCharacterIndex, MONTAGE_CHARACTERS.length);
+    this.montageCharacter = MONTAGE_CHARACTERS[this.montageCharacterIndex]!;
     this.renderImagePreview(this.montageCharacter.answer, `${this.montageCharacter.name} exact montage`);
     this.updateProgress(this.montageFound, Math.max(1, this.montageFound + 1), `${this.montageFound} found`);
 
