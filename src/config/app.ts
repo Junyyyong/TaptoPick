@@ -47,7 +47,7 @@ export const APP_CONFIG = {
   board: { columns: 7, rows: 7 },
   timing: { studioSplashMs: 1_800, productSplashMs: 2_200 },
   assets: {
-    studioSplash: new URL("../../public/assets/brand/tapeetepee-open-talk.png", import.meta.url).href,
+    studioSplash: new URL("../../public/assets/brand/tapeetepee-open-01.png", import.meta.url).href,
     celebrationVideo: CELEBRATION_MOVIES[0]!.video,
     celebrationAudio: CELEBRATION_MOVIES[0]!.sound,
     failureCelebration: FAILURE_MOVIE,
