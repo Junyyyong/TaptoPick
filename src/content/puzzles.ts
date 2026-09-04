@@ -8,6 +8,13 @@ export interface PuzzleCharacter {
   rows: 3 | 4;
 }
 
+export interface MontageCharacter {
+  id: string;
+  name: string;
+  answer: string;
+  variations: readonly string[];
+}
+
 const pieceModules = import.meta.glob<string>(
   [
     "/optimized/Bb/*.webp",
@@ -22,8 +29,8 @@ const pieceModules = import.meta.glob<string>(
 );
 
 const unitPreviewModules = import.meta.glob<string>("/optimized/unit/*.webp", { eager: true, query: "?url", import: "default" });
-const jaepiMontageModules = import.meta.glob<string>(
-  "/optimized/montage/jaepi/*.webp",
+const montageModules = import.meta.glob<string>(
+  ["/optimized/montage/jaepi/*.webp", "/optimized/montage/bbogles/*.webp"],
   { eager: true, query: "?url", import: "default" },
 );
 
@@ -81,18 +88,21 @@ export const MEMORY_REVEAL_DELAY_MS = {
   mismatch: 450,
 } as const;
 
-const jaepiAnswer = jaepiMontageModules["/optimized/montage/jaepi/answer.webp"];
-const jaepiVariations = Object.entries(jaepiMontageModules)
-  .filter(([path]) => path.includes("/variation-"))
-  .sort(([a], [b]) => natural.compare(a, b))
-  .map(([, url]) => url);
+function montageCharacter(id: string, name: string, expectedVariations: number): MontageCharacter {
+  const basePath = `/optimized/montage/${id}`;
+  const answer = montageModules[`${basePath}/answer.webp`];
+  const variations = Object.entries(montageModules)
+    .filter(([path]) => path.startsWith(`${basePath}/variation-`))
+    .sort(([a], [b]) => natural.compare(a, b))
+    .map(([, url]) => url);
 
-if (!jaepiAnswer || jaepiVariations.length !== 16) {
-  throw new Error("Montage Hunt requires one Jaepi answer and 16 variations");
+  if (!answer || variations.length !== expectedVariations) {
+    throw new Error(`Montage Hunt requires one ${name} answer and ${expectedVariations} variations`);
+  }
+  return { id, name, answer, variations };
 }
 
-export const MONTAGE_JAEPI = {
-  name: "Jaepi",
-  answer: jaepiAnswer,
-  variations: jaepiVariations,
-} as const;
+export const MONTAGE_CHARACTERS: readonly MontageCharacter[] = [
+  montageCharacter("jaepi", "Jaepi", 16),
+  montageCharacter("bbogles", "Bbogles", 14),
+];
