@@ -48,6 +48,7 @@ export const APP_CONFIG = {
   timing: { studioSplashMs: 1_800, productSplashMs: 2_200 },
   assets: {
     studioSplash: new URL("../../public/assets/brand/tapeetepee-open-01.png", import.meta.url).href,
+    productLogo: new URL("../../public/assets/brand/TAPtoPICK-logo-01.png", import.meta.url).href,
     celebrationVideo: CELEBRATION_MOVIES[0]!.video,
     celebrationAudio: CELEBRATION_MOVIES[0]!.sound,
     failureCelebration: FAILURE_MOVIE,
