@@ -236,7 +236,16 @@
 .picture-tile.is-wrong { animation: image-wrong 340ms ease; box-shadow: inset 0 0 0 3px var(--ring-bad); }
 .pick-screen.is-input-locked .picture-board { pointer-events: none; filter: saturate(.6); }
 
-.memory-card { transform-style: preserve-3d; background: linear-gradient(145deg, var(--cool), var(--cool-deep)); }
+.memory-card { transform-style: preserve-3d; background: linear-gradient(180deg, color-mix(in srgb, var(--memory-face) 76%, white), var(--memory-face)); }
+.memory-card--color-1 { --memory-face: var(--v1); }
+.memory-card--color-2 { --memory-face: var(--v2); }
+.memory-card--color-3 { --memory-face: var(--v3); }
+.memory-card--color-4 { --memory-face: var(--v4); }
+.memory-card--color-5 { --memory-face: var(--v5); }
+.memory-card--color-6 { --memory-face: var(--v6); }
+.memory-card--color-7 { --memory-face: var(--v7); }
+.memory-card--color-8 { --memory-face: var(--v8); }
+.memory-card--color-9 { --memory-face: var(--v9); }
 .memory-card img { opacity: 0; transform: scale(.72) rotateY(90deg); }
 .memory-card.is-open img,
 .memory-card.is-matched img { opacity: 1; transform: scale(1) rotateY(0); }

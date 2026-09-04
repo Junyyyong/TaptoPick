@@ -9,6 +9,7 @@ import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "
 type Mode = "unit" | "montage" | "memory";
 
 const MONTAGE_LIMIT_MS = 60_000;
+const memoryColorAt = (index: number): number => ((index * 5 + Math.floor(index / 7) * 2) % 9) + 1;
 
 function formatTime(ms: number): string {
   const safe = Math.max(0, ms);
@@ -202,10 +203,10 @@ export class TalkApp {
 
   private renderMemoryBoard(): void {
     const fragment = document.createDocumentFragment();
-    this.memoryCards.forEach((card) => {
+    this.memoryCards.forEach((card, index) => {
       const button = document.createElement("button");
       button.type = "button";
-      button.className = "picture-tile memory-card";
+      button.className = `picture-tile memory-card memory-card--color-${memoryColorAt(index)}`;
       button.setAttribute("aria-label", card.free ? "Free center block" : "Face-down picture card");
       if (card.free) {
         button.classList.add("is-free", "is-matched");
