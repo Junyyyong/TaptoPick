@@ -263,6 +263,7 @@
 .memory-free { color: white; font-size: clamp(16px, 5vw, 28px); text-shadow: 0 2px 0 var(--hot-deep); }
 
 .pick-controls { display: grid; grid-template-columns: 118px minmax(0, 1fr); gap: 10px; align-items: center; margin-top: auto; }
+.pick-screen.is-memory-mode .pick-controls { display: none; }
 .pick-controls .control-btn { height: 40px; min-height: 40px; }
 .pick-controls p { margin: 0; color: var(--ink-soft); font-size: 10px; font-weight: 700; line-height: 1.35; }
 .result-panel #result-detail { white-space: pre-line; color: var(--ink-soft); line-height: 1.55; }

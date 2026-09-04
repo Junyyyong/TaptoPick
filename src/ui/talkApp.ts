@@ -115,6 +115,7 @@ export class TalkApp {
     this.title.classList.add("hidden");
     this.splash.classList.add("hidden");
     this.game.classList.remove("hidden", "is-input-locked");
+    this.game.classList.toggle("is-memory-mode", mode === "memory");
 
     if (mode === "unit") this.startUnitRound();
     if (mode === "montage") this.startMontageRound();
@@ -194,7 +195,7 @@ export class TalkApp {
     this.targetPreview.replaceChildren();
     const badge = document.createElement("div");
     badge.className = "memory-target-badge";
-    badge.innerHTML = "<strong>24</strong><span>PAIRS</span>";
+    badge.innerHTML = "<strong>0/24</strong><span>PAIRS</span>";
     this.targetPreview.append(badge);
     this.memoryCards = createMemoryBoard(ALL_PIECES);
     this.updateProgress(0, 24, "0 / 24 pairs");
@@ -202,6 +203,8 @@ export class TalkApp {
   }
 
   private renderMemoryBoard(): void {
+    const matchedCount = this.targetPreview.querySelector("strong");
+    if (matchedCount) matchedCount.textContent = `${this.memoryMatched.size}/24`;
     const fragment = document.createDocumentFragment();
     this.memoryCards.forEach((card, index) => {
       const button = document.createElement("button");
@@ -209,7 +212,7 @@ export class TalkApp {
       button.className = `picture-tile memory-card memory-card--color-${memoryColorAt(index)}`;
       button.setAttribute("aria-label", card.free ? "Free center block" : "Face-down picture card");
       if (card.free) {
-        button.classList.add("is-free", "is-matched");
+        button.classList.add("is-free");
         button.innerHTML = "<span class=memory-free>★</span>";
         button.disabled = true;
       } else {
