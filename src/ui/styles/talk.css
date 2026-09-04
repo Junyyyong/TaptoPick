@@ -197,6 +197,15 @@
 .assembled-preview { display: grid; width: 72px; overflow: hidden; grid-template-columns: repeat(3, 1fr); background: #fff; }
 .assembled-preview img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
 .assembled-preview--12 { width: 68px; }
+.unit-reference { position: relative; height: 92px; overflow: hidden; background: #fff; }
+.unit-reference > img,
+.unit-reference-grid { display: block; width: 100%; height: 100%; }
+.unit-reference > img { object-fit: fill; }
+.unit-reference-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+.unit-reference-grid img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.unit-reference-mask { position: absolute; inset: 0; display: grid; }
+.unit-reference-mask span { border: .5px solid rgba(58,15,10,.14); background: rgba(255,246,233,.74); transition: background 180ms ease, border-color 180ms ease; }
+.unit-reference-mask span.is-revealed { border-color: transparent; background: transparent; }
 
 .memory-target-badge { display: grid; place-items: center; color: var(--hot); line-height: 1; }
 .memory-target-badge strong { font-size: 43px; font-weight: 900; }

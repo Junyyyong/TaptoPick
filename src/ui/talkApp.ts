@@ -133,7 +133,7 @@ export class TalkApp {
     this.targetName.textContent = this.targetCharacter.name;
     this.targetHint.textContent = "완성 그림에 속한 조각을 모두 찾으세요.";
     this.gameNote.textContent = "오답 없이 빠르게 찾을수록 높은 점수를 얻어요.";
-    this.renderCharacterPreview(this.targetCharacter);
+    this.renderUnitReference(this.targetCharacter);
     this.updateProgress(0, this.targetCharacter.pieces.length, `0 / ${this.targetCharacter.pieces.length} 조각`);
 
     const fragment = document.createDocumentFragment();
@@ -150,6 +150,7 @@ export class TalkApp {
         this.unitFound.add(tile.id);
         button.classList.add("is-found");
         button.disabled = true;
+        this.revealUnitPiece(tile.pieceIndex);
         feedback.pick(this.unitFound.size);
         this.updateProgress(this.unitFound.size, this.targetCharacter.pieces.length, `${this.unitFound.size} / ${this.targetCharacter.pieces.length} 조각`);
         if (this.unitFound.size === this.targetCharacter.pieces.length) this.finishUnit();
@@ -323,6 +324,47 @@ export class TalkApp {
     });
     grid.setAttribute("aria-label", `${character.name} 완성 이미지`);
     this.targetPreview.replaceChildren(grid);
+  }
+
+  private renderUnitReference(character: PuzzleCharacter): void {
+    const stage = document.createElement("div");
+    stage.className = "unit-reference";
+    stage.style.aspectRatio = `${character.columns} / ${character.rows}`;
+
+    if (character.preview) {
+      const image = document.createElement("img");
+      image.src = character.preview;
+      image.alt = `${character.name} 완성 이미지`;
+      stage.append(image);
+    } else {
+      const grid = document.createElement("div");
+      grid.className = "unit-reference-grid";
+      grid.style.gridTemplateRows = `repeat(${character.rows}, 1fr)`;
+      character.pieces.forEach((src) => {
+        const image = document.createElement("img");
+        image.src = src;
+        image.alt = "";
+        grid.append(image);
+      });
+      stage.append(grid);
+      stage.setAttribute("aria-label", `${character.name} 완성 이미지`);
+    }
+
+    const mask = document.createElement("div");
+    mask.className = "unit-reference-mask";
+    mask.style.gridTemplateColumns = `repeat(${character.columns}, 1fr)`;
+    mask.style.gridTemplateRows = `repeat(${character.rows}, 1fr)`;
+    character.pieces.forEach((_, pieceIndex) => {
+      const cell = document.createElement("span");
+      cell.dataset.pieceIndex = String(pieceIndex);
+      mask.append(cell);
+    });
+    stage.append(mask);
+    this.targetPreview.replaceChildren(stage);
+  }
+
+  private revealUnitPiece(pieceIndex: number): void {
+    this.targetPreview.querySelector<HTMLElement>(`[data-piece-index="${pieceIndex}"]`)?.classList.add("is-revealed");
   }
 
   private renderImagePreview(src: string, alt: string): void {
