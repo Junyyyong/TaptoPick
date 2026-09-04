@@ -45,9 +45,10 @@ const FAILURE_MOVIE = {
 export const APP_CONFIG = {
   name: "TAP to PICK",
   board: { columns: 7, rows: 7 },
-  timing: { studioSplashMs: 1_800, productSplashMs: 2_200 },
+  timing: { studioSplashMs: 1_800, productSplashMs: 4_000 },
   assets: {
     studioSplash: new URL("../../public/assets/brand/tapeetepee-open-01.png", import.meta.url).href,
+    productCover: new URL("../../public/assets/brand/taptopick-cover.png", import.meta.url).href,
     productLogo: new URL("../../public/assets/brand/TAPtoPICK-logo-01.png", import.meta.url).href,
     celebrationVideo: CELEBRATION_MOVIES[0]!.video,
     celebrationAudio: CELEBRATION_MOVIES[0]!.sound,
