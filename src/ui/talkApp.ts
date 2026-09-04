@@ -277,38 +277,18 @@ export class TalkApp {
     button.type = "button";
     button.className = "picture-tile";
     button.setAttribute("aria-label", `${character.name} montage candidate`);
-    const visual = this.createCleanMontage(character);
-    visual.classList.add("montage-candidate-visual");
-    visual.style.transform = transform;
-    visual.style.filter = filter;
-    button.append(visual);
+    const image = document.createElement("img");
+    image.className = "montage-candidate-image";
+    image.src = character.montage;
+    image.alt = "";
+    image.style.transform = transform;
+    image.style.filter = filter;
+    button.append(image);
     return button;
   }
 
-  private createCleanMontage(character: PuzzleCharacter): HTMLElement {
-    const composite = document.createElement("span");
-    composite.className = `montage-composite montage-composite--${character.pieces.length}`;
-    character.pieces.forEach((src) => {
-      const cell = document.createElement("span");
-      cell.className = "montage-piece";
-      const image = document.createElement("img");
-      image.src = src;
-      image.alt = "";
-      cell.append(image);
-      composite.append(cell);
-    });
-    return composite;
-  }
-
   private renderMontagePreview(character: PuzzleCharacter): void {
-    if (character.preview) {
-      this.renderImagePreview(character.preview, `${character.name} exact montage`);
-      return;
-    }
-    const composite = this.createCleanMontage(character);
-    composite.classList.add("montage-composite--preview");
-    composite.setAttribute("aria-label", `${character.name} exact montage`);
-    this.targetPreview.replaceChildren(composite);
+    this.renderImagePreview(character.montage, `${character.name} exact montage`);
   }
 
   private renderCharacterPreview(character: PuzzleCharacter): void {
