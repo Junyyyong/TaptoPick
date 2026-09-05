@@ -18,20 +18,19 @@ describe("Picture Pieces scoring content", () => {
   });
 
   it("provides answer and distinct wrong variations for each montage character", () => {
-    expect(MONTAGE_CHARACTERS.map((character) => [character.name, character.variations.length])).toEqual([
-      ["Jaepi", 16],
-      ["Bbogles", 14],
-      ["Haepi", 17],
+    expect(MONTAGE_CHARACTERS.map((character) => [character.id, character.name, character.variations.length])).toEqual([
+      ["haepi", "Haepi", 20],
     ]);
     MONTAGE_CHARACTERS.forEach((character) => {
       expect(character.answer).toMatch(/answer.*\.webp/);
       expect(new Set(character.variations)).toHaveLength(character.variations.length);
       expect(character.variations).not.toContain(character.answer);
+      expect([character.answer, ...character.variations].every((url) => url.includes("/optimized/montage/haepi/"))).toBe(true);
     });
   });
 
   it("exposes every active game image once for splash-screen preloading", () => {
-    expect(GAME_IMAGE_URLS).toHaveLength(132);
+    expect(GAME_IMAGE_URLS).toHaveLength(103);
     expect(new Set(GAME_IMAGE_URLS)).toHaveLength(GAME_IMAGE_URLS.length);
     expect(GAME_IMAGE_URLS.every((url) => url.includes(".webp"))).toBe(true);
   });
