@@ -73,7 +73,7 @@ export function createMontageBoard(variationCount: number, size = 25, random: Ra
 }
 
 export function createMemoryBoard(faces: readonly string[], size: 4 | 5 | 6 | 7 = 4, random: Random = Math.random): MemoryCard[] {
-  if (faces.length !== 8 || new Set(faces).size !== 8) throw new Error("Memory mode needs eight distinct faces");
+  if (faces.length !== 7 || new Set(faces).size !== 7) throw new Error("Memory mode needs seven distinct faces");
   const pairCount = Math.floor(size * size / 2);
   const faceOrder = shuffle(faces, random);
   const board = shuffle(Array.from({ length: pairCount }, (_, pairId) => faceOrder[pairId % faceOrder.length]!).flatMap((src, pairId) => [

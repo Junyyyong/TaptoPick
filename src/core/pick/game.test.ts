@@ -43,7 +43,7 @@ describe("TAP to PICK game rules", () => {
   });
 
   it("creates eight identical face pairs on a 4x4 board", () => {
-    const faces = Array.from({ length: 8 }, (_, i) => `face-${i}.webp`);
+    const faces = Array.from({ length: 7 }, (_, i) => `face-${i}.webp`);
     const board = createMemoryBoard(faces, 4, () => 0.4);
     expect(board).toHaveLength(16);
     expect(new Set(board.map((card) => card.id)).size).toBe(16);
@@ -54,11 +54,11 @@ describe("TAP to PICK game rules", () => {
     });
     expect(counts.size).toBe(8);
     expect([...counts.values()].every((count) => count === 2)).toBe(true);
-    expect(() => createMemoryBoard(Array(8).fill("same.webp"))).toThrow();
+    expect(() => createMemoryBoard(Array(7).fill("same.webp"))).toThrow();
   });
 
   it.each([4, 5, 6, 7] as const)("builds a balanced size-%i memory board with an optional center star", (size) => {
-    const faces = Array.from({ length: 8 }, (_, i) => `face-${i}.webp`);
+    const faces = Array.from({ length: 7 }, (_, i) => `face-${i}.webp`);
     const board = createMemoryBoard(faces, size, () => 0.4);
     expect(board).toHaveLength(size * size);
     expect(new Set(board.map((card) => card.id)).size).toBe(size * size);

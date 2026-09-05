@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { MEMORY_STAGES, MemoryRun } from "./memory";
 
-const faces = Array.from({ length: 8 }, (_, i) => `face-${i}.webp`);
+const faces = Array.from({ length: 7 }, (_, i) => `face-${i}.webp`);
 const makeRun = () => new MemoryRun(faces, 3_000, { match: 250, mismatch: 450 }, () => 0.4);
 
 function clearStage(run: MemoryRun): void {
@@ -110,13 +110,14 @@ describe("four-stage memory run", () => {
   it("honors the last correct pair before a deadline despite its reveal animation", () => {
     const run = makeRun();
     run.advance(3_000);
-    for (const src of faces.slice(0, 7)) {
-      const pair = run.cards.filter((card) => card.src === src);
+    for (let i = 0; i < 7; i++) {
+      const first = run.cards.find((card) => !card.free && !run.matchedIds.has(card.id))!;
+      const pair = run.cards.filter((card) => card.src === first.src && !run.matchedIds.has(card.id)).slice(0, 2);
       pair.forEach((card) => run.choose(card.id));
       run.advance(250);
     }
     run.advance(run.remainingMs - 1);
-    run.cards.filter((card) => card.src === faces[7]).forEach((card) => run.choose(card.id));
+    run.cards.filter((card) => !card.free && !run.matchedIds.has(card.id)).forEach((card) => run.choose(card.id));
     run.advance(250);
     expect(run.stageIndex).toBe(1);
     expect(run.phase).toBe("preview");

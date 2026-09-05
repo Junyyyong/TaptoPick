@@ -17,9 +17,11 @@ describe("Picture Pieces scoring content", () => {
     expect(MEMORY_REVEAL_DELAY_MS).toEqual({ match: 250, mismatch: 450 });
   });
 
-  it("reuses eight preloaded faces including all seven members for memory", () => {
-    expect(MEMORY_FACES).toHaveLength(8);
-    expect(new Set(MEMORY_FACES).size).toBe(8);
+  it("uses only the seven preloaded original faces for memory, with no variations", () => {
+    expect(MEMORY_FACES).toHaveLength(7);
+    expect(new Set(MEMORY_FACES).size).toBe(7);
+    expect(MEMORY_FACES).toEqual(MONTAGE_CHARACTERS.map((character) => character.answer));
+    expect(MEMORY_FACES.every((face) => !face.includes("variation"))).toBe(true);
     expect(MEMORY_PREVIEW_MS).toBe(3_000);
     MONTAGE_CHARACTERS.forEach((character) => expect(MEMORY_FACES).toContain(character.answer));
     MEMORY_FACES.forEach((face) => expect(GAME_IMAGE_URLS).toContain(face));
