@@ -1,0 +1,110 @@
+{
+  "capturedAt": "2026-09-05T13:04:07.910Z",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "deviceScaleFactor": 2,
+  "browser": "152.0.7977.76",
+  "method": "Working version; seeded RNG and controlled browser clock; actual menu clicks. Not real-device performance measurements.",
+  "captures": [
+    {
+      "id": "haepi",
+      "seed": 2654435761,
+      "target": "/optimized/montage/haepi/answer.webp",
+      "tiles": [
+        "/optimized/montage/haepi/variation-27.webp",
+        "/optimized/montage/haepi/variation-22.webp",
+        "/optimized/montage/haepi/variation-20.webp",
+        "/optimized/montage/haepi/answer.webp"
+      ],
+      "file": "screenshots/haepi-2x2.png",
+      "sha256": "1fc2b3efd9212b644d2d5c759258897c173bb496c931c79b5a84c1746ae7b83d",
+      "errors": []
+    },
+    {
+      "id": "tapee",
+      "seed": 1013904226,
+      "target": "/optimized/montage/tapee/answer.webp",
+      "tiles": [
+        "/optimized/montage/tapee/answer.webp",
+        "/optimized/montage/tapee/variation-7.webp",
+        "/optimized/montage/tapee/variation-14.webp",
+        "/optimized/montage/tapee/variation-19.webp"
+      ],
+      "file": "screenshots/tapee-2x2.png",
+      "sha256": "49e23f082bd4eb54f56b8b210878f0163ffcbccd6aed94bcd7f2bbf09a1443bf",
+      "errors": []
+    },
+    {
+      "id": "jaepi",
+      "seed": 3668339987,
+      "target": "/optimized/montage/jaepi/answer.webp",
+      "tiles": [
+        "/optimized/montage/jaepi/variation-5.webp",
+        "/optimized/montage/jaepi/answer.webp",
+        "/optimized/montage/jaepi/variation-15.webp",
+        "/optimized/montage/jaepi/variation-14.webp"
+      ],
+      "file": "screenshots/jaepi-2x2.png",
+      "sha256": "4f7c13a40e59614d002322606507ac3ecdd59f80cb7525cb2436b2979a794a82",
+      "errors": []
+    },
+    {
+      "id": "hupi",
+      "seed": 387276917,
+      "target": "/optimized/montage/hupi/answer.webp",
+      "tiles": [
+        "/optimized/montage/hupi/variation-12.webp",
+        "/optimized/montage/hupi/answer.webp",
+        "/optimized/montage/hupi/variation-13.webp",
+        "/optimized/montage/hupi/variation-16.webp"
+      ],
+      "file": "screenshots/hupi-2x2.png",
+      "sha256": "578da8662684adcd0d4eef6b8ce1cbdc30f7909be1998d883dcf31331b003037",
+      "errors": []
+    },
+    {
+      "id": "bbogles",
+      "seed": 3041712678,
+      "target": "/optimized/montage/bbogles/answer.webp",
+      "tiles": [
+        "/optimized/montage/bbogles/answer.webp",
+        "/optimized/montage/bbogles/variation-19.webp",
+        "/optimized/montage/bbogles/variation-1.webp",
+        "/optimized/montage/bbogles/variation-11.webp"
+      ],
+      "file": "screenshots/bbogles-2x2.png",
+      "sha256": "bd6a84af43625b251c2c3c9c22368df03c98270dae915f97783bd44333595421",
+      "errors": []
+    },
+    {
+      "id": "tepee",
+      "seed": 1401181143,
+      "target": "/optimized/montage/tepee/answer.webp",
+      "tiles": [
+        "/optimized/montage/tepee/answer.webp",
+        "/optimized/montage/tepee/variation-12.webp",
+        "/optimized/montage/tepee/variation-18.webp",
+        "/optimized/montage/tepee/variation-15.webp"
+      ],
+      "file": "screenshots/tepee-2x2.png",
+      "sha256": "024ab51dc7a5c8ed5e695c286c0c077b59b083597da64bb128530b2e37135769",
+      "errors": []
+    },
+    {
+      "id": "pino",
+      "seed": 2802362286,
+      "target": "/optimized/montage/pino/answer.webp",
+      "tiles": [
+        "/optimized/montage/pino/answer.webp",
+        "/optimized/montage/pino/variation-10.webp",
+        "/optimized/montage/pino/variation-16.webp",
+        "/optimized/montage/pino/variation-12.webp"
+      ],
+      "file": "screenshots/pino-2x2.png",
+      "sha256": "2fa4b656702ffd9bb9bc99eee48486dd522d1c9102eaeffe885fb3d24ab53993",
+      "errors": []
+    }
+  ]
+}
