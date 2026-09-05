@@ -54,6 +54,7 @@ export class TalkApp {
   private unitFound = new Set<number>();
   private montageFound = 0;
   private memoryCards: MemoryCard[] = [];
+  private readonly memoryButtons = new Map<number, HTMLButtonElement>();
   private memoryOpen = new Set<number>();
   private memoryMatched = new Set<number>();
   private memoryBusy = false;
@@ -109,6 +110,7 @@ export class TalkApp {
     this.montageFound = 0;
     this.memoryOpen.clear();
     this.memoryMatched.clear();
+    this.memoryButtons.clear();
     this.memoryBusy = false;
     window.clearTimeout(this.memoryTimer);
     this.cheer.stop();
@@ -212,8 +214,7 @@ export class TalkApp {
   }
 
   private renderMemoryBoard(): void {
-    const matchedCount = this.targetPreview.querySelector("strong");
-    if (matchedCount) matchedCount.textContent = `${this.memoryMatched.size}/24`;
+    this.memoryButtons.clear();
     const fragment = document.createDocumentFragment();
     this.memoryCards.forEach((card, index) => {
       const button = document.createElement("button");
@@ -225,9 +226,6 @@ export class TalkApp {
         button.innerHTML = "<span class=memory-free>★</span>";
         button.disabled = true;
       } else {
-        const open = this.memoryOpen.has(card.id) || this.memoryMatched.has(card.pairId);
-        if (open) button.classList.add("is-open");
-        if (this.memoryMatched.has(card.pairId)) button.classList.add("is-matched");
         const back = document.createElement("span");
         back.className = "memory-back";
         back.textContent = "?";
@@ -235,19 +233,35 @@ export class TalkApp {
         image.src = card.src;
         image.alt = "";
         button.append(back, image);
-        button.disabled = this.memoryMatched.has(card.pairId);
         button.addEventListener("click", () => this.flipMemoryCard(card));
+        this.memoryButtons.set(card.id, button);
       }
       fragment.append(button);
     });
     this.board.replaceChildren(fragment);
+    this.updateMemoryBoard();
+  }
+
+  private updateMemoryBoard(): void {
+    const matchedCount = this.targetPreview.querySelector("strong");
+    if (matchedCount) matchedCount.textContent = `${this.memoryMatched.size}/24`;
+    this.memoryCards.forEach((card) => {
+      const button = this.memoryButtons.get(card.id);
+      if (!button) return;
+      const matched = this.memoryMatched.has(card.pairId);
+      const open = matched || this.memoryOpen.has(card.id);
+      button.classList.toggle("is-open", open);
+      button.classList.toggle("is-matched", matched);
+      button.disabled = open;
+      button.setAttribute("aria-label", matched ? "Matched picture card" : open ? "Face-up picture card" : "Face-down picture card");
+    });
   }
 
   private flipMemoryCard(card: MemoryCard): void {
     if (!this.active || this.paused || this.memoryBusy || this.memoryOpen.has(card.id) || this.memoryMatched.has(card.pairId)) return;
     this.memoryOpen.add(card.id);
     feedback.tap();
-    this.renderMemoryBoard();
+    this.updateMemoryBoard();
     if (this.memoryOpen.size < 2) return;
 
     const openCards = this.memoryCards.filter((entry) => this.memoryOpen.has(entry.id));
@@ -264,7 +278,7 @@ export class TalkApp {
       this.memoryOpen.clear();
       this.memoryBusy = false;
       this.updateProgress(this.memoryMatched.size, 24, `${this.memoryMatched.size} / 24 pairs`);
-      this.renderMemoryBoard();
+      this.updateMemoryBoard();
       if (this.memoryMatched.size === 24) this.finishMemory();
     }, matched ? MEMORY_REVEAL_DELAY_MS.match : MEMORY_REVEAL_DELAY_MS.mismatch);
   }
