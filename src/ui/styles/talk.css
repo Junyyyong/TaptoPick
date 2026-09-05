@@ -162,8 +162,30 @@
 }
 
 .pick-screen .hud { margin-inline: -2px; }
+.life-meter { display: flex; justify-content: center; gap: clamp(3px, 1vw, 7px); }
+.run-heading .life-heart { display: block; width: clamp(23px, 6vw, 30px); height: 30px; color: #e33f68; }
+.life-heart svg { width: 100%; height: 100%; fill: currentColor; }
+.life-heart.is-empty { color: #bbb8b6; }
+.heart-loss { animation: heart-loss 480ms ease-out; }
+.heart-gain { animation: heart-gain 650ms ease-out; }
+.pick-screen.is-hit { animation: screen-hit 340ms ease-out; }
+.damage-flash { position: fixed; inset: 0; z-index: 40; pointer-events: none; opacity: 0; background: radial-gradient(ellipse at center, transparent 35%, rgba(210,35,55,.25)); }
+.damage-flash.is-active { animation: damage-warning 550ms ease-out; }
+.montage-status { position: absolute; top: 0; margin: 0; width: 100%; text-align: center; font-weight: 900; font-size: 13px; color: var(--hot); letter-spacing: .05em; }
+.picture-board.is-shuffle-warning { outline: 3px solid #dda531; outline-offset: 3px; }
+.picture-board.is-shifting .picture-tile { animation: shuffle-settle 300ms ease-out; }
+@keyframes heart-loss { 20% { transform: scale(1.25) rotate(-12deg); color: #e33f68; } 55% { transform: rotate(10deg); } }
+@keyframes heart-gain { 35% { transform: scale(1.3); filter: drop-shadow(0 0 6px #f3b350); } }
+@keyframes screen-hit { 20% { transform: translateX(-3px); } 45% { transform: translateX(3px); } 70% { transform: translateX(-2px); } }
+@keyframes damage-warning { 15% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes shuffle-settle { from { transform: scale(.92); opacity: .65; } to { transform: scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .pick-screen.is-hit, .heart-loss, .heart-gain, .picture-board.is-shifting .picture-tile { animation: none; }
+  .damage-flash.is-active { animation-duration: 700ms; background: radial-gradient(ellipse at center, transparent 55%, rgba(210,35,55,.12)); }
+}
 
 .pick-target {
+  position: relative;
   display: grid;
   place-items: center;
   min-height: 280px;
@@ -227,6 +249,7 @@
 }
 
 .picture-board--4 { --board-columns: 4; gap: clamp(4px, 1.2vw, 7px); }
+.picture-board--2 { --board-columns: 2; gap: clamp(5px, 1.4vw, 8px); }
 .picture-board--3 { --board-columns: 3; gap: clamp(4px, 1.2vw, 7px); }
 .picture-board--5 { --board-columns: 5; gap: clamp(4px, 1.2vw, 7px); }
 .picture-board--6 { --board-columns: 6; }

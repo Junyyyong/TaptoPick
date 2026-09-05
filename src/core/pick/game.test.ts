@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createMemoryBoard, createMontageBoard, createMontageRound, createRandomIndexCycle, createUnitBoard, PICK_MISTAKE_LIMIT, pickChances, tieredTimeScore, timeScore, type SourcePiece } from "./game";
+import { createMemoryBoard, createMontageBoard, createRandomIndexCycle, createUnitBoard, PICK_MISTAKE_LIMIT, pickChances, tieredTimeScore, timeScore, type SourcePiece } from "./game";
 
 const pieces: SourcePiece[] = Array.from({ length: 75 }, (_, index) => ({ characterId: `c${Math.floor(index / 12)}`, pieceIndex: index, src: `${index}.jpg` }));
 
@@ -16,19 +16,6 @@ describe("TAP to PICK game rules", () => {
     expect(board.filter((tile) => tile.exact)).toHaveLength(1);
     expect(new Set(board.filter((tile) => !tile.exact).map((tile) => tile.variationIndex))).toEqual(new Set(Array.from({ length: 16 }, (_, index) => index)));
     expect(board.filter((tile) => !tile.exact)).toHaveLength(24);
-  });
-
-  it.each([[0, 3], [1, 4], [2, 5], [3, 5], [7, 5], [100, 5]])("uses the correct montage board after %i matches", (found, side) => {
-    const round = createMontageRound(20, found, () => 0.4);
-    expect(round.side).toBe(side);
-    expect(round.tiles).toHaveLength(side! * side!);
-    expect(round.tiles.filter((tile) => tile.exact)).toHaveLength(1);
-    expect(round.tiles.filter((tile) => !tile.exact).every((tile) => tile.variationIndex >= 0 && tile.variationIndex < 20)).toBe(true);
-  });
-
-  it("starts a new montage run at 3x3", () => {
-    createMontageRound(20, 10);
-    expect(createMontageRound(20, 0).tiles).toHaveLength(9);
   });
 
   it("allows four mistakes and ends on exactly the fifth, with a fresh run restoring five chances", () => {

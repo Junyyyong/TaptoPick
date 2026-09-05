@@ -24,11 +24,6 @@ export function pickChances(mistakes: number): { remaining: number; gameOver: bo
   return { remaining, gameOver: remaining === 0 };
 }
 
-export function createMontageRound(variationCount: number, found: number, random: Random = Math.random): { side: 3 | 4 | 5; tiles: MontageTile[] } {
-  const side = found === 0 ? 3 : found === 1 ? 4 : 5;
-  return { side, tiles: createMontageBoard(variationCount, side * side, random) };
-}
-
 export interface MemoryCard {
   id: number;
   pairId: number;

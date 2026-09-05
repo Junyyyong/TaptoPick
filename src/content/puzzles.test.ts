@@ -39,6 +39,10 @@ describe("Picture Pieces scoring content", () => {
       ["pino", "Pino Pan", 18],
     ]);
     MONTAGE_CHARACTERS.forEach((character) => {
+      expect(character.easyVariations.length).toBeGreaterThanOrEqual(3);
+      expect(character.hardVariations.length).toBeGreaterThanOrEqual(5);
+      expect(character.easyVariations.every((index) => !character.hardVariations.includes(index))).toBe(true);
+      expect([...character.easyVariations, ...character.hardVariations].every((index) => index >= 0 && index < character.variations.length)).toBe(true);
       expect(character.answer).toMatch(/answer.*\.webp/);
       expect(new Set(character.variations)).toHaveLength(character.variations.length);
       expect(character.variations).not.toContain(character.answer);

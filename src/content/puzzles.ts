@@ -13,6 +13,8 @@ export interface MontageCharacter {
   name: string;
   answer: string;
   variations: readonly string[];
+  easyVariations: readonly number[];
+  hardVariations: readonly number[];
 }
 
 const pieceModules = import.meta.glob<string>(
@@ -95,18 +97,34 @@ export const MEMORY_REVEAL_DELAY_MS = {
   mismatch: 450,
 } as const;
 
+// Filename numbers, visually reviewed: large color/orientation changes vs small facial details.
+const MONTAGE_DIFFICULTY: Record<string, { easy: number[]; hard: number[] }> = {
+  haepi: { easy: [18,19,20,21,22,23,26,27], hard: [8,9,10,11,12,13,14,15,24] },
+  bbogles: { easy: [2,3,4,14,15,16], hard: [5,6,7,9,12,13,17,18,20] },
+  tapee: { easy: [1,4,5,6,7,9,14,16,17,18,19,20], hard: [2,3,8,11,12,15] },
+  tepee: { easy: [1,2,3,10,14,15,16,17,20], hard: [4,5,8,9,13,19] },
+  hupi: { easy: [1,2,3,4,7,8,11,12,16], hard: [5,6,9,14,15,17,18] },
+  jaepi: { easy: [1,2,5,7,8,10,11,14,15], hard: [3,4,9,12,13,16] },
+  pino: { easy: [1,2,3,4,7,9,12,17,18], hard: [5,6,8,10,11,13,14,15,16] },
+};
+
 function montageCharacter(id: string, name: string, expectedVariations: number): MontageCharacter {
   const basePath = `/optimized/montage/${id}`;
   const answer = montageModules[`${basePath}/answer.webp`];
-  const variations = Object.entries(montageModules)
+  const entries = Object.entries(montageModules)
     .filter(([path]) => path.startsWith(`${basePath}/variation-`))
-    .sort(([a], [b]) => natural.compare(a, b))
-    .map(([, url]) => url);
+    .sort(([a], [b]) => natural.compare(a, b));
+  const variations = entries.map(([, url]) => url);
+  const indicesFor = (numbers: number[]) => numbers.map((number) => {
+    const index = entries.findIndex(([path]) => Number(path.match(/variation-(\d+)\.webp$/)?.[1]) === number);
+    if (index < 0) throw new Error(`Missing difficulty variation ${id}/${number}`);
+    return index;
+  });
 
   if (!answer || variations.length !== expectedVariations) {
     throw new Error(`Montage Hunt requires one ${name} answer and ${expectedVariations} variations`);
   }
-  return { id, name, answer, variations };
+  return { id, name, answer, variations, easyVariations: indicesFor(MONTAGE_DIFFICULTY[id]!.easy), hardVariations: indicesFor(MONTAGE_DIFFICULTY[id]!.hard) };
 }
 
 export const MONTAGE_CHARACTERS: readonly MontageCharacter[] = [

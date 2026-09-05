@@ -21,7 +21,7 @@
         </header>
         <nav class="mode-list" aria-label="Game modes">
           <button class="mode-btn" id="mode-unit"><span class="mode-name">Picture Pieces</span><span class="mode-desc">Find every piece on a 7×7 board with 5 chances.</span></button>
-          <button class="mode-btn" id="mode-montage"><span class="mode-name">Montage Hunt</span><span class="mode-desc">Find exact matches with 5 chances, from 3×3 to 5×5.</span></button>
+          <button class="mode-btn" id="mode-montage"><span class="mode-name">Montage Hunt</span><span class="mode-desc">Clear 4 stages with 5 hearts, from 2×2 to 5×5.</span></button>
           <button class="mode-btn" id="mode-memory"><span class="mode-name">Pair Memory</span><span class="mode-desc">Match the faces through 4 stages, from 4×4 to 7×7.</span></button>
         </nav>
         <div class="title-links">
@@ -34,14 +34,15 @@
       <section class="screen talk-screen pick-screen hidden" id="screen-game">
         <header class="hud">
           <button class="icon-btn" id="btn-back" aria-label="Back to menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
-          <div class="run-heading"><span id="run-mode">Picture Pieces</span><strong id="run-clock">00:00.0</strong></div>
+          <div class="run-heading"><span id="run-mode">Picture Pieces</span><strong id="run-clock">00:00.0</strong><div id="run-lives" class="life-meter hidden" role="img" aria-label="5 of 5 lives remaining" aria-live="polite"></div></div>
           <button class="icon-btn pause-btn" id="btn-pause" aria-label="Pause"><span aria-hidden="true"></span></button>
         </header>
-        <section class="pick-target" aria-live="polite"><p class="target-character-name hidden" id="target-character-name"></p><div class="target-preview" id="target-preview"></div></section>
+        <section class="pick-target" aria-live="polite"><p id="montage-status" class="montage-status hidden"></p><p class="target-character-name hidden" id="target-character-name"></p><div class="target-preview" id="target-preview"></div></section>
         <div class="pick-progress"><span id="progress-label">0 / 0</span><div class="progress-track"><i id="progress-fill"></i></div></div>
         <div class="picture-board picture-board--7" id="picture-board" aria-label="Picture puzzle board"></div>
       </section>
 
+      <div id="damage-flash" class="damage-flash" aria-hidden="true"></div>
       <div class="cheer hidden" id="cheer" aria-hidden="true">
         <div class="cheer-card" id="cheer-card"><p class="cheer-headline" id="cheer-headline">COMPLETE</p><p class="cheer-score-label" id="cheer-score-label">SCORE</p><p class="cheer-score" id="cheer-score">0</p></div>
         <div class="cheer-word" id="cheer-word">GREAT!</div>

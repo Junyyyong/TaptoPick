@@ -1,6 +1,7 @@
 import { APP_CONFIG } from "../config/app";
 import { ALL_PIECES, MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PUZZLE_CHARACTERS, type MontageCharacter, type PuzzleCharacter } from "../content/puzzles";
-import { createMontageRound, createRandomIndexCycle, createUnitBoard, PICK_MISTAKE_LIMIT, pickChances, tieredTimeScore, timeScore, type MemoryCard } from "../core/pick/game";
+import { createRandomIndexCycle, createUnitBoard, PICK_MISTAKE_LIMIT, tieredTimeScore, timeScore, type MemoryCard, type MontageTile } from "../core/pick/game";
+import { MontageProgress, PickLives, createStagedMontageBoard, montageMotion, reshuffleMontage } from "../core/pick/montage";
 import { MEMORY_STAGES, MemoryRun } from "../core/pick/memory";
 import { el } from "./dom";
 import { feedback } from "./feedback";
@@ -27,6 +28,9 @@ export class TalkApp {
   private readonly game = el("screen-game");
   private readonly board = el("picture-board");
   private readonly clock = el("run-clock");
+  private readonly hearts = el("run-lives");
+  private readonly damageFlash = el("damage-flash");
+  private readonly montageStatus = el("montage-status");
   private readonly runMode = el("run-mode");
   private readonly targetPreview = el("target-preview");
   private readonly targetCharacterName = el("target-character-name");
@@ -52,13 +56,25 @@ export class TalkApp {
   private montageCharacterIndex = -1;
   private montageCharacterCycle: number[] = [];
   private unitFound = new Set<number>();
-  private montageFound = 0;
+  private lives = new PickLives();
+  private montage = new MontageProgress();
+  private montageTiles: MontageTile[] = [];
+  private readonly montageButtons = new Map<number, HTMLButtonElement>();
+  private montageRoundAt = 0;
+  private montageRevision = 0;
+  private montageMotionPhase = "ready";
+  private montagePointerVersion = 0;
+  private montageNoticeUntil = 0;
   private montageNextAt?: number;
   private memoryRun?: MemoryRun;
   private memoryUpdatedAt = 0;
   private readonly memoryButtons = new Map<number, HTMLButtonElement>();
 
   constructor() {
+    this.damageFlash.addEventListener("animationend", () => {
+      this.damageFlash.classList.remove("is-active");
+      this.game.classList.remove("is-hit");
+    });
     el("mode-unit").addEventListener("click", () => this.startMode("unit"));
     el("mode-montage").addEventListener("click", () => this.startMode("montage"));
     el("mode-memory").addEventListener("click", () => this.startMode("memory"));
@@ -88,6 +104,8 @@ export class TalkApp {
     this.active = false;
     this.paused = false;
     this.stopClock();
+    this.game.classList.remove("is-hit");
+    this.damageFlash.classList.remove("is-active");
     this.cheer.stop();
     this.help.classList.add("hidden");
     this.result.classList.add("hidden");
@@ -104,7 +122,9 @@ export class TalkApp {
     this.elapsedMs = 0;
     this.mistakes = 0;
     this.unitFound.clear();
-    this.montageFound = 0;
+    this.lives = new PickLives();
+    this.montage = new MontageProgress();
+    this.montageNoticeUntil = 0;
     this.montageNextAt = undefined;
     this.memoryRun = undefined;
     this.memoryButtons.clear();
@@ -114,6 +134,12 @@ export class TalkApp {
     this.title.classList.add("hidden");
     this.splash.classList.add("hidden");
     this.game.classList.remove("hidden", "is-input-locked");
+    this.game.classList.remove("is-hit");
+    this.damageFlash.classList.remove("is-active");
+    this.board.classList.remove("is-shuffle-warning", "is-shifting");
+    this.clock.classList.toggle("hidden", mode !== "memory");
+    this.hearts.classList.toggle("hidden", mode === "memory");
+    this.montageStatus.classList.toggle("hidden", mode !== "montage");
     this.game.classList.toggle("is-memory-mode", mode === "memory");
     this.game.classList.toggle("is-unit-mode", mode === "unit");
     this.targetCharacterName.classList.toggle("hidden", mode !== "unit");
@@ -165,37 +191,90 @@ export class TalkApp {
 
   private renderNextMontage(): void {
     this.montageNextAt = undefined;
+    this.montageRoundAt = this.elapsedMs;
+    this.montageRevision = 0;
+    this.montageMotionPhase = "ready";
+    this.montagePointerVersion += 1;
+    this.board.classList.remove("is-shuffle-warning", "is-shifting");
     if (!this.montageCharacterCycle.length) {
       this.montageCharacterCycle = createRandomIndexCycle(MONTAGE_CHARACTERS.length, this.montageCharacterIndex);
     }
     this.montageCharacterIndex = this.montageCharacterCycle.shift()!;
     this.montageCharacter = MONTAGE_CHARACTERS[this.montageCharacterIndex]!;
-    const round = createMontageRound(this.montageCharacter.variations.length, this.montageFound);
-    this.setBoardSize(round.side, true);
+    const stage = this.montage.stage;
+    const pool = stage.difficulty === "easy" ? this.montageCharacter.easyVariations
+      : stage.difficulty === "hard" ? this.montageCharacter.hardVariations
+      : this.montageCharacter.variations.map((_, index) => index);
+    this.montageTiles = createStagedMontageBoard(stage.side, pool);
+    this.setBoardSize(stage.side, true);
     this.renderImagePreview(this.montageCharacter.answer, `${this.montageCharacter.name} exact montage`);
-    this.updateProgress(this.montageFound, Math.max(1, this.montageFound + 1), `${this.montageFound} found`);
+    this.updateMontageProgress();
+    this.updateMontageStatus();
 
     const fragment = document.createDocumentFragment();
-    round.tiles.forEach((tile) => {
+    this.montageButtons.clear();
+    this.montageTiles.forEach((tile) => {
       const src = tile.exact ? this.montageCharacter.answer : this.montageCharacter.variations[tile.variationIndex]!;
       const button = this.montageButton(src, this.montageCharacter.name);
-      button.addEventListener("click", () => {
-        if (!this.active || this.paused || this.montageNextAt !== undefined) return;
+      this.montageButtons.set(tile.id, button);
+      let pressedVersion = -1;
+      button.addEventListener("pointerdown", () => { pressedVersion = this.montagePointerVersion; });
+      button.addEventListener("click", (event) => {
+        if (!this.active || this.paused || this.montageNextAt !== undefined || this.montageMotionPhase !== "ready") return;
+        if (event.detail !== 0 && pressedVersion !== this.montagePointerVersion) return;
         this.elapsedMs = performance.now() - this.startedAt;
         if (!tile.exact) {
           this.flashWrong(button);
           this.wrongPick();
           return;
         }
-        this.montageFound += 1;
+        const result = this.montage.correct(this.lives);
+        if (result.bonus) {
+          this.updateChances("gain");
+          this.montageNoticeUntil = this.elapsedMs + 2000;
+          this.montageStatus.textContent = "+1 HEART!";
+        }
         this.montageNextAt = this.elapsedMs + 180;
         feedback.clear(1);
         button.classList.add("is-found");
-        this.progressLabel.textContent = `${this.montageFound} found`;
+        this.progressLabel.textContent = `${this.montage.found} found`;
       });
       fragment.append(button);
     });
     this.board.replaceChildren(fragment);
+  }
+
+  private updateMontageProgress(): void {
+    this.updateProgress(this.montage.stageFound, this.montage.stage.goal, `${this.montage.stageFound}/${this.montage.stage.goal} · ${this.montage.found} found`);
+  }
+
+  private updateMontageStatus(): void {
+    this.montageStatus.textContent = this.elapsedMs < this.montageNoticeUntil ? "+1 HEART!"
+      : this.montageMotionPhase === "warning" ? "GET READY — SHUFFLING!"
+      : this.montageMotionPhase === "moving" ? "SHUFFLING…"
+      : `STAGE ${this.montage.stageIndex + 1}/4 · ${this.montage.stage.side}×${this.montage.stage.side}`;
+  }
+
+  private updateMontageMotion(): void {
+    if (this.montageNextAt !== undefined) return;
+    if (this.montageNoticeUntil && this.elapsedMs >= this.montageNoticeUntil) {
+      this.montageNoticeUntil = 0;
+      this.updateMontageStatus();
+    }
+    if (this.montage.stage.side !== 5) return;
+    const motion = montageMotion(this.elapsedMs - this.montageRoundAt);
+    if (motion.revision !== this.montageRevision) {
+      this.montageRevision = motion.revision;
+      this.montagePointerVersion += 1;
+      this.montageTiles = reshuffleMontage(this.montageTiles);
+      this.board.append(...this.montageTiles.map((tile) => this.montageButtons.get(tile.id)!));
+    }
+    if (motion.phase === this.montageMotionPhase) return;
+    this.montageMotionPhase = motion.phase;
+    this.board.classList.toggle("is-shuffle-warning", motion.phase === "warning");
+    this.board.classList.toggle("is-shifting", motion.phase === "moving");
+    this.montageButtons.forEach((button) => { button.disabled = motion.phase !== "ready"; });
+    this.updateMontageStatus();
   }
 
   private startMemoryRound(): void {
@@ -351,7 +430,8 @@ export class TalkApp {
     this.targetPreview.replaceChildren(image);
   }
 
-  private setBoardSize(size: 3 | 4 | 5 | 6 | 7 | 9, montage = false): void {
+  private setBoardSize(size: 2 | 3 | 4 | 5 | 6 | 7 | 9, montage = false): void {
+    this.board.classList.toggle("picture-board--2", size === 2);
     this.board.classList.toggle("picture-board--3", size === 3);
     this.board.classList.toggle("picture-board--4", size === 4);
     this.board.classList.toggle("picture-board--5", size === 5);
@@ -384,8 +464,14 @@ export class TalkApp {
         return;
       }
       this.elapsedMs = performance.now() - this.startedAt;
-      if (this.mode === "montage" && this.montageNextAt !== undefined && this.elapsedMs >= this.montageNextAt) this.renderNextMontage();
-      this.frame = requestAnimationFrame(tick);
+      if (this.mode === "montage") {
+        if (this.montageNextAt !== undefined && this.elapsedMs >= this.montageNextAt) {
+          if (this.montage.complete) this.finishGame("ALL STAGES CLEAR", `You cleared all 4 stages and found ${this.montage.found} matches!`, this.montage.found, this.montageCharacter.id, "found");
+          else this.renderNextMontage();
+        }
+        if (this.active) this.updateMontageMotion();
+      }
+      if (this.active) this.frame = requestAnimationFrame(tick);
     };
     this.frame = requestAnimationFrame(tick);
   }
@@ -401,18 +487,28 @@ export class TalkApp {
     this.finishGame("PUZZLE COMPLETE", `You found every ${this.targetCharacter.name} piece.\n${formatTime(this.elapsedMs)} · ${this.mistakes} wrong picks · ${score.toLocaleString()} points`, score, this.targetCharacter.id);
   }
 
-  private updateChances(): void {
-    this.clock.textContent = `CHANCES ${pickChances(this.mistakes).remaining}/${PICK_MISTAKE_LIMIT}`;
+  private updateChances(effect?: "loss" | "gain"): void {
+    this.hearts.setAttribute("aria-label", `${this.lives.remaining} of ${PICK_MISTAKE_LIMIT} lives remaining`);
+    this.hearts.innerHTML = Array.from({ length: PICK_MISTAKE_LIMIT }, (_, index) => {
+      const changed = effect === "loss" ? index === this.lives.remaining : effect === "gain" && index === this.lives.remaining - 1;
+      return `<span class="life-heart${index >= this.lives.remaining ? " is-empty" : ""}${changed ? ` heart-${effect}` : ""}" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21S2 14.5 2 7.8C2 2 9 1 12 6c3-5 10-4 10 1.8C22 14.5 12 21 12 21Z"/></svg></span>`;
+    }).join("");
   }
 
   private wrongPick(): void {
     this.mistakes += 1;
+    this.lives.lose();
     feedback.reject();
-    this.updateChances();
-    if (!pickChances(this.mistakes).gameOver) return;
+    this.updateChances("loss");
+    // One soft warning per hit; repeated rapid hits do not restart the screen flash.
+    if (!this.damageFlash.classList.contains("is-active")) {
+      this.game.classList.add("is-hit");
+      this.damageFlash.classList.add("is-active");
+    }
+    if (this.lives.remaining > 0) return;
     this.montageNextAt = undefined;
     if (this.mode === "montage") {
-      this.finishGame("GAME OVER", `You found ${this.montageFound} exact matches.\nAll ${PICK_MISTAKE_LIMIT} chances used.`, this.montageFound, "tepee", "found");
+      this.finishGame("GAME OVER", `You found ${this.montage.found} exact matches.\nNo hearts remaining.`, this.montage.found, "tepee", "found");
     } else {
       this.finishGame("GAME OVER", `You found ${this.unitFound.size} of ${this.targetCharacter.pieces.length} ${this.targetCharacter.name} pieces.\nAll ${PICK_MISTAKE_LIMIT} chances used.`, 0, "tepee");
     }
@@ -475,11 +571,11 @@ export class TalkApp {
   }
 
   private showHowToPlay(): void {
-    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Find every piece that belongs to the character on the 7×7 board. You have 5 chances and no time limit. The fifth wrong pick ends the game.</span></p><p><b>2. Montage Hunt</b><span>Find the one image that exactly matches the character above. Start with 3×3, move to 4×4 after one match, then stay at 5×5 after two matches. You have 5 chances for the whole run and no time limit. Correct picks do not restore chances. The fifth wrong pick ends the game.</span></p><p><b>3. Pair Memory</b><span>Clear all four stages: 4×4 (1 min), 5×5 (1 min), 6×6 (1 min 30 sec), and 7×7 (2 min). Each stage starts with a fresh timer after a 3-second face preview. Any two identical faces match. Gray center stars are free spaces. Time up ends the run.</span></p></div>`);
+    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Find every piece that belongs to the character on the 7×7 board. Start with 5 hearts and no time limit. Each wrong pick turns one heart gray. No hearts left means Game Over.</span></p><p><b>2. Montage Hunt</b><span>Clear 3 matches on 2×2, then 5 each on 3×3, 4×4 and 5×5 to win. Finish 3×3 to restore one heart, up to 5. Small facial differences make 4×4 harder. On 5×5, a warning appears before the tiles shuffle; wait until they settle to pick. No time limit. No hearts left means Game Over.</span></p><p><b>3. Pair Memory</b><span>Clear all four stages: 4×4 (1 min), 5×5 (1 min), 6×6 (1 min 30 sec), and 7×7 (2 min). Each stage starts with a fresh timer after a 3-second face preview. Any two identical faces match. Gray center stars are free spaces. Time up ends the run.</span></p></div>`);
   }
 
   private showRules(): void {
-    this.openHelp("Scoring rules", `<div class="rules-list"><p><b>Picture Pieces</b><span>Up to 10 sec: 1,500 · 20 sec: 1,200 · 30 sec: 900 · 45 sec: 600 · longer: 300 points. No time limit. Game Over after 5 wrong picks: 0 points.</span></p><p><b>Pair Memory</b><span>Finish faster and avoid missed pairs for a higher score.</span></p><p><b>Montage Hunt</b><span>Your result is the number of exact matches found before your fifth wrong pick. No time limit.</span></p></div>`);
+    this.openHelp("Scoring rules", `<div class="rules-list"><p><b>Picture Pieces</b><span>Up to 10 sec: 1,500 · 20 sec: 1,200 · 30 sec: 900 · 45 sec: 600 · longer: 300 points. No time limit. Game Over after 5 wrong picks: 0 points.</span></p><p><b>Pair Memory</b><span>Finish faster and avoid missed pairs for a higher score.</span></p><p><b>Montage Hunt</b><span>Your result is the number of exact matches found. Clear all 18 to win. Completing 3×3 restores one heart, up to 5; an unused bonus is not saved. No time limit.</span></p></div>`);
   }
 
   private showSettings(): void {
