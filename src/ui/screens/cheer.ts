@@ -47,6 +47,13 @@ export function randomClipFor(score: number, random: () => number = Math.random)
   return pool.length ? pool[Math.floor(random() * pool.length)]! : null;
 }
 
+export function characterClipFor(characterId: string, score: number): Clip | null {
+  const clips = APP_CONFIG.assets.characterCelebrations as Record<string, Omit<Clip, "layout">>;
+  const clip = clips[characterId];
+  const layout = poolFor(score).at(0)?.layout ?? "compact";
+  return clip ? { ...clip, layout } : null;
+}
+
 export function failureClip(): Clip {
   return APP_CONFIG.assets.failureCelebration;
 }
@@ -158,6 +165,10 @@ export class Cheer {
    */
   play(headline: string, score: number, text: string, then: () => void, tierScore = score): void {
     this.begin(headline, score, text, then, randomClipFor(tierScore));
+  }
+
+  playForCharacter(headline: string, score: number, text: string, characterId: string, then: () => void): void {
+    this.begin(headline, score, text, then, characterClipFor(characterId, score) ?? randomClipFor(score));
   }
 
   playFailure(headline: string, text: string, then: () => void): void {

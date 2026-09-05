@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { failureClip, poolFor, randomClipFor } from "./cheer";
+import { characterClipFor, failureClip, poolFor, randomClipFor } from "./cheer";
 
 describe("score-based celebration clips", () => {
   it("offers all six celebration clips at every score band", () => {
@@ -24,11 +24,34 @@ describe("score-based celebration clips", () => {
     expect(new Set(picks)).toEqual(new Set(pool.map((clip) => clip.video)));
   });
 
-  it("reserves Tipi for failed runs", () => {
+  it("keeps Tipi out of the random celebration pool", () => {
     expect(failureClip().video).toMatch(/movie\/tipi\.webm$/);
     expect(failureClip().iosVideo).toMatch(/movie\/tipi\.mp4$/);
     expect(failureClip().sound).toMatch(/movie\/tipi\.mp3$/);
     expect(poolFor(1000).every((clip) => !clip.video.includes("tipi"))).toBe(true);
     expect(poolFor(1000).some((clip) => /movie\/1\.webm$/.test(clip.video))).toBe(true);
+  });
+
+  it.each([
+    ["bb", "1"],
+    ["bbogles", "1"],
+    ["pino", "4"],
+    ["tapee", "taepi"],
+    ["hoo", "hupi"],
+    ["ha", "haepi"],
+    ["haepi", "haepi"],
+    ["ja", "jaepi"],
+    ["jaepi", "jaepi"],
+    ["tepee", "tipi"],
+  ])("maps %s to its own character clip", (characterId, movie) => {
+    const clip = characterClipFor(characterId, 1000);
+    expect(clip?.video).toMatch(new RegExp(`/movie/${movie}\\.webm$`));
+    expect(clip?.iosVideo).toMatch(new RegExp(`/movie/${movie}\\.mp4$`));
+    expect(clip?.sound).toMatch(new RegExp(`/movie/${movie}\\.mp3$`));
+    expect(clip?.layout).toBe("hero");
+  });
+
+  it("falls back cleanly for an unknown character", () => {
+    expect(characterClipFor("unknown", 1000)).toBeNull();
   });
 });

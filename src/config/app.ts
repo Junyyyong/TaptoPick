@@ -31,11 +31,28 @@ const CELEBRATION_MOVIES = [
   },
 ] as const;
 
-const FAILURE_MOVIE = {
+const TIPI_MOVIE = {
   video: new URL("../../movie/tipi.webm", import.meta.url).href,
   iosVideo: new URL("../../movie/tipi.mp4", import.meta.url).href,
   sound: new URL("../../movie/tipi.mp3", import.meta.url).href,
+} as const;
+
+const FAILURE_MOVIE = {
+  ...TIPI_MOVIE,
   layout: "compact",
+} as const;
+
+const CHARACTER_CELEBRATIONS = {
+  bb: CELEBRATION_MOVIES[0],
+  bbogles: CELEBRATION_MOVIES[0],
+  pino: CELEBRATION_MOVIES[1],
+  tapee: CELEBRATION_MOVIES[2],
+  hoo: CELEBRATION_MOVIES[3],
+  ha: CELEBRATION_MOVIES[4],
+  haepi: CELEBRATION_MOVIES[4],
+  ja: CELEBRATION_MOVIES[5],
+  jaepi: CELEBRATION_MOVIES[5],
+  tepee: TIPI_MOVIE,
 } as const;
 
 /**
@@ -53,6 +70,7 @@ export const APP_CONFIG = {
     celebrationVideo: CELEBRATION_MOVIES[0]!.video,
     celebrationAudio: CELEBRATION_MOVIES[0]!.sound,
     failureCelebration: FAILURE_MOVIE,
+    characterCelebrations: CHARACTER_CELEBRATIONS,
     celebrations: [
       { at: 1400, layout: "hero", clips: CELEBRATION_MOVIES },
       { at: 1000, layout: "hero", clips: CELEBRATION_MOVIES },

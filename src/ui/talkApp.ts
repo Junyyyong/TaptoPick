@@ -374,16 +374,16 @@ export class TalkApp {
       return;
     }
     const score = tieredTimeScore(this.elapsedMs, PICTURE_PIECES_SCORE_BANDS);
-    this.finishGame("PUZZLE COMPLETE", `You found every ${this.targetCharacter.name} piece.\n${formatTime(this.elapsedMs)} · ${this.mistakes} wrong picks · ${score.toLocaleString()} points`, score);
+    this.finishGame("PUZZLE COMPLETE", `You found every ${this.targetCharacter.name} piece.\n${formatTime(this.elapsedMs)} · ${this.mistakes} wrong picks · ${score.toLocaleString()} points`, score, this.targetCharacter.id);
   }
 
   private finishUnitTimeout(): void {
-    this.finishGame("TIME UP", `You found ${this.unitFound.size} of ${this.targetCharacter.pieces.length} ${this.targetCharacter.name} pieces.\n60 seconds · 0 points`, 0);
+    this.finishGame("TIME UP", `You found ${this.unitFound.size} of ${this.targetCharacter.pieces.length} ${this.targetCharacter.name} pieces.\n60 seconds · 0 points`, 0, this.targetCharacter.id);
   }
 
   private finishMontage(): void {
     const score = montageScore(this.montageFound, this.mistakes);
-    this.finishGame("TIME UP", `You found ${this.montageFound} exact matches in 60 seconds.\n${this.mistakes} wrong picks · ${score.toLocaleString()} points`, score);
+    this.finishGame("TIME UP", `You found ${this.montageFound} exact matches in 60 seconds.\n${this.mistakes} wrong picks · ${score.toLocaleString()} points`, score, this.montageCharacter.id);
   }
 
   private finishMemory(): void {
@@ -391,18 +391,23 @@ export class TalkApp {
     this.finishGame("ALL PAIRS FOUND", `You matched all 24 pairs.\n${formatTime(this.elapsedMs)} · ${this.mistakes} misses · ${score.toLocaleString()} points`, score);
   }
 
-  private finishGame(headline: string, detail: string, score: number): void {
+  private finishGame(headline: string, detail: string, score: number, celebrationCharacterId?: string): void {
     if (!this.active) return;
     this.active = false;
     this.stopClock();
     window.clearTimeout(this.memoryTimer);
     this.game.classList.add("is-input-locked");
     feedback.complete();
-    this.cheer.play(headline, score, "NICE PICK!", () => {
+    const showResult = (): void => {
       this.resultTitle.textContent = headline;
       this.resultDetail.textContent = detail;
       this.result.classList.remove("hidden");
-    }, score);
+    };
+    if (celebrationCharacterId) {
+      this.cheer.playForCharacter(headline, score, "NICE PICK!", celebrationCharacterId, showResult);
+    } else {
+      this.cheer.play(headline, score, "NICE PICK!", showResult, score);
+    }
   }
 
   private pauseGame(): void {
