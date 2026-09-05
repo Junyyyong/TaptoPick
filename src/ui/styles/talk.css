@@ -163,6 +163,7 @@
 
 .pick-screen .hud { margin-inline: -2px; }
 .life-meter { display: flex; justify-content: center; gap: clamp(3px, 1vw, 7px); }
+.life-meter.hidden, .is-memory-mode .life-meter { display: none; }
 .run-heading .life-heart { display: block; width: clamp(23px, 6vw, 30px); height: 30px; color: #e33f68; }
 .life-heart svg { width: 100%; height: 100%; fill: currentColor; }
 .life-heart.is-empty { color: #bbb8b6; }

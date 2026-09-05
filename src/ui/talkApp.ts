@@ -140,6 +140,7 @@ export class TalkApp {
     this.damageFlash.classList.remove("is-active");
     this.clock.classList.toggle("hidden", mode !== "memory");
     this.hearts.classList.toggle("hidden", mode === "memory");
+    if (mode === "memory") this.hearts.replaceChildren();
     this.montageStatus.classList.toggle("hidden", mode !== "montage");
     this.game.classList.toggle("is-memory-mode", mode === "memory");
     this.game.classList.toggle("is-unit-mode", mode === "unit");
