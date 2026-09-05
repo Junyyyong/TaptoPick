@@ -17,7 +17,7 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 - JPG 파일은 정사각형 조각이어야 합니다.
 - 파일 추가·교체 뒤에는 `npm run build`로 Vite가 모든 이미지를 포함하는지 확인합니다.
 - 캐릭터 폴더를 추가하면 `src/content/puzzles.ts`의 glob 패턴과 캐릭터 목록을 함께 수정합니다.
-- 게임 2는 `해피-얼굴`의 정답과 바리에이션만 사용합니다. 런타임에는 `optimized/montage/haepi/answer.webp`와 `variation-*.webp`를 불러옵니다.
+- 게임 2는 `해피-얼굴`과 `뽀글스-얼굴`의 정답·바리에이션을 사용합니다. 런타임에는 `optimized/montage/haepi/`와 `optimized/montage/bbogles/` 아래의 `answer.webp`, `variation-*.webp`를 불러옵니다.
 
 ## 의존 방향
 
