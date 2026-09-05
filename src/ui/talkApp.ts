@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "../config/app";
 import { ALL_PIECES, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS, PUZZLE_CHARACTERS, type MontageCharacter, type PuzzleCharacter } from "../content/puzzles";
-import { createMemoryBoard, createMontageBoard, createRandomIndexCycle, createUnitBoard, montageScore, tieredTimeScore, timeScore, type MemoryCard } from "../core/pick/game";
+import { createMemoryBoard, createMontageBoard, createRandomIndexCycle, createUnitBoard, tieredTimeScore, timeScore, type MemoryCard } from "../core/pick/game";
 import { el } from "./dom";
 import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
@@ -387,8 +387,7 @@ export class TalkApp {
   }
 
   private finishMontage(): void {
-    const score = montageScore(this.montageFound, this.mistakes);
-    this.finishGame("TIME UP", `You found ${this.montageFound} exact matches in 60 seconds.\n${this.mistakes} wrong picks · ${score.toLocaleString()} points`, score, this.montageCharacter.id);
+    this.finishGame("TIME UP", `You found ${this.montageFound} exact matches in 60 seconds.\n${this.mistakes} wrong picks`, this.montageFound, this.montageCharacter.id, "found");
   }
 
   private finishMemory(): void {
@@ -396,7 +395,7 @@ export class TalkApp {
     this.finishGame("ALL PAIRS FOUND", `You matched all 24 pairs.\n${formatTime(this.elapsedMs)} · ${this.mistakes} misses · ${score.toLocaleString()} points`, score);
   }
 
-  private finishGame(headline: string, detail: string, score: number, celebrationCharacterId?: string): void {
+  private finishGame(headline: string, detail: string, score: number, celebrationCharacterId?: string, metric: "score" | "found" = "score"): void {
     if (!this.active) return;
     this.active = false;
     this.stopClock();
@@ -408,7 +407,9 @@ export class TalkApp {
       this.resultDetail.textContent = detail;
       this.result.classList.remove("hidden");
     };
-    if (celebrationCharacterId) {
+    if (celebrationCharacterId && metric === "found") {
+      this.cheer.playFoundForCharacter(headline, score, "NICE PICK!", celebrationCharacterId, showResult);
+    } else if (celebrationCharacterId) {
       this.cheer.playForCharacter(headline, score, "NICE PICK!", celebrationCharacterId, showResult);
     } else {
       this.cheer.play(headline, score, "NICE PICK!", showResult, score);

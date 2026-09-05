@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createMemoryBoard, createMontageBoard, createRandomIndexCycle, createUnitBoard, montageScore, tieredTimeScore, timeScore, type SourcePiece } from "./game";
+import { createMemoryBoard, createMontageBoard, createRandomIndexCycle, createUnitBoard, tieredTimeScore, timeScore, type SourcePiece } from "./game";
 
 const pieces: SourcePiece[] = Array.from({ length: 75 }, (_, index) => ({ characterId: `c${Math.floor(index / 12)}`, pieceIndex: index, src: `${index}.jpg` }));
 
@@ -60,10 +60,5 @@ describe("TAP to PICK game rules", () => {
     expect(tieredTimeScore(45_001, bands)).toBe(300);
     expect(tieredTimeScore(60_000, bands)).toBe(300);
     expect(tieredTimeScore(60_001, bands)).toBe(0);
-  });
-
-  it("scores montage finds and deducts wrong picks", () => {
-    expect(montageScore(5, 2)).toBe(2450);
-    expect(montageScore(0, 4)).toBe(0);
   });
 });

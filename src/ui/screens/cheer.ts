@@ -114,6 +114,7 @@ export class Cheer {
   private readonly clip = el<HTMLVideoElement>("cheer-clip");
   private readonly card = el<HTMLDivElement>("cheer-card");
   private readonly headline = el<HTMLParagraphElement>("cheer-headline");
+  private readonly scoreLabel = el<HTMLParagraphElement>("cheer-score-label");
   private readonly scoreEl = el<HTMLParagraphElement>("cheer-score");
   private readonly sound = el<HTMLAudioElement>("cheer-sound");
   private timer: number | undefined;
@@ -171,13 +172,19 @@ export class Cheer {
     this.begin(headline, score, text, then, characterClipFor(characterId, score) ?? randomClipFor(score));
   }
 
+  playFoundForCharacter(headline: string, found: number, text: string, characterId: string, then: () => void): void {
+    const tierScore = 1000;
+    this.begin(headline, found, text, then, characterClipFor(characterId, tierScore) ?? randomClipFor(tierScore), "FOUND");
+  }
+
   playFailure(headline: string, text: string, then: () => void): void {
     this.begin(headline, 0, text, then, failureClip());
   }
 
-  private begin(headline: string, score: number, text: string, then: () => void, pick: Clip | null): void {
+  private begin(headline: string, score: number, text: string, then: () => void, pick: Clip | null, scoreLabel = "SCORE"): void {
     this.word.textContent = text;
     this.headline.textContent = headline;
+    this.scoreLabel.textContent = scoreLabel;
     this.scoreEl.textContent = score.toLocaleString();
     this.done = then;
 
