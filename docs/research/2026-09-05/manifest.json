@@ -1,0 +1,4023 @@
+{
+  "captureDate": "2026-09-05T12:44:06.361Z",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "deviceScaleFactor": 2,
+  "pixelSize": {
+    "width": 780,
+    "height": 1688
+  },
+  "browser": "Chromium via Playwright",
+  "seed": 20260905,
+  "method": "Actual Git snapshots, headless mobile emulation. Seeded Math.random; browser timer clock controlled for repeatable animation frames. Not historical device photographs or user study measurements.",
+  "captures": [
+    {
+      "id": "01-reference-menu",
+      "revision": "edb6abd",
+      "commit": "edb6abdabbf6a271f77038e629d4f42c57d37ef4",
+      "commitDate": "2026-09-04T10:46:29+09:00",
+      "scenario": "menu",
+      "file": "screenshots/01-reference-menu.png",
+      "sha256": "2d5c7f297a99d78a7e3f361a5ceca2932b67cea7b9a5c93f3fd1e4e368a6a60d",
+      "ui": {
+        "title": "TAP to TALK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 0,
+        "clock": "00:00.0",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "firstTile": null,
+        "images": [
+          {
+            "src": "http://127.0.0.1:5188/TAPtoTALK-logo2.svg",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "02-initial-unit",
+      "revision": "432d9db",
+      "commit": "432d9db915e5a6067344e29ba3c77e70fd6c745a",
+      "commitDate": "2026-09-04T11:30:18+09:00",
+      "scenario": "unit",
+      "file": "screenshots/02-initial-unit.png",
+      "sha256": "c26723ee1b0d59f50dad314fc7920ba6093974e40688497f10b2272a0c90c223",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 49,
+        "clock": "00:00.2",
+        "progress": "0 / 12 조각",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "target": "/Bb/Bb.png",
+        "firstTile": {
+          "width": 50,
+          "height": 50
+        },
+        "images": [
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Tepee/Tepee9.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tepee/Tepee8.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta11.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ja/Jap6.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tepee/Tepee6.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta12.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop5.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ja/Jap7.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop2.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb11.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb6.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta1.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb3.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ha/Hap1.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb9.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Hoo/Hooo11.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta7.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ha/Hap7.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ha/Hap5.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta2.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta10.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb7.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb5.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Hoo/Hooo10.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tepee/Tepee7.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ha/Hap6.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tepee/Tepee5.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Hoo/Hooo6.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop11.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop12.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Hoo/Hooo12.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ha/Hap8.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta5.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb4.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Hoo/Hooo4.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb1.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb2.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop7.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop10.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta3.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop4.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ja/Jap1.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb10.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ha/Hap9.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ja/Jap2.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop3.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb8.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb12.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tepee/Tepee4.jpg",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "03-initial-montage",
+      "revision": "432d9db",
+      "commit": "432d9db915e5a6067344e29ba3c77e70fd6c745a",
+      "commitDate": "2026-09-04T11:30:18+09:00",
+      "scenario": "montage",
+      "file": "screenshots/03-initial-montage.png",
+      "sha256": "34075860b445661c2cbd33fb5bb75c4b615931e767ad3be7677d1aa98d531867",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 81,
+        "clock": "00:59.9",
+        "progress": "0명 발견",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "target": "/Bb/Bb.png",
+        "firstTile": {
+          "width": 39.546875,
+          "height": 39.546875
+        },
+        "images": [
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "04-initial-memory",
+      "revision": "432d9db",
+      "commit": "432d9db915e5a6067344e29ba3c77e70fd6c745a",
+      "commitDate": "2026-09-04T11:30:18+09:00",
+      "scenario": "memory",
+      "file": "screenshots/04-initial-memory.png",
+      "sha256": "faf02eb52b8f9b897f537d70fdf523a1c2f7d65b8619901422a9c9b1deed2de3",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 49,
+        "clock": "00:00.0",
+        "progress": "0 / 24 페어",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "firstTile": {
+          "width": 50,
+          "height": 50
+        },
+        "images": []
+      },
+      "errors": []
+    },
+    {
+      "id": "05-full-character-preview",
+      "revision": "ae18ad0",
+      "commit": "ae18ad094449621e56e721d223bd296900242a40",
+      "commitDate": "2026-09-04T11:57:38+09:00",
+      "scenario": "unit",
+      "file": "screenshots/05-full-character-preview.png",
+      "sha256": "f637da44d8b5af80e9e4d29b8321d59aff784b9baccf0a0a01cb7d451cd38629",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 49,
+        "clock": "00:00.2",
+        "progress": "0 / 12 pieces",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "target": "/Bb/Bb.png",
+        "firstTile": {
+          "width": 49.515625,
+          "height": 49.515625
+        },
+        "images": [
+          {
+            "src": "/Bb/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Tepee/Tepee9.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tepee/Tepee8.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta11.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ja/Jap6.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tepee/Tepee6.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta12.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop5.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ja/Jap7.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop2.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb11.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb6.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta1.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb3.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ha/Hap1.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb9.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Hoo/Hooo11.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta7.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ha/Hap7.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ha/Hap5.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta2.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta10.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb7.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb5.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Hoo/Hooo10.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tepee/Tepee7.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ha/Hap6.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tepee/Tepee5.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Hoo/Hooo6.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop11.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop12.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Hoo/Hooo12.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ha/Hap8.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta5.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb4.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Hoo/Hooo4.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb1.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb2.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop7.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop10.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tapee/Ta3.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop4.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ja/Jap1.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb10.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ha/Hap9.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Ja/Jap2.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Pino/Pinop3.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb8.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Bb/Bb12.jpg",
+            "loaded": true
+          },
+          {
+            "src": "/Tepee/Tepee4.jpg",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "06-studio-brand",
+      "revision": "138318e",
+      "commit": "138318e013b45cee3eb6e1d5561c55de781a97e9",
+      "commitDate": "2026-09-04T12:58:01+09:00",
+      "scenario": "studio",
+      "file": "screenshots/06-studio-brand.png",
+      "sha256": "5e266a1e9d39a2feec29c7a11badc1c5d1570478f2d32d241c3cc514d9323509",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 0,
+        "clock": "00:00.0",
+        "progress": "0 / 0",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "firstTile": null,
+        "images": [
+          {
+            "src": "http://127.0.0.1:5188/assets/brand/tapeetepee-open-01.png",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "07-product-cover",
+      "revision": "138318e",
+      "commit": "138318e013b45cee3eb6e1d5561c55de781a97e9",
+      "commitDate": "2026-09-04T12:58:01+09:00",
+      "scenario": "cover",
+      "file": "screenshots/07-product-cover.png",
+      "sha256": "249c54235d102cd88ef2f34d238af98d9c4c56b6093a81d32b2dee167fa15b68",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 0,
+        "clock": "00:00.0",
+        "progress": "0 / 0",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "firstTile": null,
+        "images": [
+          {
+            "src": "http://127.0.0.1:5188/assets/brand/taptopick-cover.png",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "08-product-menu",
+      "revision": "138318e",
+      "commit": "138318e013b45cee3eb6e1d5561c55de781a97e9",
+      "commitDate": "2026-09-04T12:58:01+09:00",
+      "scenario": "menu",
+      "file": "screenshots/08-product-menu.png",
+      "sha256": "61a4062598e7d769dcfbd4673b774d36aa3641f7d37fcf5daf748c1e731c82df",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 0,
+        "clock": "00:00.0",
+        "progress": "0 / 0",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "firstTile": null,
+        "images": [
+          {
+            "src": "http://127.0.0.1:5188/assets/brand/TAPtoPICK-logo-01.png",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "09-full-body-png",
+      "revision": "219b041",
+      "commit": "219b041b649377825c07c780f95759236b7c8e66",
+      "commitDate": "2026-09-04T13:10:48+09:00",
+      "scenario": "montage",
+      "file": "screenshots/09-full-body-png.png",
+      "sha256": "2afed8b7b7c2b949ddfbb130ac079898df98a7aa14b1ca47621d76875214df6f",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 25,
+        "clock": "00:59.9",
+        "progress": "0 found",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "target": "/Bb.png",
+        "firstTile": {
+          "width": 70.25,
+          "height": 70.25
+        },
+        "images": [
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          },
+          {
+            "src": "/Bb.png",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "10-progressive-reveal",
+      "revision": "444fd07",
+      "commit": "444fd07867ca4e83c680b2b854ec5a0a750d4cc1",
+      "commitDate": "2026-09-04T13:27:11+09:00",
+      "scenario": "unit",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/10-progressive-reveal.png",
+      "sha256": "1dc1e1911f0c610d46ba91ca24276f7d4e77fabfa024f8ca31edb5b2f1398341",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 49,
+        "clock": "00:00.2",
+        "progress": "3 / 12 pieces",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "target": "/optimized/unit/Bb.webp",
+        "firstTile": {
+          "width": 49.515625,
+          "height": 49.515625
+        },
+        "images": [
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee9.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee8.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ja/Jap6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ja/Jap7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb3.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb9.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap8.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb4.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo4.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta3.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop4.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ja/Jap1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap9.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ja/Jap2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop3.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb8.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee4.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "11-fragment-memory",
+      "revision": "444fd07",
+      "commit": "444fd07867ca4e83c680b2b854ec5a0a750d4cc1",
+      "commitDate": "2026-09-04T13:27:11+09:00",
+      "scenario": "memory",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/11-fragment-memory.png",
+      "sha256": "e2662a34caf1098fbece12534218acda5cf3348e1d59871c953946e8ebdc2e86",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 49,
+        "clock": "00:00.2",
+        "progress": "0 / 24 pairs",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "firstTile": {
+          "width": 49.515625,
+          "height": 49.53125
+        },
+        "images": [
+          {
+            "src": "/optimized/Pino/Pinop11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb7.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "12-full-body-proportions",
+      "revision": "18211bf",
+      "commit": "18211bff399a01b992ee231c36c2c98f0bb314fe",
+      "commitDate": "2026-09-04T17:19:28+09:00",
+      "scenario": "montage",
+      "file": "screenshots/12-full-body-proportions.png",
+      "sha256": "499d1cb967267259179611bebe70d9a1d6b165a2379778cca52ce6967b30cbf8",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 25,
+        "clock": "00:59.9",
+        "progress": "0 found",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "target": "/optimized/montage/jaepi/answer.webp",
+        "firstTile": {
+          "width": 70.25,
+          "height": 70.25
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-3.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-8.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-16.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-8.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-4.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-3.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-15.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-9.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-4.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-6.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "13-face-montage",
+      "revision": "d86d1af",
+      "commit": "d86d1af01beb7860fc1fc123f6e18a0c68194eb0",
+      "commitDate": "2026-09-05T17:38:54+09:00",
+      "scenario": "montage",
+      "file": "screenshots/13-face-montage.png",
+      "sha256": "0b6ffb1c90786158fea088945fc4e289bc7249687c821e748617545010df9ec0",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 25,
+        "clock": "00:59.9",
+        "progress": "0 found",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "target": "/optimized/montage/haepi/answer.webp",
+        "firstTile": {
+          "width": 70.25,
+          "height": 70.25
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-20.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-21.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-23.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-18.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-15.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-25.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-17.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-24.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-27.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-26.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-22.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-16.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-19.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "14-seven-member-content",
+      "revision": "2d1c636",
+      "commit": "2d1c6360e62a477f59a68575f0be7d4c59fc7d97",
+      "commitDate": "2026-09-05T19:15:30+09:00",
+      "scenario": "montage",
+      "file": "screenshots/14-seven-member-content.png",
+      "sha256": "a4271603d7fe491410b75ca6a4ce72ec38afdd9e187dd398298e1f7776a467d9",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 25,
+        "clock": "00:59.9",
+        "progress": "0 found",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "target": "/optimized/montage/haepi/answer.webp",
+        "firstTile": {
+          "width": 70.25,
+          "height": 70.25
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-20.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-21.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-23.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-18.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-15.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-25.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-17.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-24.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-27.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-26.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-22.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-16.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-19.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "15-character-name",
+      "revision": "8d2f5e1",
+      "commit": "8d2f5e19f970562af42aac7d4036fd08610af0b3",
+      "commitDate": "2026-09-05T19:34:59+09:00",
+      "scenario": "unit",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/15-character-name.png",
+      "sha256": "6a7edb3f5873c5c44c79c1125150c8350f8398931b6f8593e9b198dc0c39a42f",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 49,
+        "clock": "00:59.7",
+        "progress": "0 / 12 pieces",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "target": "/optimized/unit/Bb.webp",
+        "targetName": "Bbogles",
+        "firstTile": {
+          "width": 49.515625,
+          "height": 49.515625
+        },
+        "images": [
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee9.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee8.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ja/Jap6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ja/Jap7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb3.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb9.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap8.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb4.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo4.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta3.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop4.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ja/Jap1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap9.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ja/Jap2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop3.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb8.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee4.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "16-square-board",
+      "revision": "f4ea687",
+      "commit": "f4ea687363df93b89cdcede78a514c4f67f6c159",
+      "commitDate": "2026-09-05T19:42:50+09:00",
+      "scenario": "unit",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/16-square-board.png",
+      "sha256": "6a7edb3f5873c5c44c79c1125150c8350f8398931b6f8593e9b198dc0c39a42f",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 49,
+        "clock": "00:59.7",
+        "progress": "0 / 12 pieces",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "target": "/optimized/unit/Bb.webp",
+        "targetName": "Bbogles",
+        "firstTile": {
+          "width": 49.515625,
+          "height": 49.515625
+        },
+        "images": [
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/unit/Bb.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee9.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee8.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ja/Jap6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ja/Jap7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb3.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb9.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap8.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb4.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Hoo/Hooo4.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tapee/Ta3.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop4.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ja/Jap1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ha/Hap9.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Ja/Jap2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Pino/Pinop3.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb8.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Tepee/Tepee4.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "17-square-memory",
+      "revision": "f4ea687",
+      "commit": "f4ea687363df93b89cdcede78a514c4f67f6c159",
+      "commitDate": "2026-09-05T19:42:50+09:00",
+      "scenario": "memory",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/17-square-memory.png",
+      "sha256": "700862e83f6b5a2c4b5152f1ff619a977c563a0d9c47b65ea30e4c14914b188c",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 49,
+        "clock": "00:00.2",
+        "progress": "0 / 24 pairs",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "targetName": "",
+        "firstTile": {
+          "width": 49.515625,
+          "height": 49.515625
+        },
+        "images": [
+          {
+            "src": "/optimized/Pino/Pinop11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/Bb/Bb7.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "18-face-memory-preview",
+      "revision": "321798e",
+      "commit": "321798e30fd3b0e912146dd7bb9a8744dd1ae68e",
+      "commitDate": "2026-09-05T20:16:04+09:00",
+      "scenario": "memory-preview",
+      "file": "screenshots/18-face-memory-preview.png",
+      "sha256": "01c6a60b9c32de7ae9ae36f32e9195fab89189f934711711b61b7a365dc232b6",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 16,
+        "clock": "LOOK · 3",
+        "progress": "Memorize the faces",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "targetName": "",
+        "firstTile": {
+          "width": 88.984375,
+          "height": 88.984375
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/pino/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/hupi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tapee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tapee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tepee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/pino/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/hupi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tepee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-1.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "19-memory-next-stage",
+      "revision": "321798e",
+      "commit": "321798e30fd3b0e912146dd7bb9a8744dd1ae68e",
+      "commitDate": "2026-09-05T20:16:04+09:00",
+      "scenario": "memory-stage2",
+      "file": "screenshots/19-memory-next-stage.png",
+      "sha256": "0084ddc6c41a927e952f4ebc8a8529166bc1c9b7533d3f8035c1b7c81467f536",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 25,
+        "clock": "LOOK · 3",
+        "progress": "Memorize the faces",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "targetName": "",
+        "firstTile": {
+          "width": 70.25,
+          "height": 70.25
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/pino/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/pino/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tapee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tepee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tepee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/pino/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/hupi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/hupi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tapee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/pino/answer.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "20-three-minute-montage",
+      "revision": "321798e",
+      "commit": "321798e30fd3b0e912146dd7bb9a8744dd1ae68e",
+      "commitDate": "2026-09-05T20:16:04+09:00",
+      "scenario": "montage",
+      "file": "screenshots/20-three-minute-montage.png",
+      "sha256": "90caeca4e492c73108afc2e848cc619b57d6400dabc6294c613ff218351e8ac4",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 9,
+        "clock": "02:59.9",
+        "progress": "0 found",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "target": "/optimized/montage/jaepi/answer.webp",
+        "targetName": "",
+        "firstTile": {
+          "width": 120.21875,
+          "height": 120.21875
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-4.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-8.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-3.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "21-original-faces-only",
+      "revision": "8948acd",
+      "commit": "8948acd43e2dbbdd3a3b91c1991f4335dbf88624",
+      "commitDate": "2026-09-05T20:31:26+09:00",
+      "scenario": "memory-preview",
+      "file": "screenshots/21-original-faces-only.png",
+      "sha256": "68fb5b61dd4795419954bd35081aa3e6a1e1251d4e20d01708e5cf66365c6d3c",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 16,
+        "clock": "LOOK · 3",
+        "progress": "Memorize the faces",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "targetName": "",
+        "firstTile": {
+          "width": 88.984375,
+          "height": 88.984375
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tapee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/pino/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/hupi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/hupi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/pino/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tepee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tapee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tepee/answer.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "22-numeric-chances",
+      "revision": "36c3ad3",
+      "commit": "36c3ad3c1ca767b67c31252fc4bea191d8212595",
+      "commitDate": "2026-09-05T20:39:28+09:00",
+      "scenario": "montage-wrong",
+      "file": "screenshots/22-numeric-chances.png",
+      "sha256": "e5c22337c61e51671f0e219535571cc1b678ac7c0e352dd83f9ea6d7d1a02cfe",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 9,
+        "clock": "CHANCES 4/5",
+        "progress": "0 found",
+        "heartsDisplay": null,
+        "heartCount": 0,
+        "doors": 0,
+        "target": "/optimized/montage/jaepi/answer.webp",
+        "targetName": "",
+        "firstTile": {
+          "width": 120.21875,
+          "height": 120.21875
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-4.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-8.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-1.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-2.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-3.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "23-heart-feedback",
+      "revision": "48f8456",
+      "commit": "48f84561866c5b6a6c4e8494f1eb9c2931c8c992",
+      "commitDate": "2026-09-05T21:12:58+09:00",
+      "scenario": "montage-hit",
+      "file": "screenshots/23-heart-feedback.png",
+      "sha256": "1f31842a67e3329b0a1be1416671c79cc5949cc3224c5dc94b2c3c9c2ddbb295",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 4,
+        "clock": "00:00.0",
+        "progress": "0/3 · 0 found",
+        "stage": "STAGE 1/4 · 2×2",
+        "heartsDisplay": "flex",
+        "heartCount": 5,
+        "doors": 0,
+        "target": "/optimized/montage/jaepi/answer.webp",
+        "targetName": "",
+        "firstTile": {
+          "width": 182.265625,
+          "height": 182.265625
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-1.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "24-whole-board-before",
+      "revision": "48f8456",
+      "commit": "48f84561866c5b6a6c4e8494f1eb9c2931c8c992",
+      "commitDate": "2026-09-05T21:12:58+09:00",
+      "scenario": "montage-final",
+      "file": "screenshots/24-whole-board-before.png",
+      "sha256": "92b608230d40821d1456f92ab1867527643b451e8741d0930ce49d38f3849998",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 25,
+        "clock": "00:00.0",
+        "progress": "0/5 · 13 found",
+        "stage": "STAGE 4/4 · 5×5",
+        "heartsDisplay": "flex",
+        "heartCount": 5,
+        "doors": 0,
+        "target": "/optimized/montage/haepi/answer.webp",
+        "targetName": "",
+        "firstTile": {
+          "width": 70.25,
+          "height": 70.25
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-24.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-15.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-24.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-15.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "25-whole-board-shuffle",
+      "revision": "48f8456",
+      "commit": "48f84561866c5b6a6c4e8494f1eb9c2931c8c992",
+      "commitDate": "2026-09-05T21:12:58+09:00",
+      "scenario": "montage-final-motion",
+      "file": "screenshots/25-whole-board-shuffle.png",
+      "sha256": "167720adc35ea29fd527a4ea24b25322b3facc0da38a3503a80d18051f5e5bc8",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 25,
+        "clock": "00:00.0",
+        "progress": "0/5 · 13 found",
+        "stage": "SHUFFLING…",
+        "heartsDisplay": "flex",
+        "heartCount": 5,
+        "doors": 0,
+        "target": "/optimized/montage/haepi/answer.webp",
+        "targetName": "",
+        "firstTile": {
+          "width": 65.14479064941406,
+          "height": 65.144775390625
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-24.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-15.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-24.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-15.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-13.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "26-memory-hearts-bug",
+      "revision": "06783f7",
+      "commit": "06783f78e3277c3a317bdca4ea9c2338307aa776",
+      "commitDate": "2026-09-05T21:24:40+09:00",
+      "scenario": "memory-after-montage",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/26-memory-hearts-bug.png",
+      "sha256": "39e49426f48b6f4dca06c089be61e8cd88c15e1ff0defa7f644e302d60881aef",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 16,
+        "clock": "00:59.3",
+        "progress": "0 / 8 pairs",
+        "stage": "STAGE 1/4 · 2×2",
+        "heartsDisplay": "flex",
+        "heartCount": 5,
+        "doors": 0,
+        "targetName": "",
+        "firstTile": {
+          "width": 88.984375,
+          "height": 88.984375
+        },
+        "images": []
+      },
+      "errors": []
+    },
+    {
+      "id": "27-current-stage2",
+      "revision": "1b8b69f",
+      "commit": "1b8b69ff9600cc19593d68d916ee78d77cf91ff6",
+      "commitDate": "2026-09-05T21:26:59+09:00",
+      "scenario": "montage",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/27-current-stage2.png",
+      "sha256": "5465ac51c758180677d005c77b2dd7fccde059f7c4d825a218909423426fecb6",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 4,
+        "clock": "00:00.0",
+        "progress": "0/3 · 0 found",
+        "stage": "STAGE 1/4 · 2×2",
+        "heartsDisplay": "flex",
+        "heartCount": 5,
+        "doors": 0,
+        "target": "/optimized/montage/jaepi/answer.webp",
+        "targetName": "",
+        "firstTile": {
+          "width": 182.265625,
+          "height": 182.265625
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-1.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "28-bonus-heart",
+      "revision": "1b8b69f",
+      "commit": "1b8b69ff9600cc19593d68d916ee78d77cf91ff6",
+      "commitDate": "2026-09-05T21:26:59+09:00",
+      "scenario": "montage-bonus",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/28-bonus-heart.png",
+      "sha256": "ad5a38448701433da9eef8c56559e18766e5d7dadbe603904f00ed9e99d7c301",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 16,
+        "clock": "00:00.0",
+        "progress": "0/5 · 8 found",
+        "stage": "+1 HEART!",
+        "heartsDisplay": "flex",
+        "heartCount": 5,
+        "doors": 0,
+        "target": "/optimized/montage/bbogles/answer.webp",
+        "targetName": "",
+        "firstTile": {
+          "width": 88.984375,
+          "height": 88.984375
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-5.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-20.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-17.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-9.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-17.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-20.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-6.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-9.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/variation-18.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "29-door-before",
+      "revision": "1b8b69f",
+      "commit": "1b8b69ff9600cc19593d68d916ee78d77cf91ff6",
+      "commitDate": "2026-09-05T21:26:59+09:00",
+      "scenario": "montage-final",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/29-door-before.png",
+      "sha256": "92b608230d40821d1456f92ab1867527643b451e8741d0930ce49d38f3849998",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 25,
+        "clock": "00:00.0",
+        "progress": "0/5 · 13 found",
+        "stage": "STAGE 4/4 · 5×5",
+        "heartsDisplay": "flex",
+        "heartCount": 5,
+        "doors": 0,
+        "target": "/optimized/montage/haepi/answer.webp",
+        "targetName": "",
+        "firstTile": {
+          "width": 70.25,
+          "height": 70.25
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-24.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-15.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-24.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-15.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "30-door-closed",
+      "revision": "1b8b69f",
+      "commit": "1b8b69ff9600cc19593d68d916ee78d77cf91ff6",
+      "commitDate": "2026-09-05T21:26:59+09:00",
+      "scenario": "montage-door-closed",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/30-door-closed.png",
+      "sha256": "7aaad03c3e769958642edb71b15a6a7d39877102b17e5d2f6fdedb8402e5dc2e",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 25,
+        "clock": "00:00.0",
+        "progress": "0/5 · 13 found",
+        "stage": "TWO TILES ARE SWAPPING…",
+        "heartsDisplay": "flex",
+        "heartCount": 5,
+        "doors": 2,
+        "target": "/optimized/montage/haepi/answer.webp",
+        "targetName": "",
+        "firstTile": {
+          "width": 70.25,
+          "height": 70.25
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-15.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-24.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-15.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-24.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "31-door-opened",
+      "revision": "1b8b69f",
+      "commit": "1b8b69ff9600cc19593d68d916ee78d77cf91ff6",
+      "commitDate": "2026-09-05T21:26:59+09:00",
+      "scenario": "montage-door-opened",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/31-door-opened.png",
+      "sha256": "280ab4268ccd80d0e6cdb1ac94e20ce626d19742dde2544a2fe1b86d0ff55c7a",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 25,
+        "clock": "00:00.0",
+        "progress": "0/5 · 13 found",
+        "stage": "STAGE 4/4 · 5×5",
+        "heartsDisplay": "flex",
+        "heartCount": 5,
+        "doors": 0,
+        "target": "/optimized/montage/haepi/answer.webp",
+        "targetName": "",
+        "firstTile": {
+          "width": 70.25,
+          "height": 70.25
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-15.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-24.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-15.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-24.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-09.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-13.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-10.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-08.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-11.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/variation-12.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "32-memory-hearts-fixed",
+      "revision": "1b8b69f",
+      "commit": "1b8b69ff9600cc19593d68d916ee78d77cf91ff6",
+      "commitDate": "2026-09-05T21:26:59+09:00",
+      "scenario": "memory-after-montage",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/32-memory-hearts-fixed.png",
+      "sha256": "c522a037af3769b451e5c2b8077faeba295471b25d89778d746b33e40233a557",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 16,
+        "clock": "00:59.3",
+        "progress": "0 / 8 pairs",
+        "stage": "STAGE 1/4 · 2×2",
+        "heartsDisplay": "none",
+        "heartCount": 0,
+        "doors": 0,
+        "targetName": "",
+        "firstTile": {
+          "width": 88.984375,
+          "height": 88.984375
+        },
+        "images": []
+      },
+      "errors": []
+    },
+    {
+      "id": "33-current-game-over",
+      "revision": "1b8b69f",
+      "commit": "1b8b69ff9600cc19593d68d916ee78d77cf91ff6",
+      "commitDate": "2026-09-05T21:26:59+09:00",
+      "scenario": "montage-gameover",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/33-current-game-over.png",
+      "sha256": "6efaeab99fbce8558340023c68208c8cf01e59ec17a5c429690ed78c3602093d",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 4,
+        "clock": "00:00.0",
+        "progress": "0/3 · 0 found",
+        "stage": "STAGE 1/4 · 2×2",
+        "heartsDisplay": "flex",
+        "heartCount": 5,
+        "doors": 0,
+        "target": "/optimized/montage/jaepi/answer.webp",
+        "targetName": "",
+        "firstTile": {
+          "width": 182.265625,
+          "height": 182.265625
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-7.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-14.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/variation-1.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "34-current-memory-stage2",
+      "revision": "1b8b69f",
+      "commit": "1b8b69ff9600cc19593d68d916ee78d77cf91ff6",
+      "commitDate": "2026-09-05T21:26:59+09:00",
+      "scenario": "memory-stage2",
+      "networkCondition": "local assets loaded",
+      "file": "screenshots/34-current-memory-stage2.png",
+      "sha256": "28e91fdae79b90d47e9367a1f4f928bef06703eeb85b2b72d4c7dae9202856d0",
+      "ui": {
+        "title": "TAP to PICK",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "boardCount": 25,
+        "clock": "LOOK · 3",
+        "progress": "Memorize the faces",
+        "stage": "",
+        "heartsDisplay": "none",
+        "heartCount": 0,
+        "doors": 0,
+        "targetName": "",
+        "firstTile": {
+          "width": 70.25,
+          "height": 70.25
+        },
+        "images": [
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tepee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/hupi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tepee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tapee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/hupi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tepee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/hupi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tapee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/pino/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/hupi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/haepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/pino/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/tepee/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/jaepi/answer.webp",
+            "loaded": true
+          },
+          {
+            "src": "/optimized/montage/bbogles/answer.webp",
+            "loaded": true
+          }
+        ]
+      },
+      "errors": []
+    }
+  ],
+  "browserVersion": "152.0.7977.76"
+}

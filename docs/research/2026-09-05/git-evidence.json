@@ -1,0 +1,1040 @@
+{
+  "scope": "Tracked image blob sizes in Git; not measured loading time or transferred network bytes.",
+  "beforeRevision": "219b041",
+  "afterRevision": "444fd07",
+  "picturePieces": {
+    "original": {
+      "count": 75,
+      "bytes": 2941708
+    },
+    "optimized": {
+      "count": 75,
+      "bytes": 199118
+    },
+    "allNamesMatched": true,
+    "pairs": [
+      {
+        "before": {
+          "name": "Bb/Bb1.jpg",
+          "bytes": 32912
+        },
+        "after": {
+          "name": "optimized/Bb/Bb1.webp",
+          "bytes": 1636
+        }
+      },
+      {
+        "before": {
+          "name": "Bb/Bb10.jpg",
+          "bytes": 28486
+        },
+        "after": {
+          "name": "optimized/Bb/Bb10.webp",
+          "bytes": 718
+        }
+      },
+      {
+        "before": {
+          "name": "Bb/Bb11.jpg",
+          "bytes": 41214
+        },
+        "after": {
+          "name": "optimized/Bb/Bb11.webp",
+          "bytes": 3162
+        }
+      },
+      {
+        "before": {
+          "name": "Bb/Bb12.jpg",
+          "bytes": 40070
+        },
+        "after": {
+          "name": "optimized/Bb/Bb12.webp",
+          "bytes": 2704
+        }
+      },
+      {
+        "before": {
+          "name": "Bb/Bb2.jpg",
+          "bytes": 46545
+        },
+        "after": {
+          "name": "optimized/Bb/Bb2.webp",
+          "bytes": 3762
+        }
+      },
+      {
+        "before": {
+          "name": "Bb/Bb3.jpg",
+          "bytes": 29299
+        },
+        "after": {
+          "name": "optimized/Bb/Bb3.webp",
+          "bytes": 1128
+        }
+      },
+      {
+        "before": {
+          "name": "Bb/Bb4.jpg",
+          "bytes": 43500
+        },
+        "after": {
+          "name": "optimized/Bb/Bb4.webp",
+          "bytes": 3486
+        }
+      },
+      {
+        "before": {
+          "name": "Bb/Bb5.jpg",
+          "bytes": 60753
+        },
+        "after": {
+          "name": "optimized/Bb/Bb5.webp",
+          "bytes": 6614
+        }
+      },
+      {
+        "before": {
+          "name": "Bb/Bb6.jpg",
+          "bytes": 40188
+        },
+        "after": {
+          "name": "optimized/Bb/Bb6.webp",
+          "bytes": 2766
+        }
+      },
+      {
+        "before": {
+          "name": "Bb/Bb7.jpg",
+          "bytes": 31058
+        },
+        "after": {
+          "name": "optimized/Bb/Bb7.webp",
+          "bytes": 1210
+        }
+      },
+      {
+        "before": {
+          "name": "Bb/Bb8.jpg",
+          "bytes": 52585
+        },
+        "after": {
+          "name": "optimized/Bb/Bb8.webp",
+          "bytes": 4878
+        }
+      },
+      {
+        "before": {
+          "name": "Bb/Bb9.jpg",
+          "bytes": 47863
+        },
+        "after": {
+          "name": "optimized/Bb/Bb9.webp",
+          "bytes": 3828
+        }
+      },
+      {
+        "before": {
+          "name": "Ha/Hap1.jpg",
+          "bytes": 29602
+        },
+        "after": {
+          "name": "optimized/Ha/Hap1.webp",
+          "bytes": 896
+        }
+      },
+      {
+        "before": {
+          "name": "Ha/Hap2.jpg",
+          "bytes": 56808
+        },
+        "after": {
+          "name": "optimized/Ha/Hap2.webp",
+          "bytes": 5586
+        }
+      },
+      {
+        "before": {
+          "name": "Ha/Hap3.jpg",
+          "bytes": 49271
+        },
+        "after": {
+          "name": "optimized/Ha/Hap3.webp",
+          "bytes": 4380
+        }
+      },
+      {
+        "before": {
+          "name": "Ha/Hap4.jpg",
+          "bytes": 29685
+        },
+        "after": {
+          "name": "optimized/Ha/Hap4.webp",
+          "bytes": 1030
+        }
+      },
+      {
+        "before": {
+          "name": "Ha/Hap5.jpg",
+          "bytes": 53008
+        },
+        "after": {
+          "name": "optimized/Ha/Hap5.webp",
+          "bytes": 5150
+        }
+      },
+      {
+        "before": {
+          "name": "Ha/Hap6.jpg",
+          "bytes": 49382
+        },
+        "after": {
+          "name": "optimized/Ha/Hap6.webp",
+          "bytes": 4558
+        }
+      },
+      {
+        "before": {
+          "name": "Ha/Hap7.jpg",
+          "bytes": 45254
+        },
+        "after": {
+          "name": "optimized/Ha/Hap7.webp",
+          "bytes": 3756
+        }
+      },
+      {
+        "before": {
+          "name": "Ha/Hap8.jpg",
+          "bytes": 48647
+        },
+        "after": {
+          "name": "optimized/Ha/Hap8.webp",
+          "bytes": 4206
+        }
+      },
+      {
+        "before": {
+          "name": "Ha/Hap9.jpg",
+          "bytes": 42950
+        },
+        "after": {
+          "name": "optimized/Ha/Hap9.webp",
+          "bytes": 3206
+        }
+      },
+      {
+        "before": {
+          "name": "Hoo/Hooo1.jpg",
+          "bytes": 26811
+        },
+        "after": {
+          "name": "optimized/Hoo/Hooo1.webp",
+          "bytes": 580
+        }
+      },
+      {
+        "before": {
+          "name": "Hoo/Hooo10.jpg",
+          "bytes": 27021
+        },
+        "after": {
+          "name": "optimized/Hoo/Hooo10.webp",
+          "bytes": 564
+        }
+      },
+      {
+        "before": {
+          "name": "Hoo/Hooo11.jpg",
+          "bytes": 38159
+        },
+        "after": {
+          "name": "optimized/Hoo/Hooo11.webp",
+          "bytes": 2622
+        }
+      },
+      {
+        "before": {
+          "name": "Hoo/Hooo12.jpg",
+          "bytes": 28671
+        },
+        "after": {
+          "name": "optimized/Hoo/Hooo12.webp",
+          "bytes": 884
+        }
+      },
+      {
+        "before": {
+          "name": "Hoo/Hooo2.jpg",
+          "bytes": 29820
+        },
+        "after": {
+          "name": "optimized/Hoo/Hooo2.webp",
+          "bytes": 1096
+        }
+      },
+      {
+        "before": {
+          "name": "Hoo/Hooo3.jpg",
+          "bytes": 26838
+        },
+        "after": {
+          "name": "optimized/Hoo/Hooo3.webp",
+          "bytes": 538
+        }
+      },
+      {
+        "before": {
+          "name": "Hoo/Hooo4.jpg",
+          "bytes": 30324
+        },
+        "after": {
+          "name": "optimized/Hoo/Hooo4.webp",
+          "bytes": 1102
+        }
+      },
+      {
+        "before": {
+          "name": "Hoo/Hooo5.jpg",
+          "bytes": 33535
+        },
+        "after": {
+          "name": "optimized/Hoo/Hooo5.webp",
+          "bytes": 1698
+        }
+      },
+      {
+        "before": {
+          "name": "Hoo/Hooo6.jpg",
+          "bytes": 41338
+        },
+        "after": {
+          "name": "optimized/Hoo/Hooo6.webp",
+          "bytes": 2864
+        }
+      },
+      {
+        "before": {
+          "name": "Hoo/Hooo7.jpg",
+          "bytes": 27708
+        },
+        "after": {
+          "name": "optimized/Hoo/Hooo7.webp",
+          "bytes": 690
+        }
+      },
+      {
+        "before": {
+          "name": "Hoo/Hooo8.jpg",
+          "bytes": 55058
+        },
+        "after": {
+          "name": "optimized/Hoo/Hooo8.webp",
+          "bytes": 4536
+        }
+      },
+      {
+        "before": {
+          "name": "Hoo/Hooo9.jpg",
+          "bytes": 32519
+        },
+        "after": {
+          "name": "optimized/Hoo/Hooo9.webp",
+          "bytes": 1480
+        }
+      },
+      {
+        "before": {
+          "name": "Ja/Jap1.jpg",
+          "bytes": 34156
+        },
+        "after": {
+          "name": "optimized/Ja/Jap1.webp",
+          "bytes": 1714
+        }
+      },
+      {
+        "before": {
+          "name": "Ja/Jap2.jpg",
+          "bytes": 38875
+        },
+        "after": {
+          "name": "optimized/Ja/Jap2.webp",
+          "bytes": 2278
+        }
+      },
+      {
+        "before": {
+          "name": "Ja/Jap3.jpg",
+          "bytes": 33792
+        },
+        "after": {
+          "name": "optimized/Ja/Jap3.webp",
+          "bytes": 1728
+        }
+      },
+      {
+        "before": {
+          "name": "Ja/Jap4.jpg",
+          "bytes": 44751
+        },
+        "after": {
+          "name": "optimized/Ja/Jap4.webp",
+          "bytes": 3354
+        }
+      },
+      {
+        "before": {
+          "name": "Ja/Jap5.jpg",
+          "bytes": 66526
+        },
+        "after": {
+          "name": "optimized/Ja/Jap5.webp",
+          "bytes": 6668
+        }
+      },
+      {
+        "before": {
+          "name": "Ja/Jap6.jpg",
+          "bytes": 42734
+        },
+        "after": {
+          "name": "optimized/Ja/Jap6.webp",
+          "bytes": 3326
+        }
+      },
+      {
+        "before": {
+          "name": "Ja/Jap7.jpg",
+          "bytes": 36704
+        },
+        "after": {
+          "name": "optimized/Ja/Jap7.webp",
+          "bytes": 2012
+        }
+      },
+      {
+        "before": {
+          "name": "Ja/Jap8.jpg",
+          "bytes": 51057
+        },
+        "after": {
+          "name": "optimized/Ja/Jap8.webp",
+          "bytes": 4242
+        }
+      },
+      {
+        "before": {
+          "name": "Ja/Jap9.jpg",
+          "bytes": 30883
+        },
+        "after": {
+          "name": "optimized/Ja/Jap9.webp",
+          "bytes": 1280
+        }
+      },
+      {
+        "before": {
+          "name": "Pino/Pinop1.jpg",
+          "bytes": 29009
+        },
+        "after": {
+          "name": "optimized/Pino/Pinop1.webp",
+          "bytes": 974
+        }
+      },
+      {
+        "before": {
+          "name": "Pino/Pinop10.jpg",
+          "bytes": 34598
+        },
+        "after": {
+          "name": "optimized/Pino/Pinop10.webp",
+          "bytes": 1712
+        }
+      },
+      {
+        "before": {
+          "name": "Pino/Pinop11.jpg",
+          "bytes": 46361
+        },
+        "after": {
+          "name": "optimized/Pino/Pinop11.webp",
+          "bytes": 4328
+        }
+      },
+      {
+        "before": {
+          "name": "Pino/Pinop12.jpg",
+          "bytes": 33731
+        },
+        "after": {
+          "name": "optimized/Pino/Pinop12.webp",
+          "bytes": 1666
+        }
+      },
+      {
+        "before": {
+          "name": "Pino/Pinop2.jpg",
+          "bytes": 43104
+        },
+        "after": {
+          "name": "optimized/Pino/Pinop2.webp",
+          "bytes": 3288
+        }
+      },
+      {
+        "before": {
+          "name": "Pino/Pinop3.jpg",
+          "bytes": 46321
+        },
+        "after": {
+          "name": "optimized/Pino/Pinop3.webp",
+          "bytes": 3768
+        }
+      },
+      {
+        "before": {
+          "name": "Pino/Pinop4.jpg",
+          "bytes": 34942
+        },
+        "after": {
+          "name": "optimized/Pino/Pinop4.webp",
+          "bytes": 2096
+        }
+      },
+      {
+        "before": {
+          "name": "Pino/Pinop5.jpg",
+          "bytes": 46382
+        },
+        "after": {
+          "name": "optimized/Pino/Pinop5.webp",
+          "bytes": 4110
+        }
+      },
+      {
+        "before": {
+          "name": "Pino/Pinop6.jpg",
+          "bytes": 37714
+        },
+        "after": {
+          "name": "optimized/Pino/Pinop6.webp",
+          "bytes": 2602
+        }
+      },
+      {
+        "before": {
+          "name": "Pino/Pinop7.jpg",
+          "bytes": 35001
+        },
+        "after": {
+          "name": "optimized/Pino/Pinop7.webp",
+          "bytes": 2122
+        }
+      },
+      {
+        "before": {
+          "name": "Pino/Pinop8.jpg",
+          "bytes": 49762
+        },
+        "after": {
+          "name": "optimized/Pino/Pinop8.webp",
+          "bytes": 4292
+        }
+      },
+      {
+        "before": {
+          "name": "Pino/Pinop9.jpg",
+          "bytes": 36858
+        },
+        "after": {
+          "name": "optimized/Pino/Pinop9.webp",
+          "bytes": 2444
+        }
+      },
+      {
+        "before": {
+          "name": "Tapee/Ta1.jpg",
+          "bytes": 34652
+        },
+        "after": {
+          "name": "optimized/Tapee/Ta1.webp",
+          "bytes": 2024
+        }
+      },
+      {
+        "before": {
+          "name": "Tapee/Ta10.jpg",
+          "bytes": 29354
+        },
+        "after": {
+          "name": "optimized/Tapee/Ta10.webp",
+          "bytes": 1022
+        }
+      },
+      {
+        "before": {
+          "name": "Tapee/Ta11.jpg",
+          "bytes": 41234
+        },
+        "after": {
+          "name": "optimized/Tapee/Ta11.webp",
+          "bytes": 3648
+        }
+      },
+      {
+        "before": {
+          "name": "Tapee/Ta12.jpg",
+          "bytes": 30702
+        },
+        "after": {
+          "name": "optimized/Tapee/Ta12.webp",
+          "bytes": 1456
+        }
+      },
+      {
+        "before": {
+          "name": "Tapee/Ta2.jpg",
+          "bytes": 54089
+        },
+        "after": {
+          "name": "optimized/Tapee/Ta2.webp",
+          "bytes": 5618
+        }
+      },
+      {
+        "before": {
+          "name": "Tapee/Ta3.jpg",
+          "bytes": 35909
+        },
+        "after": {
+          "name": "optimized/Tapee/Ta3.webp",
+          "bytes": 2364
+        }
+      },
+      {
+        "before": {
+          "name": "Tapee/Ta4.jpg",
+          "bytes": 34333
+        },
+        "after": {
+          "name": "optimized/Tapee/Ta4.webp",
+          "bytes": 1818
+        }
+      },
+      {
+        "before": {
+          "name": "Tapee/Ta5.jpg",
+          "bytes": 34445
+        },
+        "after": {
+          "name": "optimized/Tapee/Ta5.webp",
+          "bytes": 1740
+        }
+      },
+      {
+        "before": {
+          "name": "Tapee/Ta6.jpg",
+          "bytes": 35377
+        },
+        "after": {
+          "name": "optimized/Tapee/Ta6.webp",
+          "bytes": 1890
+        }
+      },
+      {
+        "before": {
+          "name": "Tapee/Ta7.jpg",
+          "bytes": 42957
+        },
+        "after": {
+          "name": "optimized/Tapee/Ta7.webp",
+          "bytes": 3664
+        }
+      },
+      {
+        "before": {
+          "name": "Tapee/Ta8.jpg",
+          "bytes": 42112
+        },
+        "after": {
+          "name": "optimized/Tapee/Ta8.webp",
+          "bytes": 2992
+        }
+      },
+      {
+        "before": {
+          "name": "Tapee/Ta9.jpg",
+          "bytes": 43058
+        },
+        "after": {
+          "name": "optimized/Tapee/Ta9.webp",
+          "bytes": 3748
+        }
+      },
+      {
+        "before": {
+          "name": "Tepee/Tepee1.jpg",
+          "bytes": 29198
+        },
+        "after": {
+          "name": "optimized/Tepee/Tepee1.webp",
+          "bytes": 1000
+        }
+      },
+      {
+        "before": {
+          "name": "Tepee/Tepee2.jpg",
+          "bytes": 45550
+        },
+        "after": {
+          "name": "optimized/Tepee/Tepee2.webp",
+          "bytes": 3732
+        }
+      },
+      {
+        "before": {
+          "name": "Tepee/Tepee3.jpg",
+          "bytes": 30963
+        },
+        "after": {
+          "name": "optimized/Tepee/Tepee3.webp",
+          "bytes": 1172
+        }
+      },
+      {
+        "before": {
+          "name": "Tepee/Tepee4.jpg",
+          "bytes": 40536
+        },
+        "after": {
+          "name": "optimized/Tepee/Tepee4.webp",
+          "bytes": 2886
+        }
+      },
+      {
+        "before": {
+          "name": "Tepee/Tepee5.jpg",
+          "bytes": 34403
+        },
+        "after": {
+          "name": "optimized/Tepee/Tepee5.webp",
+          "bytes": 1620
+        }
+      },
+      {
+        "before": {
+          "name": "Tepee/Tepee6.jpg",
+          "bytes": 43541
+        },
+        "after": {
+          "name": "optimized/Tepee/Tepee6.webp",
+          "bytes": 3182
+        }
+      },
+      {
+        "before": {
+          "name": "Tepee/Tepee7.jpg",
+          "bytes": 34191
+        },
+        "after": {
+          "name": "optimized/Tepee/Tepee7.webp",
+          "bytes": 1744
+        }
+      },
+      {
+        "before": {
+          "name": "Tepee/Tepee8.jpg",
+          "bytes": 37143
+        },
+        "after": {
+          "name": "optimized/Tepee/Tepee8.webp",
+          "bytes": 2144
+        }
+      },
+      {
+        "before": {
+          "name": "Tepee/Tepee9.jpg",
+          "bytes": 37818
+        },
+        "after": {
+          "name": "optimized/Tepee/Tepee9.webp",
+          "bytes": 2336
+        }
+      }
+    ]
+  },
+  "montageWholeImages": {
+    "original": {
+      "count": 7,
+      "bytes": 381202
+    },
+    "optimized": {
+      "count": 7,
+      "bytes": 207232
+    }
+  },
+  "commits": [
+    {
+      "sha": "edb6abdabbf6a271f77038e629d4f42c57d37ef4",
+      "date": "2026-09-04T10:46:29+09:00",
+      "subject": "Initialize TaptoPick from TAPtoTALK structure"
+    },
+    {
+      "sha": "c448b70890852c214cfbb043247b3c5eaa9575a0",
+      "date": "2026-09-04T11:12:18+09:00",
+      "subject": "Add files via upload"
+    },
+    {
+      "sha": "432d9db915e5a6067344e29ba3c77e70fd6c745a",
+      "date": "2026-09-04T11:30:18+09:00",
+      "subject": "Build TAP to PICK image game modes"
+    },
+    {
+      "sha": "3a69c8059280d5b92c2e213e813ab91e54dd9487",
+      "date": "2026-09-04T11:32:18+09:00",
+      "subject": "Map numbered image pieces to puzzle positions"
+    },
+    {
+      "sha": "a3809190d4ae8a44f5452e069468ff765310083c",
+      "date": "2026-09-04T11:33:24+09:00",
+      "subject": "Update studio splash branding"
+    },
+    {
+      "sha": "d0d1e1a137a668d9650bf4e86efc721b8f08be49",
+      "date": "2026-09-04T11:51:25+09:00",
+      "subject": "Center character previews and match block styling"
+    },
+    {
+      "sha": "ae18ad094449621e56e721d223bd296900242a40",
+      "date": "2026-09-04T11:57:38+09:00",
+      "subject": "Expand full character preview"
+    },
+    {
+      "sha": "b23e6d00027c69d74a5387ba31d8d462b32df6ab",
+      "date": "2026-09-04T12:01:41+09:00",
+      "subject": "Change montage board to 7x7"
+    },
+    {
+      "sha": "b352900d6dd28daf0b66c367f0a8e7dc857e3160",
+      "date": "2026-09-04T12:04:35+09:00",
+      "subject": "Add colorful memory card backs"
+    },
+    {
+      "sha": "4e28b8df0f149304a99c8afcc2b7ef1f631a0b1e",
+      "date": "2026-09-04T12:28:56+09:00",
+      "subject": "Improve montage candidate differences"
+    },
+    {
+      "sha": "3901e176e387673c3acfb83d930cefa2379ba56a",
+      "date": "2026-09-04T12:39:21+09:00",
+      "subject": "Replace title screen logo"
+    },
+    {
+      "sha": "dd72c76b7b5f11589062a0adadb269f2dc04bd89",
+      "date": "2026-09-04T12:48:42+09:00",
+      "subject": "Replace product splash cover"
+    },
+    {
+      "sha": "0360e3e440759294a396a8ac09cac3b64d5dc5b4",
+      "date": "2026-09-04T12:49:21+09:00",
+      "subject": "Update product splash artwork"
+    },
+    {
+      "sha": "6d953ff916e285ca181fe6948faffb1c88cb0920",
+      "date": "2026-09-04T12:51:18+09:00",
+      "subject": "Remove title picture label"
+    },
+    {
+      "sha": "71f3c869afb09bd0763b2e7a7d9f7a9e1f1fbed1",
+      "date": "2026-09-04T12:55:30+09:00",
+      "subject": "Change montage hunt to 5x5"
+    },
+    {
+      "sha": "b550c431202493e278b6fc65ae3521becff117db",
+      "date": "2026-09-04T12:57:18+09:00",
+      "subject": "Simplify pair memory screen"
+    },
+    {
+      "sha": "138318e013b45cee3eb6e1d5561c55de781a97e9",
+      "date": "2026-09-04T12:58:01+09:00",
+      "subject": "Refresh logo and cover artwork"
+    },
+    {
+      "sha": "f35ed616c4a543acdc0f47db51430c47781e8af0",
+      "date": "2026-09-04T13:07:59+09:00",
+      "subject": "Add files via upload"
+    },
+    {
+      "sha": "219b041b649377825c07c780f95759236b7c8e66",
+      "date": "2026-09-04T13:10:48+09:00",
+      "subject": "Use new montage PNG artwork"
+    },
+    {
+      "sha": "1f75e88106cd6fe12ca63d6deeaf334193089344",
+      "date": "2026-09-04T13:18:36+09:00",
+      "subject": "Add files via upload"
+    },
+    {
+      "sha": "444fd07867ca4e83c680b2b854ec5a0a750d4cc1",
+      "date": "2026-09-04T13:27:11+09:00",
+      "subject": "Optimize puzzle images and add progressive reveal"
+    },
+    {
+      "sha": "607416e139906bfb2f06beca80ab330cb00485e3",
+      "date": "2026-09-04T13:34:03+09:00",
+      "subject": "Add five-tier Picture Pieces scoring"
+    },
+    {
+      "sha": "4ce172b7f12210cf80532c73603c3301ed643ef2",
+      "date": "2026-09-04T13:35:54+09:00",
+      "subject": "Tune Pair Memory reveal timing"
+    },
+    {
+      "sha": "49ea909f2a9af5afadd36fc65ed3f9848a5f466b",
+      "date": "2026-09-04T13:55:42+09:00",
+      "subject": "Add files via upload"
+    },
+    {
+      "sha": "4d7a1c194409cbfb22b3df3bf9bd84ee50004d8f",
+      "date": "2026-09-04T13:59:58+09:00",
+      "subject": "Use Jaepi variations in Montage Hunt"
+    },
+    {
+      "sha": "4d4427293f3d5a9f91b150f9e85f5e7d716e0d60",
+      "date": "2026-09-04T14:13:18+09:00",
+      "subject": "Add files via upload"
+    },
+    {
+      "sha": "3d45c3d592ea3ce8fecb4fe61ec84954c05f6187",
+      "date": "2026-09-04T14:15:57+09:00",
+      "subject": "Add Bbogles to Montage Hunt"
+    },
+    {
+      "sha": "adb82f3f66cccadc9af012253096b7f037f77f47",
+      "date": "2026-09-04T14:29:58+09:00",
+      "subject": "Add files via upload"
+    },
+    {
+      "sha": "1e8ec7b2766160504af87f092ca025ca6d5de629",
+      "date": "2026-09-04T14:31:20+09:00",
+      "subject": "Add Haepi to Montage Hunt"
+    },
+    {
+      "sha": "18211bff399a01b992ee231c36c2c98f0bb314fe",
+      "date": "2026-09-04T17:19:28+09:00",
+      "subject": "Preserve montage proportions and avoid repeats"
+    },
+    {
+      "sha": "8bd9d7a4db2d9f653b1108e2de99499260022a75",
+      "date": "2026-09-04T17:23:57+09:00",
+      "subject": "Expand game previews and remove footer controls"
+    },
+    {
+      "sha": "55c12be4eda82841a157db3a095f56068ca3315a",
+      "date": "2026-09-04T17:28:17+09:00",
+      "subject": "Preload game images during splash"
+    },
+    {
+      "sha": "87f49fc5075365ace94c151f431bfb870d96c64d",
+      "date": "2026-09-05T17:04:47+09:00",
+      "subject": "Match completion videos to characters"
+    },
+    {
+      "sha": "bb0d359568f9ba931db6e563429afdc6aae8054a",
+      "date": "2026-09-05T17:35:17+09:00",
+      "subject": "Add files via upload"
+    },
+    {
+      "sha": "d86d1af01beb7860fc1fc123f6e18a0c68194eb0",
+      "date": "2026-09-05T17:38:54+09:00",
+      "subject": "Replace montage game with Haepi faces"
+    },
+    {
+      "sha": "05ddf8370b7a928284a19170f0511dd0fee6c3f3",
+      "date": "2026-09-05T17:54:23+09:00",
+      "subject": "Add files via upload"
+    },
+    {
+      "sha": "16eec6a3c5756dfd21f3180a9ea91515b0a589d3",
+      "date": "2026-09-05T17:56:00+09:00",
+      "subject": "Add Bbogles faces to montage game"
+    },
+    {
+      "sha": "7a616f0b085819d19075e3550f7bdba186fdba8b",
+      "date": "2026-09-05T18:38:00+09:00",
+      "subject": "Add files via upload"
+    },
+    {
+      "sha": "c2406969db60c2a09eb3dd1190ee5c1441dfa9ec",
+      "date": "2026-09-05T18:39:32+09:00",
+      "subject": "Add Tapee and Tepee face montages"
+    },
+    {
+      "sha": "4c4494fa13b7da09af1ac176093ee104882bb691",
+      "date": "2026-09-05T19:13:36+09:00",
+      "subject": "Add files via upload"
+    },
+    {
+      "sha": "2d1c6360e62a477f59a68575f0be7d4c59fc7d97",
+      "date": "2026-09-05T19:15:30+09:00",
+      "subject": "Complete seven-character face montages"
+    },
+    {
+      "sha": "fa3c2bfc053c2661a0c5b95cd10340e75ec438dc",
+      "date": "2026-09-05T19:21:41+09:00",
+      "subject": "Cycle through every montage character"
+    },
+    {
+      "sha": "a4c7d51e17c05be71c0c26a4441e321ae00bf157",
+      "date": "2026-09-05T19:23:52+09:00",
+      "subject": "Show montage finds instead of points"
+    },
+    {
+      "sha": "8d2f5e19f970562af42aac7d4036fd08610af0b3",
+      "date": "2026-09-05T19:34:59+09:00",
+      "subject": "Show character names above picture puzzle previews"
+    },
+    {
+      "sha": "f4ea687363df93b89cdcede78a514c4f67f6c159",
+      "date": "2026-09-05T19:42:50+09:00",
+      "subject": "Keep puzzle tiles square and reuse memory cards"
+    },
+    {
+      "sha": "321798e30fd3b0e912146dd7bb9a8744dd1ae68e",
+      "date": "2026-09-05T20:16:04+09:00",
+      "subject": "Add staged face memory and progressive three-minute montage"
+    },
+    {
+      "sha": "83f6550db8285c8b41889cc893bd75f1b1db34ea",
+      "date": "2026-09-05T20:27:32+09:00",
+      "subject": "Add files via upload"
+    },
+    {
+      "sha": "8948acd43e2dbbdd3a3b91c1991f4335dbf88624",
+      "date": "2026-09-05T20:31:26+09:00",
+      "subject": "Use only seven original character faces in memory game"
+    },
+    {
+      "sha": "36c3ad3c1ca767b67c31252fc4bea191d8212595",
+      "date": "2026-09-05T20:39:28+09:00",
+      "subject": "Replace pick game deadlines with five chances and Tepee game over"
+    },
+    {
+      "sha": "48f84561866c5b6a6c4e8494f1eb9c2931c8c992",
+      "date": "2026-09-05T21:12:58+09:00",
+      "subject": "Add heart feedback and staged montage challenge with shuffle finale"
+    },
+    {
+      "sha": "06783f78e3277c3a317bdca4ea9c2338307aa776",
+      "date": "2026-09-05T21:24:40+09:00",
+      "subject": "Swap only two montage tiles behind doors and use current character ending"
+    },
+    {
+      "sha": "1b8b69ff9600cc19593d68d916ee78d77cf91ff6",
+      "date": "2026-09-05T21:26:59+09:00",
+      "subject": "Hide and clear heart HUD in memory mode"
+    }
+  ]
+}
