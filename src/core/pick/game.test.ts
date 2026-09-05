@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createMemoryBoard, createMontageBoard, createMontageRound, createRandomIndexCycle, createUnitBoard, MONTAGE_LIMIT_MS, tieredTimeScore, timeScore, type SourcePiece } from "./game";
+import { createMemoryBoard, createMontageBoard, createMontageRound, createRandomIndexCycle, createUnitBoard, PICK_MISTAKE_LIMIT, pickChances, tieredTimeScore, timeScore, type SourcePiece } from "./game";
 
 const pieces: SourcePiece[] = Array.from({ length: 75 }, (_, index) => ({ characterId: `c${Math.floor(index / 12)}`, pieceIndex: index, src: `${index}.jpg` }));
 
@@ -26,10 +26,19 @@ describe("TAP to PICK game rules", () => {
     expect(round.tiles.filter((tile) => !tile.exact).every((tile) => tile.variationIndex >= 0 && tile.variationIndex < 20)).toBe(true);
   });
 
-  it("gives montage one shared three-minute limit and starts a new run at 3x3", () => {
-    expect(MONTAGE_LIMIT_MS).toBe(180_000);
+  it("starts a new montage run at 3x3", () => {
     createMontageRound(20, 10);
     expect(createMontageRound(20, 0).tiles).toHaveLength(9);
+  });
+
+  it("allows four mistakes and ends on exactly the fifth, with a fresh run restoring five chances", () => {
+    expect(PICK_MISTAKE_LIMIT).toBe(5);
+    for (let mistakes = 0; mistakes < 5; mistakes++) {
+      expect(pickChances(mistakes)).toEqual({ remaining: 5 - mistakes, gameOver: false });
+    }
+    expect(pickChances(5)).toEqual({ remaining: 0, gameOver: true });
+    expect(pickChances(6)).toEqual({ remaining: 0, gameOver: true });
+    expect(pickChances(0)).toEqual({ remaining: 5, gameOver: false });
   });
 
   it("uses every montage character once before starting a new random cycle", () => {

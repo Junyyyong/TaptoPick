@@ -1,16 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { GAME_IMAGE_URLS, MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS } from "./puzzles";
+import { GAME_IMAGE_URLS, MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS } from "./puzzles";
+import { tieredTimeScore } from "../core/pick/game";
 
 describe("Picture Pieces scoring content", () => {
-  it("defines five score bands ending at 60 seconds", () => {
-    expect(PICTURE_PIECES_TIME_LIMIT_MS).toBe(60_000);
+  it("keeps five score bands without a completion deadline", () => {
     expect(PICTURE_PIECES_SCORE_BANDS).toEqual([
       { maxMs: 10_000, score: 1500 },
       { maxMs: 20_000, score: 1200 },
       { maxMs: 30_000, score: 900 },
       { maxMs: 45_000, score: 600 },
-      { maxMs: 60_000, score: 300 },
+      { maxMs: Infinity, score: 300 },
     ]);
+    expect(tieredTimeScore(600_000, PICTURE_PIECES_SCORE_BANDS)).toBe(300);
   });
 
   it("keeps memory reveals readable without a long input lock", () => {

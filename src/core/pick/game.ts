@@ -17,7 +17,12 @@ export interface MontageTile {
   variationIndex: number;
 }
 
-export const MONTAGE_LIMIT_MS = 180_000;
+export const PICK_MISTAKE_LIMIT = 5;
+
+export function pickChances(mistakes: number): { remaining: number; gameOver: boolean } {
+  const remaining = Math.max(0, PICK_MISTAKE_LIMIT - mistakes);
+  return { remaining, gameOver: remaining === 0 };
+}
 
 export function createMontageRound(variationCount: number, found: number, random: Random = Math.random): { side: 3 | 4 | 5; tiles: MontageTile[] } {
   const side = found === 0 ? 3 : found === 1 ? 4 : 5;

@@ -82,13 +82,12 @@ export const ALL_PIECES = PUZZLE_CHARACTERS.flatMap((entry) =>
   entry.pieces.map((src, pieceIndex) => ({ characterId: entry.id, pieceIndex, src })),
 );
 
-export const PICTURE_PIECES_TIME_LIMIT_MS = 60_000;
 export const PICTURE_PIECES_SCORE_BANDS = [
   { maxMs: 10_000, score: 1500 },
   { maxMs: 20_000, score: 1200 },
   { maxMs: 30_000, score: 900 },
   { maxMs: 45_000, score: 600 },
-  { maxMs: PICTURE_PIECES_TIME_LIMIT_MS, score: 300 },
+  { maxMs: Infinity, score: 300 },
 ] as const;
 
 export const MEMORY_REVEAL_DELAY_MS = {

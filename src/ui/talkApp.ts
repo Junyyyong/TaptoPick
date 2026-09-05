@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "../config/app";
-import { ALL_PIECES, MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS, PUZZLE_CHARACTERS, type MontageCharacter, type PuzzleCharacter } from "../content/puzzles";
-import { createMontageRound, createRandomIndexCycle, createUnitBoard, MONTAGE_LIMIT_MS, tieredTimeScore, timeScore, type MemoryCard } from "../core/pick/game";
+import { ALL_PIECES, MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PUZZLE_CHARACTERS, type MontageCharacter, type PuzzleCharacter } from "../content/puzzles";
+import { createMontageRound, createRandomIndexCycle, createUnitBoard, PICK_MISTAKE_LIMIT, pickChances, tieredTimeScore, timeScore, type MemoryCard } from "../core/pick/game";
 import { MEMORY_STAGES, MemoryRun } from "../core/pick/memory";
 import { el } from "./dom";
 import { feedback } from "./feedback";
@@ -118,6 +118,7 @@ export class TalkApp {
     this.game.classList.toggle("is-unit-mode", mode === "unit");
     this.targetCharacterName.classList.toggle("hidden", mode !== "unit");
     this.targetCharacterName.textContent = "";
+    if (mode !== "memory") this.updateChances();
 
     if (mode === "unit") this.startUnitRound();
     if (mode === "montage") this.startMontageRound();
@@ -137,11 +138,10 @@ export class TalkApp {
     tiles.forEach((tile) => {
       const button = this.imageButton(tile.src, `${tile.characterId} picture piece`);
       button.addEventListener("click", () => {
-        if (!this.active || this.paused || this.unitFound.has(tile.pieceIndex)) return;
+        if (!this.active || this.paused || (tile.target && this.unitFound.has(tile.pieceIndex))) return;
         if (!tile.target) {
-          this.mistakes += 1;
-          feedback.reject();
           this.flashWrong(button);
+          this.wrongPick();
           return;
         }
         this.unitFound.add(tile.pieceIndex);
@@ -182,14 +182,9 @@ export class TalkApp {
       button.addEventListener("click", () => {
         if (!this.active || this.paused || this.montageNextAt !== undefined) return;
         this.elapsedMs = performance.now() - this.startedAt;
-        if (this.elapsedMs >= MONTAGE_LIMIT_MS) {
-          this.finishMontage();
-          return;
-        }
         if (!tile.exact) {
-          this.mistakes += 1;
-          feedback.reject();
           this.flashWrong(button);
+          this.wrongPick();
           return;
         }
         this.montageFound += 1;
@@ -389,20 +384,7 @@ export class TalkApp {
         return;
       }
       this.elapsedMs = performance.now() - this.startedAt;
-      if (this.mode === "unit" || this.mode === "montage") {
-        const limit = this.mode === "unit" ? PICTURE_PIECES_TIME_LIMIT_MS : MONTAGE_LIMIT_MS;
-        const remaining = Math.max(0, limit - this.elapsedMs);
-        this.clock.textContent = formatTime(remaining);
-        if (this.mode === "montage") this.progressFill.style.width = `${remaining / limit * 100}%`;
-        if (remaining <= 0) {
-          if (this.mode === "unit") this.finishUnitTimeout();
-          else this.finishMontage();
-          return;
-        }
-        if (this.mode === "montage" && this.montageNextAt !== undefined && this.elapsedMs >= this.montageNextAt) this.renderNextMontage();
-      } else {
-        this.clock.textContent = formatTime(this.elapsedMs);
-      }
+      if (this.mode === "montage" && this.montageNextAt !== undefined && this.elapsedMs >= this.montageNextAt) this.renderNextMontage();
       this.frame = requestAnimationFrame(tick);
     };
     this.frame = requestAnimationFrame(tick);
@@ -414,20 +396,26 @@ export class TalkApp {
   }
 
   private finishUnit(): void {
-    if (this.elapsedMs > PICTURE_PIECES_TIME_LIMIT_MS) {
-      this.finishUnitTimeout();
-      return;
-    }
+    this.elapsedMs = performance.now() - this.startedAt;
     const score = tieredTimeScore(this.elapsedMs, PICTURE_PIECES_SCORE_BANDS);
     this.finishGame("PUZZLE COMPLETE", `You found every ${this.targetCharacter.name} piece.\n${formatTime(this.elapsedMs)} · ${this.mistakes} wrong picks · ${score.toLocaleString()} points`, score, this.targetCharacter.id);
   }
 
-  private finishUnitTimeout(): void {
-    this.finishGame("TIME UP", `You found ${this.unitFound.size} of ${this.targetCharacter.pieces.length} ${this.targetCharacter.name} pieces.\n60 seconds · 0 points`, 0, this.targetCharacter.id);
+  private updateChances(): void {
+    this.clock.textContent = `CHANCES ${pickChances(this.mistakes).remaining}/${PICK_MISTAKE_LIMIT}`;
   }
 
-  private finishMontage(): void {
-    this.finishGame("TIME UP", `You found ${this.montageFound} exact matches in 3 minutes.\n${this.mistakes} wrong picks`, this.montageFound, this.montageCharacter.id, "found");
+  private wrongPick(): void {
+    this.mistakes += 1;
+    feedback.reject();
+    this.updateChances();
+    if (!pickChances(this.mistakes).gameOver) return;
+    this.montageNextAt = undefined;
+    if (this.mode === "montage") {
+      this.finishGame("GAME OVER", `You found ${this.montageFound} exact matches.\nAll ${PICK_MISTAKE_LIMIT} chances used.`, this.montageFound, "tepee", "found");
+    } else {
+      this.finishGame("GAME OVER", `You found ${this.unitFound.size} of ${this.targetCharacter.pieces.length} ${this.targetCharacter.name} pieces.\nAll ${PICK_MISTAKE_LIMIT} chances used.`, 0, "tepee");
+    }
   }
 
   private finishMemory(): void {
@@ -451,10 +439,11 @@ export class TalkApp {
       this.resultDetail.textContent = detail;
       this.result.classList.remove("hidden");
     };
+    const videoCaption = headline === "GAME OVER" ? "GAME OVER" : "NICE PICK!";
     if (celebrationCharacterId && metric === "found") {
-      this.cheer.playFoundForCharacter(headline, score, "NICE PICK!", celebrationCharacterId, showResult);
+      this.cheer.playFoundForCharacter(headline, score, videoCaption, celebrationCharacterId, showResult);
     } else if (celebrationCharacterId) {
-      this.cheer.playForCharacter(headline, score, "NICE PICK!", celebrationCharacterId, showResult);
+      this.cheer.playForCharacter(headline, score, videoCaption, celebrationCharacterId, showResult);
     } else {
       this.cheer.play(headline, score, "NICE PICK!", showResult, score);
     }
@@ -486,11 +475,11 @@ export class TalkApp {
   }
 
   private showHowToPlay(): void {
-    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Find every piece that belongs to the character on the 7×7 board before the 60-second timer runs out.</span></p><p><b>2. Montage Hunt</b><span>Find the one image that exactly matches the character above. Start with 3×3, move to 4×4 after one match, then stay at 5×5 after two matches. Find as many as you can within one shared 3-minute timer. The character changes after every match.</span></p><p><b>3. Pair Memory</b><span>Clear all four stages: 4×4 (1 min), 5×5 (1 min), 6×6 (1 min 30 sec), and 7×7 (2 min). Each stage starts with a fresh timer after a 3-second face preview. Any two identical faces match. Gray center stars are free spaces. Time up ends the run.</span></p></div>`);
+    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Find every piece that belongs to the character on the 7×7 board. You have 5 chances and no time limit. The fifth wrong pick ends the game.</span></p><p><b>2. Montage Hunt</b><span>Find the one image that exactly matches the character above. Start with 3×3, move to 4×4 after one match, then stay at 5×5 after two matches. You have 5 chances for the whole run and no time limit. Correct picks do not restore chances. The fifth wrong pick ends the game.</span></p><p><b>3. Pair Memory</b><span>Clear all four stages: 4×4 (1 min), 5×5 (1 min), 6×6 (1 min 30 sec), and 7×7 (2 min). Each stage starts with a fresh timer after a 3-second face preview. Any two identical faces match. Gray center stars are free spaces. Time up ends the run.</span></p></div>`);
   }
 
   private showRules(): void {
-    this.openHelp("Scoring rules", `<div class="rules-list"><p><b>Picture Pieces</b><span>Up to 10 sec: 1,500 · 20 sec: 1,200 · 30 sec: 900 · 45 sec: 600 · 60 sec: 300 points.</span></p><p><b>Pair Memory</b><span>Finish faster and avoid missed pairs for a higher score.</span></p><p><b>Montage Hunt</b><span>Your result is the number of exact matches found in 3 minutes.</span></p></div>`);
+    this.openHelp("Scoring rules", `<div class="rules-list"><p><b>Picture Pieces</b><span>Up to 10 sec: 1,500 · 20 sec: 1,200 · 30 sec: 900 · 45 sec: 600 · longer: 300 points. No time limit. Game Over after 5 wrong picks: 0 points.</span></p><p><b>Pair Memory</b><span>Finish faster and avoid missed pairs for a higher score.</span></p><p><b>Montage Hunt</b><span>Your result is the number of exact matches found before your fifth wrong pick. No time limit.</span></p></div>`);
   }
 
   private showSettings(): void {
