@@ -38,6 +38,7 @@ describe("score-based celebration clips", () => {
     ["pino", "4"],
     ["tapee", "taepi"],
     ["hoo", "hupi"],
+    ["hupi", "hupi"],
     ["ha", "haepi"],
     ["haepi", "haepi"],
     ["ja", "jaepi"],
