@@ -5,7 +5,7 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 ## 자주 수정할 곳
 
 - `src/content/puzzles.ts` — 캐릭터 이름, 폴더, PNG/JPG 연결
-- `src/core/pick/game.ts` — 7×7·9×9 보드 생성, 셔플, 점수 규칙
+- `src/core/pick/game.ts` — 7×7·5×5·4×4 보드 생성, 셔플, 점수 규칙
 - `src/ui/talkApp.ts` — 세 게임의 화면 흐름과 문구
 - `src/ui/styles/talk.css` — 목표 카드, 이미지 블록, 메모리 카드 레이아웃
 - `src/ui/styles/tokens.css` — TAPtoTALK에서 이어받은 색상과 한글 폰트
@@ -18,6 +18,9 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 - 파일 추가·교체 뒤에는 `npm run build`로 Vite가 모든 이미지를 포함하는지 확인합니다.
 - 캐릭터 폴더를 추가하면 `src/content/puzzles.ts`의 glob 패턴과 캐릭터 목록을 함께 수정합니다.
 - 게임 2는 일곱 캐릭터 얼굴의 정답과 바리에이션을 사용합니다. 런타임에는 `optimized/montage/` 아래 캐릭터별 폴더의 `answer.webp`, `variation-*.webp`를 불러옵니다.
+- 게임 2의 `createMontageRound`는 정답 개수에 따라 3×3 → 4×4 → 5×5(이후 유지) 보드를 생성합니다. `MONTAGE_LIMIT_MS`는 단계마다 초기화하지 않는 전체 제한시간 3분입니다.
+- 게임 3은 `MEMORY_FACES`의 얼굴 8종을 반복해 8·12·18·24쌍을 구성합니다. 게임 2의 최적화된 얼굴을 재사용하며 `MEMORY_PREVIEW_MS`로 단계별 미리보기 시간을 설정합니다.
+- `src/core/pick/memory.ts`의 `MEMORY_STAGES`는 보드 크기·쌍 수·단계별 제한시간을 정의합니다. `MemoryRun`이 미리보기, 동일 이미지 매칭, 단계 전환, 시간 초과를 처리합니다. UI는 일시정지 중 시간을 전달하지 않아 타이머와 뒤집기 대기도 함께 멈춥니다.
 
 ## 의존 방향
 

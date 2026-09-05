@@ -126,3 +126,10 @@ export const GAME_IMAGE_URLS = [
   ...ALL_PIECES.map((piece) => piece.src),
   ...MONTAGE_CHARACTERS.flatMap((character) => character.variations),
 ] as const;
+
+// Seven members plus an easy-to-distinguish hat variation for the eighth pair.
+export const MEMORY_FACES = [
+  ...MONTAGE_CHARACTERS.map((character) => character.answer),
+  montageModules["/optimized/montage/bbogles/variation-1.webp"]!,
+] as const;
+export const MEMORY_PREVIEW_MS = 3_000;

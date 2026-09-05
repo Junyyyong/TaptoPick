@@ -1,6 +1,7 @@
 import { APP_CONFIG } from "../config/app";
-import { ALL_PIECES, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS, PUZZLE_CHARACTERS, type MontageCharacter, type PuzzleCharacter } from "../content/puzzles";
-import { createMemoryBoard, createMontageBoard, createRandomIndexCycle, createUnitBoard, tieredTimeScore, timeScore, type MemoryCard } from "../core/pick/game";
+import { ALL_PIECES, MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS, PUZZLE_CHARACTERS, type MontageCharacter, type PuzzleCharacter } from "../content/puzzles";
+import { createMontageRound, createRandomIndexCycle, createUnitBoard, MONTAGE_LIMIT_MS, tieredTimeScore, timeScore, type MemoryCard } from "../core/pick/game";
+import { MEMORY_STAGES, MemoryRun } from "../core/pick/memory";
 import { el } from "./dom";
 import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
@@ -8,7 +9,6 @@ import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "
 
 type Mode = "unit" | "montage" | "memory";
 
-const MONTAGE_LIMIT_MS = 60_000;
 const memoryColorAt = (index: number): number => ((index * 5 + Math.floor(index / 7) * 2) % 9) + 1;
 
 function formatTime(ms: number): string {
@@ -53,12 +53,10 @@ export class TalkApp {
   private montageCharacterCycle: number[] = [];
   private unitFound = new Set<number>();
   private montageFound = 0;
-  private memoryCards: MemoryCard[] = [];
+  private montageNextAt?: number;
+  private memoryRun?: MemoryRun;
+  private memoryUpdatedAt = 0;
   private readonly memoryButtons = new Map<number, HTMLButtonElement>();
-  private memoryOpen = new Set<number>();
-  private memoryMatched = new Set<number>();
-  private memoryBusy = false;
-  private memoryTimer?: number;
 
   constructor() {
     el("mode-unit").addEventListener("click", () => this.startMode("unit"));
@@ -90,7 +88,6 @@ export class TalkApp {
     this.active = false;
     this.paused = false;
     this.stopClock();
-    window.clearTimeout(this.memoryTimer);
     this.cheer.stop();
     this.help.classList.add("hidden");
     this.result.classList.add("hidden");
@@ -108,11 +105,9 @@ export class TalkApp {
     this.mistakes = 0;
     this.unitFound.clear();
     this.montageFound = 0;
-    this.memoryOpen.clear();
-    this.memoryMatched.clear();
+    this.montageNextAt = undefined;
+    this.memoryRun = undefined;
     this.memoryButtons.clear();
-    this.memoryBusy = false;
-    window.clearTimeout(this.memoryTimer);
     this.cheer.stop();
     this.result.classList.add("hidden");
     this.help.classList.add("hidden");
@@ -163,27 +158,34 @@ export class TalkApp {
   }
 
   private startMontageRound(): void {
-    this.setBoardSize(5, true);
     this.runMode.textContent = "Montage Hunt";
     this.montageCharacterCycle = createRandomIndexCycle(MONTAGE_CHARACTERS.length, this.montageCharacterIndex);
     this.renderNextMontage();
   }
 
   private renderNextMontage(): void {
+    this.montageNextAt = undefined;
     if (!this.montageCharacterCycle.length) {
       this.montageCharacterCycle = createRandomIndexCycle(MONTAGE_CHARACTERS.length, this.montageCharacterIndex);
     }
     this.montageCharacterIndex = this.montageCharacterCycle.shift()!;
     this.montageCharacter = MONTAGE_CHARACTERS[this.montageCharacterIndex]!;
+    const round = createMontageRound(this.montageCharacter.variations.length, this.montageFound);
+    this.setBoardSize(round.side, true);
     this.renderImagePreview(this.montageCharacter.answer, `${this.montageCharacter.name} exact montage`);
     this.updateProgress(this.montageFound, Math.max(1, this.montageFound + 1), `${this.montageFound} found`);
 
     const fragment = document.createDocumentFragment();
-    createMontageBoard(this.montageCharacter.variations.length).forEach((tile) => {
+    round.tiles.forEach((tile) => {
       const src = tile.exact ? this.montageCharacter.answer : this.montageCharacter.variations[tile.variationIndex]!;
       const button = this.montageButton(src, this.montageCharacter.name);
       button.addEventListener("click", () => {
-        if (!this.active || this.paused) return;
+        if (!this.active || this.paused || this.montageNextAt !== undefined) return;
+        this.elapsedMs = performance.now() - this.startedAt;
+        if (this.elapsedMs >= MONTAGE_LIMIT_MS) {
+          this.finishMontage();
+          return;
+        }
         if (!tile.exact) {
           this.mistakes += 1;
           feedback.reject();
@@ -191,9 +193,10 @@ export class TalkApp {
           return;
         }
         this.montageFound += 1;
+        this.montageNextAt = this.elapsedMs + 180;
         feedback.clear(1);
         button.classList.add("is-found");
-        window.setTimeout(() => { if (this.active && this.mode === "montage") this.renderNextMontage(); }, 180);
+        this.progressLabel.textContent = `${this.montageFound} found`;
       });
       fragment.append(button);
     });
@@ -201,41 +204,47 @@ export class TalkApp {
   }
 
   private startMemoryRound(): void {
-    this.setBoardSize(7);
+    this.memoryRun = new MemoryRun(MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS);
     this.runMode.textContent = "Pair Memory";
+    this.renderMemoryStage();
+  }
+
+  private renderMemoryStage(): void {
+    const run = this.memoryRun!;
+    this.setBoardSize(run.stage.size);
     this.targetPreview.replaceChildren();
     const badge = document.createElement("div");
     badge.className = "memory-target-badge";
-    badge.innerHTML = "<strong>0/24</strong><span>PAIRS</span>";
+    badge.innerHTML = `<span class="memory-stage-label">STAGE ${run.stageIndex + 1}/${MEMORY_STAGES.length} · ${run.stage.size}×${run.stage.size}</span><strong>0/${run.stage.pairs}</strong><span>PAIRS</span>`;
     this.targetPreview.append(badge);
-    this.memoryCards = createMemoryBoard(ALL_PIECES);
-    this.updateProgress(0, 24, "0 / 24 pairs");
+    this.clock.textContent = `LOOK · ${Math.ceil(run.previewRemainingMs / 1000)}`;
     this.renderMemoryBoard();
   }
 
   private renderMemoryBoard(): void {
     this.memoryButtons.clear();
     const fragment = document.createDocumentFragment();
-    this.memoryCards.forEach((card, index) => {
+    this.memoryRun!.cards.forEach((card, index) => {
       const button = document.createElement("button");
       button.type = "button";
       button.className = `picture-tile memory-card memory-card--color-${memoryColorAt(index)}`;
-      button.setAttribute("aria-label", card.free ? "Free center block" : "Face-down picture card");
       if (card.free) {
         button.classList.add("is-free");
-        button.innerHTML = "<span class=memory-free>★</span>";
+        button.innerHTML = '<span class="memory-free">★</span>';
+        button.setAttribute("aria-label", "Free center star");
         button.disabled = true;
-      } else {
-        const back = document.createElement("span");
-        back.className = "memory-back";
-        back.textContent = "?";
-        const image = document.createElement("img");
-        image.src = card.src;
-        image.alt = "";
-        button.append(back, image);
-        button.addEventListener("click", () => this.flipMemoryCard(card));
-        this.memoryButtons.set(card.id, button);
+        fragment.append(button);
+        return;
       }
+      const back = document.createElement("span");
+      back.className = "memory-back";
+      back.textContent = "?";
+      const image = document.createElement("img");
+      image.src = card.src;
+      image.alt = "";
+      button.append(back, image);
+      button.addEventListener("click", () => this.flipMemoryCard(card));
+      this.memoryButtons.set(card.id, button);
       fragment.append(button);
     });
     this.board.replaceChildren(fragment);
@@ -243,44 +252,46 @@ export class TalkApp {
   }
 
   private updateMemoryBoard(): void {
+    const run = this.memoryRun!;
     const matchedCount = this.targetPreview.querySelector("strong");
-    if (matchedCount) matchedCount.textContent = `${this.memoryMatched.size}/24`;
-    this.memoryCards.forEach((card) => {
+    if (matchedCount) matchedCount.textContent = `${run.matchedPairs}/${run.stage.pairs}`;
+    this.updateProgress(run.matchedPairs, run.stage.pairs, run.phase === "preview" ? "Memorize the faces" : `${run.matchedPairs} / ${run.stage.pairs} pairs`);
+    run.cards.forEach((card) => {
       const button = this.memoryButtons.get(card.id);
       if (!button) return;
-      const matched = this.memoryMatched.has(card.pairId);
-      const open = matched || this.memoryOpen.has(card.id);
+      const matched = run.matchedIds.has(card.id);
+      const open = run.phase === "preview" || matched || run.openIds.has(card.id);
       button.classList.toggle("is-open", open);
       button.classList.toggle("is-matched", matched);
-      button.disabled = open;
+      button.disabled = open || run.phase !== "playing";
       button.setAttribute("aria-label", matched ? "Matched picture card" : open ? "Face-up picture card" : "Face-down picture card");
     });
   }
 
   private flipMemoryCard(card: MemoryCard): void {
-    if (!this.active || this.paused || this.memoryBusy || this.memoryOpen.has(card.id) || this.memoryMatched.has(card.pairId)) return;
-    this.memoryOpen.add(card.id);
+    if (!this.active || this.paused) return;
+    this.advanceMemoryClock(performance.now());
+    if (!this.active) return;
+    const pick = this.memoryRun!.choose(card.id);
+    if (pick === "ignored") return;
     feedback.tap();
+    if (pick === "match") feedback.clear(2);
+    if (pick === "mismatch") feedback.reject();
     this.updateMemoryBoard();
-    if (this.memoryOpen.size < 2) return;
+  }
 
-    const openCards = this.memoryCards.filter((entry) => this.memoryOpen.has(entry.id));
-    const matched = openCards[0]?.pairId === openCards[1]?.pairId;
-    this.memoryBusy = true;
-    this.memoryTimer = window.setTimeout(() => {
-      if (matched && openCards[0]) {
-        this.memoryMatched.add(openCards[0].pairId);
-        feedback.clear(2);
-      } else {
-        this.mistakes += 1;
-        feedback.reject();
-      }
-      this.memoryOpen.clear();
-      this.memoryBusy = false;
-      this.updateProgress(this.memoryMatched.size, 24, `${this.memoryMatched.size} / 24 pairs`);
-      this.updateMemoryBoard();
-      if (this.memoryMatched.size === 24) this.finishMemory();
-    }, matched ? MEMORY_REVEAL_DELAY_MS.match : MEMORY_REVEAL_DELAY_MS.mismatch);
+  private advanceMemoryClock(now: number): void {
+    const run = this.memoryRun!;
+    const phase = run.phase;
+    const stage = run.stageIndex;
+    run.advance(now - this.memoryUpdatedAt);
+    this.memoryUpdatedAt = now;
+    if (stage !== run.stageIndex) this.renderMemoryStage();
+    else if (phase !== run.phase) this.updateMemoryBoard();
+    this.clock.textContent = run.phase === "preview"
+      ? `LOOK · ${Math.ceil(run.previewRemainingMs / 1000)}`
+      : formatTime(run.remainingMs);
+    if (run.phase === "won" || run.phase === "lost") this.finishMemory();
   }
 
   private imageButton(src: string, label: string): HTMLButtonElement {
@@ -345,8 +356,11 @@ export class TalkApp {
     this.targetPreview.replaceChildren(image);
   }
 
-  private setBoardSize(size: 5 | 7 | 9, montage = false): void {
+  private setBoardSize(size: 3 | 4 | 5 | 6 | 7 | 9, montage = false): void {
+    this.board.classList.toggle("picture-board--3", size === 3);
+    this.board.classList.toggle("picture-board--4", size === 4);
     this.board.classList.toggle("picture-board--5", size === 5);
+    this.board.classList.toggle("picture-board--6", size === 6);
     this.board.classList.toggle("picture-board--7", size === 7);
     this.board.classList.toggle("picture-board--9", size === 9);
     this.board.classList.toggle("is-montage", montage);
@@ -366,8 +380,14 @@ export class TalkApp {
   private startClock(): void {
     this.stopClock();
     this.startedAt = performance.now() - this.elapsedMs;
+    this.memoryUpdatedAt = performance.now();
     const tick = (): void => {
       if (!this.active || this.paused) return;
+      if (this.mode === "memory") {
+        this.advanceMemoryClock(performance.now());
+        if (this.active) this.frame = requestAnimationFrame(tick);
+        return;
+      }
       this.elapsedMs = performance.now() - this.startedAt;
       if (this.mode === "unit" || this.mode === "montage") {
         const limit = this.mode === "unit" ? PICTURE_PIECES_TIME_LIMIT_MS : MONTAGE_LIMIT_MS;
@@ -379,6 +399,7 @@ export class TalkApp {
           else this.finishMontage();
           return;
         }
+        if (this.mode === "montage" && this.montageNextAt !== undefined && this.elapsedMs >= this.montageNextAt) this.renderNextMontage();
       } else {
         this.clock.textContent = formatTime(this.elapsedMs);
       }
@@ -406,19 +427,23 @@ export class TalkApp {
   }
 
   private finishMontage(): void {
-    this.finishGame("TIME UP", `You found ${this.montageFound} exact matches in 60 seconds.\n${this.mistakes} wrong picks`, this.montageFound, this.montageCharacter.id, "found");
+    this.finishGame("TIME UP", `You found ${this.montageFound} exact matches in 3 minutes.\n${this.mistakes} wrong picks`, this.montageFound, this.montageCharacter.id, "found");
   }
 
   private finishMemory(): void {
-    const score = timeScore(this.elapsedMs, this.mistakes, 8000);
-    this.finishGame("ALL PAIRS FOUND", `You matched all 24 pairs.\n${formatTime(this.elapsedMs)} · ${this.mistakes} misses · ${score.toLocaleString()} points`, score);
+    const run = this.memoryRun!;
+    if (run.phase === "lost") {
+      this.finishGame("TIME UP", `Stage ${run.stageIndex + 1}/${MEMORY_STAGES.length} · ${run.stage.size}×${run.stage.size}\n${run.matchedPairs} / ${run.stage.pairs} pairs found. Try again from 4×4!`, 0);
+      return;
+    }
+    const score = timeScore(run.totalElapsedMs, run.mistakes, 8000);
+    this.finishGame("ALL STAGES CLEAR", `You completed all ${MEMORY_STAGES.length} stages!\n${formatTime(run.totalElapsedMs)} · ${run.mistakes} misses · ${score.toLocaleString()} points`, score);
   }
 
   private finishGame(headline: string, detail: string, score: number, celebrationCharacterId?: string, metric: "score" | "found" = "score"): void {
     if (!this.active) return;
     this.active = false;
     this.stopClock();
-    window.clearTimeout(this.memoryTimer);
     this.game.classList.add("is-input-locked");
     feedback.complete();
     const showResult = (): void => {
@@ -437,6 +462,8 @@ export class TalkApp {
 
   private pauseGame(): void {
     if (!this.active || this.paused) return;
+    if (this.mode === "memory") this.advanceMemoryClock(performance.now());
+    if (!this.active) return;
     this.paused = true;
     this.stopClock();
     this.game.classList.add("is-input-locked");
@@ -459,11 +486,11 @@ export class TalkApp {
   }
 
   private showHowToPlay(): void {
-    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Find every piece that belongs to the character on the 7×7 board before the 60-second timer runs out.</span></p><p><b>2. Montage Hunt</b><span>Find the one image that exactly matches the character above among 25 candidates. The character changes after every match.</span></p><p><b>3. Pair Memory</b><span>Flip two cards at a time and match all 24 pairs. The center star is a free block.</span></p></div>`);
+    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Find every piece that belongs to the character on the 7×7 board before the 60-second timer runs out.</span></p><p><b>2. Montage Hunt</b><span>Find the one image that exactly matches the character above. Start with 3×3, move to 4×4 after one match, then stay at 5×5 after two matches. Find as many as you can within one shared 3-minute timer. The character changes after every match.</span></p><p><b>3. Pair Memory</b><span>Clear all four stages: 4×4 (1 min), 5×5 (1 min), 6×6 (1 min 30 sec), and 7×7 (2 min). Each stage starts with a fresh timer after a 3-second face preview. Any two identical faces match. Gray center stars are free spaces. Time up ends the run.</span></p></div>`);
   }
 
   private showRules(): void {
-    this.openHelp("Scoring rules", `<div class="rules-list"><p><b>Picture Pieces</b><span>Up to 10 sec: 1,500 · 20 sec: 1,200 · 30 sec: 900 · 45 sec: 600 · 60 sec: 300 points.</span></p><p><b>Pair Memory</b><span>Finish faster and avoid missed pairs for a higher score.</span></p><p><b>60-second hunt</b><span>Each correct montage is worth 500 points. Each wrong pick costs 25 points.</span></p></div>`);
+    this.openHelp("Scoring rules", `<div class="rules-list"><p><b>Picture Pieces</b><span>Up to 10 sec: 1,500 · 20 sec: 1,200 · 30 sec: 900 · 45 sec: 600 · 60 sec: 300 points.</span></p><p><b>Pair Memory</b><span>Finish faster and avoid missed pairs for a higher score.</span></p><p><b>Montage Hunt</b><span>Your result is the number of exact matches found in 3 minutes.</span></p></div>`);
   }
 
   private showSettings(): void {

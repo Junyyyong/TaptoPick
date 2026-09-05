@@ -17,6 +17,13 @@ export interface MontageTile {
   variationIndex: number;
 }
 
+export const MONTAGE_LIMIT_MS = 180_000;
+
+export function createMontageRound(variationCount: number, found: number, random: Random = Math.random): { side: 3 | 4 | 5; tiles: MontageTile[] } {
+  const side = found === 0 ? 3 : found === 1 ? 4 : 5;
+  return { side, tiles: createMontageBoard(variationCount, side * side, random) };
+}
+
 export interface MemoryCard {
   id: number;
   pairId: number;
@@ -65,15 +72,16 @@ export function createMontageBoard(variationCount: number, size = 25, random: Ra
     : { id, exact: false, variationIndex: variationIndices[variationCursor++]! });
 }
 
-export function createMemoryBoard(pieces: readonly SourcePiece[], random: Random = Math.random): MemoryCard[] {
-  if (pieces.length < 24) throw new Error("Memory mode needs at least 24 images");
-  const selected = shuffle(pieces, random).slice(0, 24);
-  const pairs = shuffle(selected.flatMap((piece, pairId) => [
-    { id: pairId * 2, pairId, src: piece.src, free: false },
-    { id: pairId * 2 + 1, pairId, src: piece.src, free: false },
+export function createMemoryBoard(faces: readonly string[], size: 4 | 5 | 6 | 7 = 4, random: Random = Math.random): MemoryCard[] {
+  if (faces.length !== 8 || new Set(faces).size !== 8) throw new Error("Memory mode needs eight distinct faces");
+  const pairCount = Math.floor(size * size / 2);
+  const faceOrder = shuffle(faces, random);
+  const board = shuffle(Array.from({ length: pairCount }, (_, pairId) => faceOrder[pairId % faceOrder.length]!).flatMap((src, pairId) => [
+    { id: pairId * 2, pairId, src, free: false },
+    { id: pairId * 2 + 1, pairId, src, free: false },
   ]), random);
-  pairs.splice(24, 0, { id: 48, pairId: -1, src: "", free: true });
-  return pairs;
+  if (size % 2) board.splice(pairCount, 0, { id: size * size - 1, pairId: -1, src: "", free: true });
+  return board;
 }
 
 export function timeScore(elapsedMs: number, mistakes = 0, base = 5000): number {

@@ -203,6 +203,7 @@
 .memory-target-badge { display: grid; place-items: center; color: var(--hot); line-height: 1; }
 .memory-target-badge strong { font-size: 43px; font-weight: 900; }
 .memory-target-badge span { margin-top: 4px; color: var(--ink-soft); font-size: 10px; font-weight: 900; letter-spacing: .2em; }
+.memory-target-badge .memory-stage-label { margin: 0 0 16px; font-size: 13px; letter-spacing: .08em; }
 
 .pick-progress { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 9px; align-items: center; min-height: 18px; padding-inline: 2px; }
 .pick-progress > span { min-width: 72px; color: var(--ink-soft); font-size: 11px; font-weight: 800; }
@@ -225,7 +226,10 @@
   background: transparent;
 }
 
+.picture-board--4 { --board-columns: 4; gap: clamp(4px, 1.2vw, 7px); }
+.picture-board--3 { --board-columns: 3; gap: clamp(4px, 1.2vw, 7px); }
 .picture-board--5 { --board-columns: 5; gap: clamp(4px, 1.2vw, 7px); }
+.picture-board--6 { --board-columns: 6; }
 .is-unit-mode { --target-name-space: 34px; }
 .picture-board--9 { --board-columns: 9; gap: clamp(2px, .75vw, 4px); }
 .picture-board.is-montage .picture-tile img { object-position: center 18%; }
@@ -266,7 +270,7 @@
 .memory-card--color-7 { --memory-face: var(--v7); }
 .memory-card--color-8 { --memory-face: var(--v8); }
 .memory-card--color-9 { --memory-face: var(--v9); }
-.memory-card img { opacity: 0; transform: scale(.72) rotateY(90deg); }
+.memory-card img { object-fit: contain; opacity: 0; transform: scale(.72) rotateY(90deg); }
 .memory-card.is-open img,
 .memory-card.is-matched img { opacity: 1; transform: scale(1) rotateY(0); }
 .memory-card.is-matched { box-shadow: inset 0 0 0 3px var(--ring-ok); }

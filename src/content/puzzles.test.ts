@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { GAME_IMAGE_URLS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS } from "./puzzles";
+import { GAME_IMAGE_URLS, MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PICTURE_PIECES_TIME_LIMIT_MS } from "./puzzles";
 
 describe("Picture Pieces scoring content", () => {
   it("defines five score bands ending at 60 seconds", () => {
@@ -15,6 +15,14 @@ describe("Picture Pieces scoring content", () => {
 
   it("keeps memory reveals readable without a long input lock", () => {
     expect(MEMORY_REVEAL_DELAY_MS).toEqual({ match: 250, mismatch: 450 });
+  });
+
+  it("reuses eight preloaded faces including all seven members for memory", () => {
+    expect(MEMORY_FACES).toHaveLength(8);
+    expect(new Set(MEMORY_FACES).size).toBe(8);
+    expect(MEMORY_PREVIEW_MS).toBe(3_000);
+    MONTAGE_CHARACTERS.forEach((character) => expect(MEMORY_FACES).toContain(character.answer));
+    MEMORY_FACES.forEach((face) => expect(GAME_IMAGE_URLS).toContain(face));
   });
 
   it("provides answer and distinct wrong variations for each montage character", () => {
