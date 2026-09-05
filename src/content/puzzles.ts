@@ -68,11 +68,11 @@ function character(id: string, name: string, folder: string): PuzzleCharacter {
 }
 
 export const PUZZLE_CHARACTERS: readonly PuzzleCharacter[] = [
-  character("bb", "BB", "Bb"),
-  character("ha", "Ha", "Ha"),
-  character("hoo", "Hoo", "Hoo"),
-  character("ja", "Ja", "Ja"),
-  character("pino", "Pino", "Pino"),
+  character("bb", "Bbogles", "Bb"),
+  character("ha", "Hapee", "Ha"),
+  character("hoo", "Hooopee", "Hoo"),
+  character("ja", "Zapee", "Ja"),
+  character("pino", "PinoPan", "Pino"),
   character("tapee", "Tapee", "Tapee"),
   character("tepee", "Tepee", "Tepee"),
 ];

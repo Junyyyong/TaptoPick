@@ -178,6 +178,17 @@
   overflow: visible;
 }
 
+.is-unit-mode .pick-target { min-height: 314px; row-gap: 6px; }
+.target-character-name {
+  margin: 0;
+  color: var(--ink);
+  font-family: "TAP Serif KR", serif;
+  font-size: clamp(20px, 5.5vw, 26px);
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+}
+
 .target-preview > img { display: block; width: 100%; min-width: 0; max-width: 100%; height: 100%; min-height: 0; max-height: 100%; object-fit: contain; }
 .assembled-preview { display: grid; width: 224px; overflow: hidden; grid-template-columns: repeat(3, 1fr); background: #fff; }
 .assembled-preview img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
@@ -203,7 +214,7 @@
   display: grid;
   flex: 0 1 auto;
   align-self: center;
-  width: min(100%, calc(var(--app-h, 100dvh) - 390px), 560px);
+  width: min(100%, calc(var(--app-h, 100dvh) - 390px - var(--target-name-space, 0px)), 560px);
   aspect-ratio: 1;
   min-height: 0;
   grid-template-columns: repeat(var(--board-columns), minmax(0, 1fr));
@@ -214,6 +225,7 @@
 }
 
 .picture-board--5 { --board-columns: 5; gap: clamp(4px, 1.2vw, 7px); }
+.is-unit-mode { --target-name-space: 34px; }
 .picture-board--9 { --board-columns: 9; gap: clamp(2px, .75vw, 4px); }
 .picture-board.is-montage .picture-tile img { object-position: center 18%; }
 .picture-tile .montage-candidate-image { object-fit: contain; transition: transform 160ms ease, filter 160ms ease; }
@@ -274,10 +286,13 @@
 @media (max-height: 700px) {
   .pick-screen { gap: 4px; }
   .pick-target { min-height: 190px; padding: 2px 0; }
+  .is-unit-mode .pick-target { min-height: 220px; row-gap: 4px; }
+  .is-unit-mode { --target-name-space: 30px; }
+  .target-character-name { font-size: 20px; }
   .target-preview { width: min(76vw, 250px); height: 182px; }
   .assembled-preview { width: 152px; }
   .assembled-preview--12 { width: 114px; }
   .unit-reveal { width: 182px; height: 182px; }
   .unit-reveal--12 { width: 136.5px; }
-  .picture-board { width: min(100%, calc(var(--app-h, 100dvh) - 300px), 560px); }
+  .picture-board { width: min(100%, calc(var(--app-h, 100dvh) - 300px - var(--target-name-space, 0px)), 560px); }
 }

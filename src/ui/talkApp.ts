@@ -29,6 +29,7 @@ export class TalkApp {
   private readonly clock = el("run-clock");
   private readonly runMode = el("run-mode");
   private readonly targetPreview = el("target-preview");
+  private readonly targetCharacterName = el("target-character-name");
   private readonly progressLabel = el("progress-label");
   private readonly progressFill = el("progress-fill");
   private readonly result = el("result-layer");
@@ -117,6 +118,9 @@ export class TalkApp {
     this.splash.classList.add("hidden");
     this.game.classList.remove("hidden", "is-input-locked");
     this.game.classList.toggle("is-memory-mode", mode === "memory");
+    this.game.classList.toggle("is-unit-mode", mode === "unit");
+    this.targetCharacterName.classList.toggle("hidden", mode !== "unit");
+    this.targetCharacterName.textContent = "";
 
     if (mode === "unit") this.startUnitRound();
     if (mode === "montage") this.startMontageRound();
@@ -291,6 +295,7 @@ export class TalkApp {
   }
 
   private renderUnitPreview(character: PuzzleCharacter): void {
+    this.targetCharacterName.textContent = character.name;
     const reveal = document.createElement("div");
     reveal.className = `unit-reveal unit-reveal--${character.pieces.length}`;
     reveal.setAttribute("aria-label", `${character.name} picture progress`);
