@@ -21,6 +21,8 @@ describe("Picture Pieces scoring content", () => {
     expect(MONTAGE_CHARACTERS.map((character) => [character.id, character.name, character.variations.length])).toEqual([
       ["haepi", "Haepi", 20],
       ["bbogles", "Bbogles", 20],
+      ["tapee", "Tapee", 20],
+      ["tepee", "Tepee", 20],
     ]);
     MONTAGE_CHARACTERS.forEach((character) => {
       expect(character.answer).toMatch(/answer.*\.webp/);
@@ -31,7 +33,7 @@ describe("Picture Pieces scoring content", () => {
   });
 
   it("exposes every active game image once for splash-screen preloading", () => {
-    expect(GAME_IMAGE_URLS).toHaveLength(124);
+    expect(GAME_IMAGE_URLS).toHaveLength(166);
     expect(new Set(GAME_IMAGE_URLS)).toHaveLength(GAME_IMAGE_URLS.length);
     expect(GAME_IMAGE_URLS.every((url) => url.includes(".webp"))).toBe(true);
   });

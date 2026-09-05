@@ -33,6 +33,8 @@ const montageModules = import.meta.glob<string>(
   [
     "/optimized/montage/haepi/*.webp",
     "/optimized/montage/bbogles/*.webp",
+    "/optimized/montage/tapee/*.webp",
+    "/optimized/montage/tepee/*.webp",
   ],
   { eager: true, query: "?url", import: "default" },
 );
@@ -108,6 +110,8 @@ function montageCharacter(id: string, name: string, expectedVariations: number):
 export const MONTAGE_CHARACTERS: readonly MontageCharacter[] = [
   montageCharacter("haepi", "Haepi", 20),
   montageCharacter("bbogles", "Bbogles", 20),
+  montageCharacter("tapee", "Tapee", 20),
+  montageCharacter("tepee", "Tepee", 20),
 ];
 
 export const GAME_IMAGE_URLS = [
