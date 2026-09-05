@@ -97,23 +97,33 @@ export const MEMORY_REVEAL_DELAY_MS = {
   mismatch: 450,
 } as const;
 
-// Filename numbers, visually reviewed: large color/orientation changes vs small facial details.
+// Approved exclusions apply to every stage; keep the source files for future reference.
+const MONTAGE_EXCLUDED: Record<string, readonly number[]> = {
+  haepi: [23], bbogles: [15], tapee: [1,17], tepee: [20],
+  hupi: [], jaepi: [11], pino: [1,17],
+};
+
+// Filename numbers, visually reviewed: introductory shape changes vs subtler details.
+// The first 2x2 stage excludes color-only, mirrored, and 3D-render substitutions.
 const MONTAGE_DIFFICULTY: Record<string, { easy: number[]; hard: number[] }> = {
-  haepi: { easy: [18,19,20,21,22,23,26,27], hard: [8,9,10,11,12,13,14,15,24] },
-  bbogles: { easy: [2,3,4,14,15,16], hard: [5,6,7,9,12,13,17,18,20] },
-  tapee: { easy: [1,4,5,6,7,9,14,16,17,18,19,20], hard: [2,3,8,11,12,15] },
-  tepee: { easy: [1,2,3,10,14,15,16,17,20], hard: [4,5,8,9,13,19] },
-  hupi: { easy: [1,2,3,4,7,8,11,12,16], hard: [5,6,9,14,15,17,18] },
-  jaepi: { easy: [1,2,5,7,8,10,11,14,15], hard: [3,4,9,12,13,16] },
-  pino: { easy: [1,2,3,4,7,9,12,17,18], hard: [5,6,8,10,11,13,14,15,16] },
+  haepi: { easy: [16,17,20,22,27], hard: [8,9,10,11,12,13,14,15,24] },
+  bbogles: { easy: [1,8,11,19], hard: [5,6,7,9,12,13,17,18,20] },
+  tapee: { easy: [7,10,13,14,18,19,20], hard: [2,3,8,11,12,15] },
+  tepee: { easy: [6,7,11,12,14,15,18], hard: [4,5,8,9,13,19] },
+  hupi: { easy: [10,12,13,16], hard: [5,6,9,14,15,17,18] },
+  jaepi: { easy: [5,6,14,15], hard: [3,4,9,12,13,16] },
+  pino: { easy: [9,10,12,16], hard: [5,6,8,11,13,14,15] },
 };
 
 function montageCharacter(id: string, name: string, expectedVariations: number): MontageCharacter {
   const basePath = `/optimized/montage/${id}`;
   const answer = montageModules[`${basePath}/answer.webp`];
-  const entries = Object.entries(montageModules)
+  const sourceEntries = Object.entries(montageModules)
     .filter(([path]) => path.startsWith(`${basePath}/variation-`))
     .sort(([a], [b]) => natural.compare(a, b));
+  const entries = sourceEntries.filter(([path]) =>
+    !MONTAGE_EXCLUDED[id]!.includes(Number(path.match(/variation-(\d+)\.webp$/)?.[1])),
+  );
   const variations = entries.map(([, url]) => url);
   const indicesFor = (numbers: number[]) => numbers.map((number) => {
     const index = entries.findIndex(([path]) => Number(path.match(/variation-(\d+)\.webp$/)?.[1]) === number);
@@ -121,7 +131,7 @@ function montageCharacter(id: string, name: string, expectedVariations: number):
     return index;
   });
 
-  if (!answer || variations.length !== expectedVariations) {
+  if (!answer || sourceEntries.length !== expectedVariations) {
     throw new Error(`Montage Hunt requires one ${name} answer and ${expectedVariations} variations`);
   }
   return { id, name, answer, variations, easyVariations: indicesFor(MONTAGE_DIFFICULTY[id]!.easy), hardVariations: indicesFor(MONTAGE_DIFFICULTY[id]!.hard) };
