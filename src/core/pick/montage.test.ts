@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { MontageProgress, PickLives, MONTAGE_STAGES, createStagedMontageBoard, montageMotion, reshuffleMontage } from "./montage";
+import { MontageProgress, PickLives, MONTAGE_STAGES, createStagedMontageBoard, montageMotion, planMontageSwap } from "./montage";
 
 describe("montage stages and lives", () => {
   it("requires 3, 5, 5, 5 correct picks and wins only after all 18", () => {
@@ -50,19 +50,34 @@ describe("montage stages and lives", () => {
     expect(board.filter((t)=>t.exact)).toHaveLength(1);
     expect(board.filter((t)=>!t.exact).every((t)=>[2,7,9].includes(t.variationIndex))).toBe(true);
   });
-  it("warns before every shuffle and provides a stable settling interval", () => {
-    expect(montageMotion(5999)).toEqual({phase:"ready",revision:0});
-    expect(montageMotion(6000)).toEqual({phase:"warning",revision:0});
-    expect(montageMotion(6899)).toEqual({phase:"warning",revision:0});
-    expect(montageMotion(6900)).toEqual({phase:"moving",revision:1});
-    expect(montageMotion(7200)).toEqual({phase:"ready",revision:1});
-    expect(montageMotion(14100)).toEqual({phase:"moving",revision:2});
+  it("closes doors before swapping, holds them shut, then reopens", () => {
+    expect(montageMotion(5999)).toEqual({phase:"ready",cycle:0,closure:0});
+    expect(montageMotion(6000)).toEqual({phase:"closing",cycle:0,closure:0});
+    expect(montageMotion(6180)).toEqual({phase:"closing",cycle:0,closure:.5});
+    expect(montageMotion(6360)).toEqual({phase:"closed",cycle:0,closure:1});
+    expect(montageMotion(6479)).toEqual({phase:"closed",cycle:0,closure:1});
+    expect(montageMotion(6660)).toEqual({phase:"opening",cycle:0,closure:.5});
+    expect(montageMotion(6840)).toEqual({phase:"ready",cycle:1,closure:0});
+    expect(montageMotion(13200)).toEqual({phase:"closed",cycle:1,closure:1});
   });
-  it("preserves every tile and exactly one answer while moving the answer", () => {
+  it("swaps exactly two different pictures and leaves the other 23 untouched", () => {
     const board = createStagedMontageBoard(5,[1,2,3]);
-    const moved = reshuffleMontage(board,()=>.9999);
-    expect(moved.findIndex(t=>t.exact)).not.toBe(board.findIndex(t=>t.exact));
-    expect([...moved].sort((a,b)=>a.id-b.id)).toEqual([...board].sort((a,b)=>a.id-b.id));
-    expect(moved.filter(t=>t.exact)).toHaveLength(1);
+    for (const value of [0, .2, .5, .9999]) {
+      const plan = planMontageSwap(board,()=>value);
+      const changed = plan.tiles.filter((tile,index)=>tile.id!==board[index]!.id);
+      expect(changed).toHaveLength(2);
+      expect(new Set(changed.map(tile=>tile.id))).toEqual(new Set(plan.ids));
+      expect(changed[0]!.variationIndex).not.toBe(changed[1]!.variationIndex);
+      expect([...plan.tiles].sort((a,b)=>a.id-b.id)).toEqual([...board].sort((a,b)=>a.id-b.id));
+      expect(plan.tiles.filter(t=>t.exact)).toHaveLength(1);
+    }
+  });
+  it("does not force the answer to move each time and never mutates the original board", () => {
+    const board = createStagedMontageBoard(5,[1,2,3],()=>.9999);
+    const original = [...board];
+    const plan = planMontageSwap(board,()=>.5);
+    expect(plan.ids).not.toContain(0);
+    expect(board).toEqual(original);
+    expect(planMontageSwap([]).ids).toEqual([]);
   });
 });

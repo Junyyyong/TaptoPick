@@ -50,20 +50,24 @@ export function createStagedMontageBoard(
   })), random);
 }
 
-export function reshuffleMontage(tiles: readonly MontageTile[], random: Random = Math.random): MontageTile[] {
-  const shuffled = shuffle(tiles, random);
-  // Always move the answer, including for deterministic/random no-op shuffles.
-  const oldAnswer = tiles.findIndex((tile) => tile.exact);
-  const newAnswer = shuffled.findIndex((tile) => tile.exact);
-  if (shuffled.length > 1 && oldAnswer === newAnswer) shuffled.push(shuffled.shift()!);
-  return shuffled;
+export function planMontageSwap(tiles: readonly MontageTile[], random: Random = Math.random): { tiles: MontageTile[]; ids: number[] } {
+  const first = Math.floor(random() * tiles.length);
+  const selected = tiles[first];
+  const candidates = tiles.map((tile, index) => ({ tile, index })).filter(({tile, index}) => index !== first &&
+    (tile.exact !== selected?.exact || tile.variationIndex !== selected?.variationIndex));
+  if (!selected || !candidates.length) return { tiles: [...tiles], ids: [] };
+  const second = candidates[Math.floor(random() * candidates.length)]!.index;
+  const swapped = [...tiles];
+  [swapped[first], swapped[second]] = [swapped[second]!, swapped[first]!];
+  return { tiles: swapped, ids: [selected.id, tiles[second]!.id] };
 }
 
-/** Six seconds to pick, 900 ms warning, 300 ms settling. No time limit. */
-export function montageMotion(elapsedMs: number): { phase: "ready" | "warning" | "moving"; revision: number } {
-  const position = elapsedMs % 7200;
-  return {
-    phase: position < 6000 ? "ready" : position < 6900 ? "warning" : "moving",
-    revision: Math.floor((elapsedMs + 300) / 7200),
-  };
+/** Only the selected pair closes (360 ms), swaps fully covered (120 ms), then opens (360 ms). */
+export function montageMotion(elapsedMs: number): { phase: "ready" | "closing" | "closed" | "opening"; cycle: number; closure: number } {
+  const position = elapsedMs % 6840;
+  const cycle = Math.floor(elapsedMs / 6840);
+  if (position < 6000) return { phase: "ready", cycle, closure: 0 };
+  if (position < 6360) return { phase: "closing", cycle, closure: (position - 6000) / 360 };
+  if (position < 6480) return { phase: "closed", cycle, closure: 1 };
+  return { phase: "opening", cycle, closure: (6840 - position) / 360 };
 }
