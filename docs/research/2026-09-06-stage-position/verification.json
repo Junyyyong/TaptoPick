@@ -1,0 +1,242 @@
+[
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "round": 0,
+    "board": {
+      "x": 10,
+      "y": 381,
+      "width": 370,
+      "height": 370
+    },
+    "status": {
+      "x": 10,
+      "y": 758,
+      "width": 370,
+      "height": 16
+    },
+    "text": "STAGE 1/4 · 2×2"
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "round": 3,
+    "board": {
+      "x": 10,
+      "y": 381,
+      "width": 370,
+      "height": 370
+    },
+    "status": {
+      "x": 10,
+      "y": 758,
+      "width": 370,
+      "height": 16
+    },
+    "text": "STAGE 2/4 · 3×3"
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "round": 8,
+    "board": {
+      "x": 10,
+      "y": 381,
+      "width": 370,
+      "height": 370
+    },
+    "status": {
+      "x": 10,
+      "y": 758,
+      "width": 370,
+      "height": 16
+    },
+    "text": "STAGE 3/4 · 4×4"
+  },
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "round": 13,
+    "board": {
+      "x": 10,
+      "y": 381,
+      "width": 370,
+      "height": 370
+    },
+    "status": {
+      "x": 10,
+      "y": 758,
+      "width": 370,
+      "height": 16
+    },
+    "text": "STAGE 4/4 · 5×5"
+  },
+  {
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "round": 0,
+    "board": {
+      "x": 10,
+      "y": 272,
+      "width": 355,
+      "height": 355
+    },
+    "status": {
+      "x": 10,
+      "y": 631,
+      "width": 355,
+      "height": 16
+    },
+    "text": "STAGE 1/4 · 2×2"
+  },
+  {
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "round": 3,
+    "board": {
+      "x": 10,
+      "y": 272,
+      "width": 355,
+      "height": 355
+    },
+    "status": {
+      "x": 10,
+      "y": 631,
+      "width": 355,
+      "height": 16
+    },
+    "text": "STAGE 2/4 · 3×3"
+  },
+  {
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "round": 8,
+    "board": {
+      "x": 10,
+      "y": 272,
+      "width": 355,
+      "height": 355
+    },
+    "status": {
+      "x": 10,
+      "y": 631,
+      "width": 355,
+      "height": 16
+    },
+    "text": "STAGE 3/4 · 4×4"
+  },
+  {
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "round": 13,
+    "board": {
+      "x": 10,
+      "y": 272,
+      "width": 355,
+      "height": 355
+    },
+    "status": {
+      "x": 10,
+      "y": 631,
+      "width": 355,
+      "height": 16
+    },
+    "text": "STAGE 4/4 · 5×5"
+  },
+  {
+    "viewport": {
+      "width": 430,
+      "height": 932
+    },
+    "round": 0,
+    "board": {
+      "x": 10,
+      "y": 381,
+      "width": 410,
+      "height": 410
+    },
+    "status": {
+      "x": 10,
+      "y": 798,
+      "width": 410,
+      "height": 16
+    },
+    "text": "STAGE 1/4 · 2×2"
+  },
+  {
+    "viewport": {
+      "width": 430,
+      "height": 932
+    },
+    "round": 3,
+    "board": {
+      "x": 10,
+      "y": 381,
+      "width": 410,
+      "height": 410
+    },
+    "status": {
+      "x": 10,
+      "y": 798,
+      "width": 410,
+      "height": 16
+    },
+    "text": "STAGE 2/4 · 3×3"
+  },
+  {
+    "viewport": {
+      "width": 430,
+      "height": 932
+    },
+    "round": 8,
+    "board": {
+      "x": 10,
+      "y": 381,
+      "width": 410,
+      "height": 410
+    },
+    "status": {
+      "x": 10,
+      "y": 798,
+      "width": 410,
+      "height": 16
+    },
+    "text": "STAGE 3/4 · 4×4"
+  },
+  {
+    "viewport": {
+      "width": 430,
+      "height": 932
+    },
+    "round": 13,
+    "board": {
+      "x": 10,
+      "y": 381,
+      "width": 410,
+      "height": 410
+    },
+    "status": {
+      "x": 10,
+      "y": 798,
+      "width": 410,
+      "height": 16
+    },
+    "text": "STAGE 4/4 · 5×5"
+  }
+]
