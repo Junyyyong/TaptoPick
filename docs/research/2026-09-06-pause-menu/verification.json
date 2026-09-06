@@ -1,0 +1,21 @@
+{
+  "date": "2026-09-06T01:45:37.410Z",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "deviceScaleFactor": 2,
+  "modes": [
+    "unit",
+    "montage",
+    "memory"
+  ],
+  "checks": [
+    "pause freezes clock",
+    "resume restores play and memory clock",
+    "main menu exits without resuming",
+    "new game can start",
+    "close still resumes"
+  ],
+  "errors": []
+}

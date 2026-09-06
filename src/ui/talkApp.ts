@@ -569,7 +569,9 @@ export class TalkApp {
     this.paused = true;
     this.stopClock();
     this.game.classList.add("is-input-locked");
-    this.openHelp("Paused", "<div class=pause-copy><strong>Take your time.</strong><p>Close this panel to resume the timer.</p></div>");
+    this.openHelp("Paused", `<div class="pause-card"><p>Take a break. Your game is paused.</p><button class="wood-btn" id="btn-resume">Resume</button><button class="text-btn" id="btn-pause-menu">Main menu</button></div>`);
+    el("btn-resume").addEventListener("click", () => this.closeHelp());
+    el("btn-pause-menu").addEventListener("click", () => this.showTitle());
   }
 
   private closeHelp(): void {
