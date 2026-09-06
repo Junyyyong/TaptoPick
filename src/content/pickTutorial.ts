@@ -9,9 +9,9 @@ const unit = PUZZLE_CHARACTERS.find(c => c.id === "tepee")!;
 const face = MONTAGE_CHARACTERS.find(c => c.id === "tapee")!;
 const other = MONTAGE_CHARACTERS.find(c => c.id === "tepee")!;
 export const PRACTICE_EXAMPLES: readonly PracticeExample[] = [
-  { mode: "unit", title: "Picture Pieces", instruction: "Find the 3 sample pieces from this character. Ignore the other piece.",
+  { mode: "unit", title: "Picture Pieces", instruction: "Find all 9 pieces of this character. Follow the glowing pieces.",
     rule: "In the game: find every piece on a 7×7 board. You have 5 hearts and no time limit.", name: unit.displayName, preview: unit.preview,
-    tiles: [...unit.pieces.slice(0,3).map(src => ({src, key:unit.id, target:true})), {src:PUZZLE_CHARACTERS[0]!.pieces[0]!, key:"decoy", target:false}] },
+    tiles: unit.pieces.map(src => ({src, key:unit.id, target:true})) },
   { mode: "montage", title: "Montage Hunt", instruction: "Tap the one face that matches exactly. Look at the eyes, mouth and hat.",
     rule: "In the game: advance from 2×2 to 5×5. You have 5 hearts. Two tiles swap in the final stage.", name:face.displayName, preview:face.answer,
     tiles: [{src:face.answer,key:"answer",target:true}, ...face.easyVariations.slice(0,3).map(i=>({src:face.variations[i]!,key:`wrong-${i}`,target:false}))] },

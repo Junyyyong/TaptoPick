@@ -15,6 +15,7 @@ export function mountPickTutorial(root: HTMLElement): () => void {
     const currentGeneration = generation;
     const example = PRACTICE_EXAMPLES[step]!;
     let previewing = example.mode === "memory";
+    let countdown = 3;
     const run = new PracticeRun(example.mode, example.tiles);
     root.innerHTML = `<div class="visual-practice${previewing ? " is-memory" : ""}"><header class="visual-practice-head"><nav class="visual-practice-dots" aria-label="Practice steps"></nav><button type="button" class="text-btn" data-skip>Skip</button></header><h3>${example.title}</h3><p class="practice-sr-only">${example.instruction} Follow the highlighted button.</p>${example.preview ? '<div class="visual-practice-preview"></div>' : ''}<div class="practice-board" aria-label="Guided practice board"></div><footer class="visual-practice-foot"><p class="practice-status" role="status" aria-live="polite"></p><div class="visual-practice-actions"><button type="button" class="wood-btn" data-next>${step===2?"Done":"Next"}</button></div></footer></div>`;
     PRACTICE_EXAMPLES.forEach((entry,i)=>{
@@ -26,6 +27,11 @@ export function mountPickTutorial(root: HTMLElement): () => void {
     const preview=root.querySelector(".visual-practice-preview")!;
     if(example.preview){const img=new Image();img.src=example.preview;img.alt=example.name!;preview.append(img);}
     const next=root.querySelector<HTMLButtonElement>("[data-next]")!;
+    root.querySelector(".visual-practice")!.classList.toggle("is-unit",example.mode === "unit");
+    const countdownLabel=document.createElement("div");
+    countdownLabel.className="practice-countdown";
+    countdownLabel.setAttribute("role","status");
+    if(previewing) root.querySelector(".practice-board")!.before(countdownLabel);
     const status=root.querySelector<HTMLElement>(".practice-status")!;
     const buttons=run.tiles.map((tile,index)=>{
       const button=document.createElement("button");button.type="button";
@@ -39,7 +45,8 @@ export function mountPickTutorial(root: HTMLElement): () => void {
       });return button;
     });
     const update=():void=>{
-      status.textContent=previewing ? "" : run.complete?"✓":`${run.progress}/${run.goal}`;
+      status.textContent=previewing || run.complete ? "" : `${run.progress}/${run.goal}`;
+      countdownLabel.textContent=previewing ? String(countdown) : "";
       root.querySelector(".practice-board")!.classList.toggle("is-previewing",previewing);
       status.setAttribute("aria-label",run.complete?"Practice complete":`${run.progress} of ${run.goal} complete. Tap the highlighted card.`);
       next.hidden=!run.complete;next.classList.toggle("is-guided",run.complete);
@@ -57,7 +64,14 @@ export function mountPickTutorial(root: HTMLElement): () => void {
     if(previewing) {
       void Promise.all(buttons.map(button => button.querySelector("img")!.decode().catch(() => undefined))).then(() => {
         if(currentGeneration !== generation) return;
-        previewTimer=setTimeout(() => { if(currentGeneration !== generation) return; previewing=false;update(); },2000);
+        const tick=():void=>{
+          if(currentGeneration !== generation) return;
+          countdown--;
+          if(countdown===0) previewing=false;
+          update();
+          if(previewing) previewTimer=setTimeout(tick,1000);
+        };
+        previewTimer=setTimeout(tick,1000);
       });
     }
   };
