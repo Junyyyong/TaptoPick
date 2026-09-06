@@ -1,5 +1,7 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-06 — 첫째·둘째 안내 레이아웃 통일](2026-09-06-help-unified/README.md)
+
 - [2026-09-06 — 9조각 안내와 컬러 카운트다운](2026-09-06-help-countdown/README.md)
 
 - [2026-09-06 — 안내 요소 정리와 페어 2초 미리보기](2026-09-06-help-preview/README.md)
