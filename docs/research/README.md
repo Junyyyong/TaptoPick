@@ -8,5 +8,6 @@
 - [2026-09-06 — 체험형 How to play](2026-09-06-interactive-help/README.md)
 - [2026-09-06 — 커버 전 TapeeTepee 로고 교체](2026-09-06-studio-logo/README.md)
 - [2026-09-06 — TAPtoTEN 방식의 이미지 중심 How to play](2026-09-06-visual-help/README.md)
+- [2026-09-06 — 해피 11번 초록 선글라스 교체](2026-09-06-hapee-green/README.md)
 
 이 폴더는 개발 과정의 기록입니다. 게임 실행 코드에서 불러오지 않습니다. 원본 TAPtoTALK 저장소는 수정하지 않으며, 과거 화면은 **이 TaptoPick 저장소에 저장된 커밋**을 별도 임시 폴더에서 실행해 재현합니다.

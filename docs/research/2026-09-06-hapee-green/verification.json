@@ -1,0 +1,29 @@
+{
+  "attempt": 1,
+  "round": 11,
+  "target": "/optimized/montage/haepi/answer.webp",
+  "tiles": [
+    "/optimized/montage/haepi/variation-24.webp",
+    "/optimized/montage/haepi/variation-10.webp",
+    "/optimized/montage/haepi/variation-15.webp",
+    "/optimized/montage/haepi/variation-13.webp",
+    "/optimized/montage/haepi/variation-14.webp",
+    "/optimized/montage/haepi/variation-11.webp",
+    "/optimized/montage/haepi/variation-08.webp",
+    "/optimized/montage/haepi/variation-13.webp",
+    "/optimized/montage/haepi/variation-12.webp",
+    "/optimized/montage/haepi/variation-08.webp",
+    "/optimized/montage/haepi/answer.webp",
+    "/optimized/montage/haepi/variation-09.webp",
+    "/optimized/montage/haepi/variation-12.webp",
+    "/optimized/montage/haepi/variation-14.webp",
+    "/optimized/montage/haepi/variation-15.webp",
+    "/optimized/montage/haepi/variation-09.webp"
+  ],
+  "errors": [],
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "deviceScaleFactor": 2
+}
