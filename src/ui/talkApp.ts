@@ -144,7 +144,8 @@ export class TalkApp {
     this.montageStatus.classList.toggle("hidden", mode !== "montage");
     this.game.classList.toggle("is-memory-mode", mode === "memory");
     this.game.classList.toggle("is-unit-mode", mode === "unit");
-    this.targetCharacterName.classList.toggle("hidden", mode !== "unit");
+    this.game.classList.toggle("has-character-name", mode !== "memory");
+    this.targetCharacterName.classList.toggle("hidden", mode === "memory");
     this.targetCharacterName.textContent = "";
     if (mode !== "memory") this.updateChances();
 
@@ -210,7 +211,8 @@ export class TalkApp {
       : this.montageCharacter.variations.map((_, index) => index);
     this.montageTiles = createStagedMontageBoard(stage.side, pool);
     this.setBoardSize(stage.side, true);
-    this.renderImagePreview(this.montageCharacter.answer, `${this.montageCharacter.name} exact montage`);
+    this.targetCharacterName.textContent = this.montageCharacter.displayName;
+    this.renderImagePreview(this.montageCharacter.answer, `${this.montageCharacter.displayName} exact montage`);
     this.updateMontageProgress();
     this.updateMontageStatus();
 
@@ -411,7 +413,7 @@ export class TalkApp {
   }
 
   private renderUnitPreview(character: PuzzleCharacter): void {
-    this.targetCharacterName.textContent = character.name;
+    this.targetCharacterName.textContent = character.displayName;
     const reveal = document.createElement("div");
     reveal.className = `unit-reveal unit-reveal--${character.pieces.length}`;
     reveal.setAttribute("aria-label", `${character.name} picture progress`);

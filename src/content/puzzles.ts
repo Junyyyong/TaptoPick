@@ -1,6 +1,7 @@
 export interface PuzzleCharacter {
   id: string;
   name: string;
+  displayName: string;
   folder: string;
   preview: string;
   pieces: readonly string[];
@@ -11,10 +12,22 @@ export interface PuzzleCharacter {
 export interface MontageCharacter {
   id: string;
   name: string;
+  displayName: string;
   answer: string;
   variations: readonly string[];
   easyVariations: readonly number[];
   hardVariations: readonly number[];
+}
+
+const KOREAN_NAMES: Record<string, string> = {
+  Tapee: "태피", Tepee: "티피", Hooopee: "후피", Zapee: "재피",
+  Hapee: "해피", Bbogles: "뽀글스", PinoPan: "피노팬",
+};
+
+function bilingualName(name: string): string {
+  const korean = KOREAN_NAMES[name];
+  if (!korean) throw new Error(`Missing Korean character name: ${name}`);
+  return `${korean} ${name}`;
 }
 
 const pieceModules = import.meta.glob<string>(
@@ -61,6 +74,7 @@ function character(id: string, name: string, folder: string): PuzzleCharacter {
   return {
     id,
     name,
+    displayName: bilingualName(name),
     folder,
     preview,
     pieces,
@@ -134,17 +148,17 @@ function montageCharacter(id: string, name: string, expectedVariations: number):
   if (!answer || sourceEntries.length !== expectedVariations) {
     throw new Error(`Montage Hunt requires one ${name} answer and ${expectedVariations} variations`);
   }
-  return { id, name, answer, variations, easyVariations: indicesFor(MONTAGE_DIFFICULTY[id]!.easy), hardVariations: indicesFor(MONTAGE_DIFFICULTY[id]!.hard) };
+  return { id, name, displayName: bilingualName(name), answer, variations, easyVariations: indicesFor(MONTAGE_DIFFICULTY[id]!.easy), hardVariations: indicesFor(MONTAGE_DIFFICULTY[id]!.hard) };
 }
 
 export const MONTAGE_CHARACTERS: readonly MontageCharacter[] = [
-  montageCharacter("haepi", "Haepi", 20),
+  montageCharacter("haepi", "Hapee", 20),
   montageCharacter("bbogles", "Bbogles", 20),
   montageCharacter("tapee", "Tapee", 20),
   montageCharacter("tepee", "Tepee", 20),
-  montageCharacter("hupi", "Hupi", 18),
-  montageCharacter("jaepi", "Jaepi", 16),
-  montageCharacter("pino", "Pino Pan", 18),
+  montageCharacter("hupi", "Hooopee", 18),
+  montageCharacter("jaepi", "Zapee", 16),
+  montageCharacter("pino", "PinoPan", 18),
 ];
 
 export const GAME_IMAGE_URLS = [

@@ -1,9 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { GAME_IMAGE_URLS, MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS } from "./puzzles";
 import { tieredTimeScore } from "../core/pick/game";
+import { PUZZLE_CHARACTERS } from "./puzzles";
 import { createStagedMontageBoard } from "../core/pick/montage";
 
 describe("Picture Pieces scoring content", () => {
+  it("shares the approved Korean and English names between games 1 and 2", () => {
+    const expected = ["태피 Tapee", "티피 Tepee", "후피 Hooopee", "재피 Zapee", "해피 Hapee", "뽀글스 Bbogles", "피노팬 PinoPan"].sort();
+    expect(PUZZLE_CHARACTERS.map(c => c.displayName).sort()).toEqual(expected);
+    expect(MONTAGE_CHARACTERS.map(c => c.displayName).sort()).toEqual(expected);
+  });
   it("keeps five score bands without a completion deadline", () => {
     expect(PICTURE_PIECES_SCORE_BANDS).toEqual([
       { maxMs: 10_000, score: 1500 },
@@ -31,13 +37,13 @@ describe("Picture Pieces scoring content", () => {
 
   it("provides answer and distinct wrong variations for each montage character", () => {
     expect(MONTAGE_CHARACTERS.map((character) => [character.id, character.name, character.variations.length])).toEqual([
-      ["haepi", "Haepi", 19],
+      ["haepi", "Hapee", 19],
       ["bbogles", "Bbogles", 19],
       ["tapee", "Tapee", 18],
       ["tepee", "Tepee", 19],
-      ["hupi", "Hupi", 18],
-      ["jaepi", "Jaepi", 15],
-      ["pino", "Pino Pan", 16],
+      ["hupi", "Hooopee", 18],
+      ["jaepi", "Zapee", 15],
+      ["pino", "PinoPan", 16],
     ]);
     MONTAGE_CHARACTERS.forEach((character) => {
       expect(character.easyVariations.length).toBeGreaterThanOrEqual(3);
