@@ -118,20 +118,17 @@
 .visual-practice-dot.is-current::after { background: var(--hot); transform: scale(1.25); }
 .visual-practice-dot.is-done::after { background: var(--go); }
 .visual-practice h3 { margin: 0; font: 800 22px "TAP Serif KR",serif; text-align: center; }
-.visual-practice-preview { display: flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 100%; height: clamp(150px,28dvh,260px); margin-top: auto; }
+.visual-practice-preview { display: flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 100%; height: clamp(180px,33.6dvh,312px); margin-top: auto; }
 .visual-practice-preview img { width: 100%; height: 100%; object-fit: contain; }
-.visual-practice-preview.is-pair-example img { width: 38%; }
-.visual-practice-preview span { font-size: 30px; margin: 8px; }
-.visual-practice-arrow { font-size: 28px; color: var(--ink-soft); line-height: 1; }
-.visual-practice .practice-board { width: min(100%, 340px, 39dvh); flex: 0 0 auto; }
+.visual-practice .practice-board { width: min(70%, 238px, 27.3dvh); gap: 4.9px; flex: 0 0 auto; }
+.visual-practice.is-memory .practice-board { margin-top: auto; }
+.visual-practice .practice-board.is-previewing .practice-tile { filter: none; opacity: 1; }
 .visual-practice .practice-tile:not(.is-guided):not(.is-matched) { filter: grayscale(1); opacity: .35; }
 .visual-practice .practice-tile.is-matched { opacity: .8; }
 .visual-practice .is-guided { outline: 3px solid var(--warm); outline-offset: 2px; animation: practice-pulse 1.1s ease-in-out infinite; z-index: 1; }
 @keyframes practice-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(253,208,0,.2); } 50% { box-shadow: 0 0 0 7px rgba(253,208,0,.4),0 0 20px rgba(253,208,0,.35); } }
-.visual-practice .practice-tile.is-guided::after { content: "☝"; position: absolute; bottom: 2px; right: 4px; font-size: 25px; color: var(--ink); text-shadow: 0 1px white; pointer-events: none; }
 .visual-practice-foot { width: 100%; margin-top: auto; padding-top: 6px; }
 .visual-practice-actions { display: flex; align-items: center; justify-content: center; gap: 14px; min-height: 58px; }
-.visual-practice-actions [data-retry] { font-size: 28px; width: 44px; min-height: 44px; }
 .visual-practice-actions [data-next] { flex: 1; }
 .practice-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 @media (prefers-reduced-motion: reduce) { .visual-practice .is-guided { animation: none; } }
@@ -139,9 +136,8 @@
   .visual-practice-panel .help-body { padding: 6px 24px 12px; }
   .visual-practice { gap: 6px; }
   .visual-practice h3 { font-size: 18px; }
-  .visual-practice-preview { height: 25dvh; flex: 0 0 auto; }
-  .visual-practice-arrow { font-size: 20px; }
-  .visual-practice .practice-board { width: min(100%,34dvh); }
+  .visual-practice-preview { height: 30dvh; flex: 0 0 auto; }
+  .visual-practice .practice-board { width: min(70%,23.8dvh); }
 }
 .help-panel:has(.pick-practice) { max-height: calc(var(--app-h) - 32px); }
 .pick-practice { display: grid; gap: 8px; }
