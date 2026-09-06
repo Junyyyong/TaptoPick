@@ -1,0 +1,17 @@
+{
+  "src": "http://127.0.0.1:5189/assets/brand/tapeetepee-open2-06.png",
+  "naturalWidth": 1989,
+  "naturalHeight": 1399,
+  "box": {
+    "x": 113.09375,
+    "y": 364.390625,
+    "width": 163.796875,
+    "height": 115.203125,
+    "top": 364.390625,
+    "right": 276.890625,
+    "bottom": 479.59375,
+    "left": 113.09375
+  },
+  "fit": "fill",
+  "background": "rgb(252, 207, 0)"
+}

@@ -1,0 +1,9 @@
+const {chromium}=require('playwright');const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+(async()=>{const browser=await chromium.launch({headless:true,executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
+try{const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true});
+await page.clock.install({time:new Date('2026-09-06T12:00:00Z')});await page.clock.pauseAt(new Date('2026-09-06T12:00:00Z'));
+await page.goto('http://127.0.0.1:5189/',{waitUntil:'networkidle'});await page.locator('.studio-splash-cover').evaluate(i=>i.decode());
+const state=await page.locator('.studio-splash-cover').evaluate(i=>({src:i.getAttribute('src'),naturalWidth:i.naturalWidth,naturalHeight:i.naturalHeight,box:i.getBoundingClientRect().toJSON(),fit:getComputedStyle(i).objectFit,background:getComputedStyle(i.parentElement).backgroundColor}));
+const name=process.env.BEFORE?'before':'after';await page.screenshot({path:path.join(__dirname,`${name}.png`)});
+if(!process.env.BEFORE){assert(state.src.includes('tapeetepee-open2-06.png'));const before=JSON.parse(fs.readFileSync(path.join(__dirname,'before.json')));assert.equal(state.box.width,before.box.width);assert.equal(state.box.x,before.box.x);assert(Math.abs(state.box.y+state.box.height/2-before.box.y-before.box.height/2)<1);assert(Math.abs(state.box.height/state.box.width-state.naturalHeight/state.naturalWidth)<.001);assert.equal(state.background,before.background);await page.clock.runFor(1800);assert.equal(await page.locator('#screen-studio-splash').isVisible(),false);assert.equal(await page.locator('#screen-splash').isVisible(),true);}
+fs.writeFileSync(path.join(__dirname,`${name}.json`),JSON.stringify(state,null,2)+'\n');}finally{await browser.close();}})().catch(e=>{console.error(e);process.exitCode=1;});
