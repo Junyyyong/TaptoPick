@@ -2,6 +2,13 @@ import { describe, it, expect } from "vitest";
 import { PracticeRun } from "./tutorial";
 const tiles=[{src:"a",key:"a",target:true},{src:"a",key:"a",target:true},{src:"b",key:"b",target:false},{src:"b",key:"b",target:false}];
 describe("isolated practice",()=>{
+  it("guides each target and matching face in sequence",()=>{
+    const unit=new PracticeRun("unit",tiles,()=>.99);
+    expect(unit.nextIndex).toBe(0);unit.pick(unit.nextIndex);expect(unit.nextIndex).toBe(1);unit.pick(unit.nextIndex);expect(unit.nextIndex).toBe(-1);
+    const memory=new PracticeRun("memory",tiles,()=>.99);
+    expect(memory.nextIndex).toBe(0);memory.pick(0);expect(memory.nextIndex).toBe(1);memory.pick(1);
+    expect(memory.nextIndex).toBe(2);memory.pick(2);expect(memory.nextIndex).toBe(3);memory.pick(3);expect(memory.nextIndex).toBe(-1);
+  });
   it("counts each correct piece once and lets mistakes retry",()=>{
     const run=new PracticeRun("unit",tiles,()=>.99);
     expect(run.pick(2)).toBe("wrong");expect(run.progress).toBe(0);

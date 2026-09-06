@@ -4,7 +4,7 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 
 ## 자주 수정할 곳
 
-- 체험형 How to play: `src/content/pickTutorial.ts`(예제·이미지), `src/core/pick/tutorial.ts`(연습 규칙), `src/ui/pickTutorial.ts`(버튼·표시). 연습은 본 게임과 상태를 공유하지 않으며 닫기·전환 때 대기 타이머를 해제합니다.
+- 체험형 How to play: `src/content/pickTutorial.ts`(예제·이미지), `src/core/pick/tutorial.ts`(연습 규칙·다음 대상), `src/ui/pickTutorial.ts`(버튼·표시). TAPtoTEN 방식의 상단 진행 점·Skip, 그림 중심 안내, 단일 컬러 강조 버튼, 완료 후 Next/Done을 사용합니다. 연습은 본 게임과 상태를 공유하지 않으며 타이머를 사용하지 않습니다. 화면 문구는 최소화하고 보조기기용 안내는 유지합니다.
 
 - `src/content/puzzles.ts` — 캐릭터 이름, 폴더, PNG/JPG 연결
 - `src/core/pick/game.ts` — 7×7·5×5·4×4 보드 생성, 셔플, 점수 규칙

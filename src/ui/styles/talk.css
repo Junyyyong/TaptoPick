@@ -104,6 +104,44 @@
 .help-head { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--paper-edge); }
 .help-head h2 { margin: 0; color: var(--ink); font-family: "TAP Serif KR", serif; font-size: 19px; text-align: center; }
 .help-body { overflow: auto; padding: 22px; }
+.visual-practice-panel { width: 100%; height: calc(var(--app-h) - 32px); max-height: calc(var(--app-h) - 32px); }
+.visual-practice-panel .help-head { display: none; }
+.visual-practice-panel .help-body { flex: 1; padding: 14px; }
+.visual-practice { min-height: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.visual-practice p { margin: 0; }
+.visual-practice-head { display: flex; width: 100%; align-items: center; justify-content: space-between; min-height: 44px; }
+.visual-practice-head [data-skip] { min-height: 44px; min-width: 54px; }
+.visual-practice-dots { display: flex; }
+.visual-practice-dot { width: 36px; height: 44px; border: 0; padding: 0; background: transparent; }
+.visual-practice-dot::after { content: ""; display: block; margin: auto; width: 9px; height: 9px; border-radius: 50%; background: var(--recess); }
+.visual-practice-dot.is-current::after { background: var(--hot); transform: scale(1.25); }
+.visual-practice-dot.is-done::after { background: var(--go); }
+.visual-practice h3 { margin: 0; font: 800 22px "TAP Serif KR",serif; text-align: center; }
+.visual-practice-preview { display: flex; align-items: center; justify-content: center; width: 100%; height: clamp(100px,20dvh,180px); margin-top: auto; }
+.visual-practice-preview img { width: 100%; height: 100%; object-fit: contain; }
+.visual-practice-preview.is-pair-example img { width: 38%; }
+.visual-practice-preview span { font-size: 30px; margin: 8px; }
+.visual-practice-arrow { font-size: 28px; color: var(--ink-soft); line-height: 1; }
+.visual-practice .practice-board { width: min(100%, 260px, 36dvh); flex: 0 0 auto; }
+.visual-practice .practice-tile:not(.is-guided):not(.is-matched) { filter: grayscale(1); opacity: .35; }
+.visual-practice .practice-tile.is-matched { opacity: .8; }
+.visual-practice .is-guided { outline: 3px solid var(--warm); outline-offset: 2px; animation: practice-pulse 1.1s ease-in-out infinite; z-index: 1; }
+@keyframes practice-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(253,208,0,.2); } 50% { box-shadow: 0 0 0 7px rgba(253,208,0,.4),0 0 20px rgba(253,208,0,.35); } }
+.visual-practice .practice-tile.is-guided::after { content: "☝"; position: absolute; bottom: 2px; right: 4px; font-size: 25px; color: var(--ink); text-shadow: 0 1px white; pointer-events: none; }
+.visual-practice-foot { width: 100%; margin-top: auto; padding-top: 6px; }
+.visual-practice-actions { display: flex; align-items: center; justify-content: center; gap: 14px; min-height: 58px; }
+.visual-practice-actions [data-retry] { font-size: 28px; width: 44px; min-height: 44px; }
+.visual-practice-actions [data-next] { width: min(220px,65%); }
+.practice-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+@media (prefers-reduced-motion: reduce) { .visual-practice .is-guided { animation: none; } }
+@media (max-height: 700px) {
+  .visual-practice-panel .help-body { padding: 10px; }
+  .visual-practice { gap: 6px; }
+  .visual-practice h3 { font-size: 18px; }
+  .visual-practice-preview { height: 60px; flex: 0 0 auto; }
+  .visual-practice-arrow { font-size: 20px; }
+  .visual-practice .practice-board { width: min(100%,190px,26dvh); }
+}
 .help-panel:has(.pick-practice) { max-height: calc(var(--app-h) - 32px); }
 .pick-practice { display: grid; gap: 8px; }
 .pick-practice h3,.pick-practice p { margin: 0; }

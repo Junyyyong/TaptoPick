@@ -13,6 +13,11 @@ export class PracticeRun {
     this.goal = mode === "memory" ? tiles.length / 2 : tiles.filter(t => t.target).length;
   }
   get complete(): boolean { return this.progress === this.goal; }
+  get nextIndex(): number {
+    if (this.complete || this.open.length === 2) return -1;
+    return this.tiles.findIndex((tile, i) => !this.matched.has(i) && !this.open.includes(i) &&
+      (this.mode === "memory" ? !this.open.length || tile.key === this.tiles[this.open[0]!]!.key : tile.target));
+  }
   pick(index: number): "ignored" | "wrong" | "first" | "mismatch" | "correct" {
     const tile = this.tiles[index];
     if (!tile || this.complete || this.matched.has(index) || this.open.includes(index) || this.open.length === 2) return "ignored";

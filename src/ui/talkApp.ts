@@ -600,7 +600,7 @@ export class TalkApp {
 
   private showHowToPlay(): void {
     this.openHelp("How to play", "");
-    this.disposePractice = mountPickTutorial(this.helpBody, mode => this.startMode(mode));
+    this.disposePractice = mountPickTutorial(this.helpBody);
   }
 
   private showRules(): void {
