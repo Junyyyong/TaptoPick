@@ -4,6 +4,7 @@ import { createRandomIndexCycle, createUnitBoard, PICK_MISTAKE_LIMIT, tieredTime
 import { MontageProgress, PickLives, createStagedMontageBoard, montageMotion, planMontageSwap } from "../core/pick/montage";
 import { MEMORY_STAGES, MemoryRun } from "../core/pick/memory";
 import { el } from "./dom";
+import { mountPickTutorial } from "./pickTutorial";
 import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
@@ -46,6 +47,7 @@ export class TalkApp {
   private preferences: TalkPreferences = loadTalkPreferences();
   private mode: Mode = "unit";
   private active = false;
+  private disposePractice?: () => void;
   private paused = false;
   private startedAt = 0;
   private elapsedMs = 0;
@@ -73,6 +75,7 @@ export class TalkApp {
   private readonly memoryButtons = new Map<number, HTMLButtonElement>();
 
   constructor() {
+    this.helpBody.addEventListener("practice-done", () => this.closeHelp());
     this.damageFlash.addEventListener("animationend", () => {
       this.damageFlash.classList.remove("is-active");
       this.game.classList.remove("is-hit");
@@ -103,6 +106,7 @@ export class TalkApp {
   }
 
   private showTitle(): void {
+    this.disposePractice?.();
     this.active = false;
     this.paused = false;
     this.stopClock();
@@ -118,6 +122,7 @@ export class TalkApp {
   }
 
   private startMode(mode: Mode): void {
+    this.disposePractice?.();
     this.mode = mode;
     this.active = true;
     this.paused = false;
@@ -577,6 +582,7 @@ export class TalkApp {
   }
 
   private closeHelp(): void {
+    this.disposePractice?.();
     this.help.classList.add("hidden");
     if (this.paused && this.active) {
       this.paused = false;
@@ -586,13 +592,15 @@ export class TalkApp {
   }
 
   private openHelp(title: string, html: string): void {
+    this.disposePractice?.();
     this.helpTitle.textContent = title;
     this.helpBody.innerHTML = html;
     this.help.classList.remove("hidden");
   }
 
   private showHowToPlay(): void {
-    this.openHelp("How to play", `<div class="rules-list"><p><b>1. Picture Pieces</b><span>Find every piece that belongs to the character on the 7×7 board. Start with 5 hearts and no time limit. Each wrong pick turns one heart gray. No hearts left means Game Over.</span></p><p><b>2. Montage Hunt</b><span>Clear 3 matches on 2×2, then 5 each on 3×3, 4×4 and 5×5 to win. Finish 3×3 to restore one heart, up to 5. Small facial differences make 4×4 harder. On 5×5, two tiles close like doors, swap places, then reopen. The other tiles stay put. Wait for the doors to open before picking. No time limit. No hearts left means Game Over. The ending video features your last character.</span></p><p><b>3. Pair Memory</b><span>Clear all four stages: 4×4 (1 min), 5×5 (1 min), 6×6 (1 min 30 sec), and 7×7 (2 min). Each stage starts with a fresh timer after a 3-second face preview. Any two identical faces match. Gray center stars are free spaces. Time up ends the run.</span></p></div>`);
+    this.openHelp("How to play", "");
+    this.disposePractice = mountPickTutorial(this.helpBody, mode => this.startMode(mode));
   }
 
   private showRules(): void {
