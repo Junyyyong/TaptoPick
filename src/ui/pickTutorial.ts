@@ -46,10 +46,15 @@ export function mountPickTutorial(root: HTMLElement): () => void {
     const buttons=run.tiles.map((tile,index)=>{
       const button=document.createElement("button");button.type="button";
       button.className=`practice-tile${example.mode==="memory"?` practice-back practice-color-${index}`:""}`;
+      button.dataset.target=String(tile.target);
       const img=new Image();img.src=tile.src;img.alt="";
       const back=document.createElement("span");back.textContent="?";back.className="practice-question";
       button.append(img,back);root.querySelector(".practice-board")!.append(button);
       button.addEventListener("click",()=>{
+        if(example.mode==="unit" && !tile.target && !run.complete){
+          run.pick(index);button.classList.remove("is-wrong");void button.offsetWidth;button.classList.add("is-wrong");
+          status.textContent="Not Tepee";return;
+        }
         if(previewing || index!==run.nextIndex)return;
         run.pick(index);if(run.complete)feedback.complete();else feedback.tap();update();
       });return button;
@@ -67,7 +72,7 @@ export function mountPickTutorial(root: HTMLElement): () => void {
         const guided=!previewing && i===run.nextIndex;
         const revealed=previewing||example.mode!=="memory"||run.matched.has(i)||run.open.includes(i);
         button.classList.toggle("is-revealed",revealed);button.classList.toggle("is-matched",run.matched.has(i));button.classList.toggle("is-guided",guided);
-        button.disabled=!guided;
+        button.disabled=example.mode==="unit" ? run.complete || run.matched.has(i) : !guided;
         button.setAttribute("aria-label",`Card ${i+1}, ${guided?"tap here":run.matched.has(i)?"matched":revealed?"face up":"face down"}`);
       });
     };
