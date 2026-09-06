@@ -26,6 +26,16 @@ export function mountPickTutorial(root: HTMLElement): () => void {
     });
     const preview=root.querySelector(".visual-practice-preview")!;
     if(example.preview){const img=new Image();img.src=example.preview;img.alt=example.name!;preview.append(img);}
+    if(example.pieceIndices) {
+      preview.classList.add("practice-piece-preview");
+      example.pieceIndices.forEach((pieceIndex,index)=>{
+        const color=new Image();color.src=example.preview!;color.alt="";
+        color.className="practice-piece-color";color.dataset.pieceSrc=example.tiles[index]!.src;
+        const row=Math.floor(pieceIndex/3),column=pieceIndex%3;
+        color.style.clipPath=`inset(${row/3*100}% ${(2-column)/3*100}% ${(2-row)/3*100}% ${column/3*100}%)`;
+        preview.append(color);
+      });
+    }
     const next=root.querySelector<HTMLButtonElement>("[data-next]")!;
     root.querySelector(".visual-practice")!.classList.toggle("is-unit",example.mode === "unit");
     const countdownLabel=document.createElement("div");
@@ -50,6 +60,9 @@ export function mountPickTutorial(root: HTMLElement): () => void {
       root.querySelector(".practice-board")!.classList.toggle("is-previewing",previewing);
       status.setAttribute("aria-label",run.complete?"Practice complete":`${run.progress} of ${run.goal} complete. Tap the highlighted card.`);
       next.hidden=!run.complete;next.classList.toggle("is-guided",run.complete);
+      preview?.querySelectorAll<HTMLImageElement>(".practice-piece-color").forEach(image=>{
+        image.classList.toggle("is-revealed",[...run.matched].some(i=>run.tiles[i]!.src===image.dataset.pieceSrc));
+      });
       buttons.forEach((button,i)=>{
         const guided=!previewing && i===run.nextIndex;
         const revealed=previewing||example.mode!=="memory"||run.matched.has(i)||run.open.includes(i);

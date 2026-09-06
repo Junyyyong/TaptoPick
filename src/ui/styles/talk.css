@@ -122,6 +122,14 @@
 .visual-practice-preview { display: flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 100%; height: clamp(180px,33.6dvh,312px); margin-top: auto; }
 .visual-practice-preview img { width: 100%; height: 100%; object-fit: contain; }
 .visual-practice .practice-board { width: min(70%, 238px, 27.3dvh); gap: 4.9px; flex: 0 0 auto; }
+.visual-practice.is-unit .practice-board { margin-top: clamp(24px,5dvh,44px); }
+.visual-practice.is-unit .visual-practice-preview { width: clamp(160px,28dvh,240px); height: clamp(160px,28dvh,240px); }
+.practice-piece-preview { position: relative; }
+.practice-piece-preview > img:first-child { filter: grayscale(1); }
+.practice-piece-preview .practice-piece-color { position: absolute; inset: 0; opacity: 0; }
+.practice-piece-preview .practice-piece-color.is-revealed { opacity: 1; }
+.visual-practice.is-unit .practice-tile img { transform: scale(1.02); }
+.visual-practice.is-memory .practice-board { width: min(100%,320px,44dvh); }
 .visual-practice.is-memory .practice-board { margin-top: auto; }
 .practice-countdown { height: 48px; margin-top: auto; font-size: 36px; font-weight: 800; color: var(--hot); }
 .visual-practice.is-memory .practice-countdown + .practice-board { margin-top: 0; }
