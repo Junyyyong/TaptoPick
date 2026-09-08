@@ -1,0 +1,121 @@
+{
+  "verifiedAt": "2026-09-08T07:27:06.030Z",
+  "preservedAssetsVerified": [
+    "pick-garden.wav",
+    "pick-garden.mp3",
+    "pick-garden.json",
+    "pick-garden-menu.wav",
+    "pick-garden-menu.mp3",
+    "pick-garden-menu.json",
+    "pick-lobby.wav",
+    "pick-lobby.mp3",
+    "pick-lobby.json"
+  ],
+  "preservedGeneratorSha256": "0ded936e65a8aab3d0767fbc7eee63cc4ba01d62b07eedb4ba48c73f5b766733",
+  "reports": [
+    {
+      "track": "pick-garden",
+      "format": "wav",
+      "bytes": 6773804,
+      "frames": 1693440,
+      "seconds": 38.4,
+      "peakDbFS": -3.478725501789336,
+      "rmsDbFS": -18.200080787233304,
+      "boundaryDelta": [
+        0.0018310546875,
+        0.00262451171875
+      ]
+    },
+    {
+      "track": "pick-garden",
+      "format": "mp3",
+      "bytes": 559707,
+      "frames": 1693440,
+      "seconds": 38.4,
+      "peakDbFS": -3.5113885364290343,
+      "rmsDbFS": -18.200584873710824,
+      "boundaryDelta": [
+        0.005911625921726227,
+        0.006655830889940262
+      ]
+    },
+    {
+      "track": "pick-garden-menu",
+      "format": "wav",
+      "bytes": 7362828,
+      "frames": 1840696,
+      "seconds": 41.73913832199546,
+      "peakDbFS": -4.731641220411906,
+      "rmsDbFS": -19.363538300706093,
+      "boundaryDelta": [
+        0.001556396484375,
+        0.0025634765625
+      ]
+    },
+    {
+      "track": "pick-garden-menu",
+      "format": "mp3",
+      "bytes": 424330,
+      "frames": 1840696,
+      "seconds": 41.73913832199546,
+      "peakDbFS": -4.738188525835585,
+      "rmsDbFS": -19.363424501779573,
+      "boundaryDelta": [
+        0.0008522551506757736,
+        0.00008687935769557953
+      ]
+    },
+    {
+      "track": "pick-lobby",
+      "format": "wav",
+      "bytes": 7056044,
+      "frames": 1764000,
+      "seconds": 40,
+      "peakDbFS": -4.731641220411906,
+      "rmsDbFS": -19.000295719704585,
+      "boundaryDelta": [
+        0.0008544921875,
+        0.000579833984375
+      ]
+    },
+    {
+      "track": "pick-lobby",
+      "format": "mp3",
+      "bytes": 244324,
+      "frames": 1764000,
+      "seconds": 40,
+      "peakDbFS": -4.741332664601257,
+      "rmsDbFS": -18.9980662622372,
+      "boundaryDelta": [
+        0.00023290514945983887,
+        0.000060673803091049194
+      ]
+    },
+    {
+      "track": "pick-tap-lobby",
+      "format": "wav",
+      "bytes": 7471104,
+      "frames": 1867765,
+      "seconds": 42.35294784580499,
+      "peakDbFS": -3.478725501789336,
+      "rmsDbFS": -17.95526597985636,
+      "boundaryDelta": [
+        0.001129150390625,
+        0.00128173828125
+      ]
+    },
+    {
+      "track": "pick-tap-lobby",
+      "format": "mp3",
+      "bytes": 634474,
+      "frames": 1867765,
+      "seconds": 42.35294784580499,
+      "peakDbFS": -3.2670494902645943,
+      "rmsDbFS": -17.964425797306603,
+      "boundaryDelta": [
+        0.00024496112018823624,
+        0.004285478964447975
+      ]
+    }
+  ]
+}

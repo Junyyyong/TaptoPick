@@ -6,7 +6,7 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 
 - 게임 반응 체험판: `ui/styles/pickExperience.css`, `ui/feedback.ts`, `ui/talkApp.ts`. 기록은 `ui/pickRecords.ts`, 결과 표현은 `ui/pickResultView.ts`. `docs/EXPERIMENT-game-feel.md`에 기준 버전과 복구 절차를 기록했다. 게임 규칙은 변경하지 않았다.
 
-- 음악: 재생기는 `ui/backgroundMusic.ts`, 화면별 음원 선택·중복 방지는 `ui/sceneMusic.ts`, 경로는 `config/app.ts`, 생성 원본은 `scripts/generate-pick-music.mjs`에 둔다. 메뉴·메뉴에서 연 설정·How to play는 독립곡 **Paper Lantern Waltz**(`pick-lobby.mp3`, 72 BPM·F장조·3/4박자·40초)를 사용하며, 실제 플레이는 기존 **Pick Garden**(100 BPM·C장조·4/4박자·38.4초)을 유지한다. 같은 멜로디의 이전 92 BPM 메뉴 변주곡은 활성 음원이 아니라 복구·연구용 보관본이다. 생성기 `--menu`는 새 독립곡, `--legacy-menu`는 이전 변주곡, 옵션 없음은 기존 게임곡을 재생성한다.
+- 음악: 재생기는 `ui/backgroundMusic.ts`, 화면별 음원 선택·중복 방지는 `ui/sceneMusic.ts`, 경로는 `config/app.ts`에 둔다. 현재 메뉴·메뉴에서 연 설정·How to play는 **Tap Parade**(`pick-tap-lobby.mp3`, 136 BPM·D장조·4/4박자·24마디·약 42.35초)를 사용한다. `scripts/generate-tap-lobby.mjs`가 합성 발끝·뒤꿈치 타격음과 피아노·워킹 베이스의 스윙을 생성한다. 실제 플레이는 기존 **Pick Garden**(100 BPM·C장조·4/4박자·38.4초)을 유지한다. 이전 왈츠 **Paper Lantern Waltz**와 92 BPM 메뉴 변주곡은 복구·연구용으로 보존한다. 기존 `scripts/generate-pick-music.mjs`의 `--menu`는 보관된 왈츠, `--legacy-menu`는 이전 변주곡, 옵션 없음은 게임곡을 재생성한다. 새 메뉴곡은 반드시 별도 탭 생성기를 사용한다.
 
 - 음악 시작: 메뉴 음원을 미리 디코딩하고 인트로는 무음으로 유지한다. 첫 게임선택화면에서 `AudioContext.resume()`을 시도해 허용된 브라우저에서는 입력 없이 재생한다. 브라우저가 차단하면 500ms 뒤 메뉴 하단 **Tap for music**을 표시하며, 해당 버튼·로고 등 메뉴 영역의 터치나 키보드 입력으로 재시도한다. 게임에 들어갔다 나올 필요는 없다. 저장된 Music 꺼짐 설정을 우선하고, 일시정지·영상·결과·숨긴 탭에서는 중지한다. 공통 Music 켜기/끄기는 두 곡에 적용하며 효과음 설정과 독립이다. 자동 재생 차단은 우회하지 않는다. 상세 변경은 [첫 방문 음악 연구기록](research/2026-09-08-menu-autoplay/README.md)을 참고한다.
 

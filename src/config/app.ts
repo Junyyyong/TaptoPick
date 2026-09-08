@@ -67,7 +67,7 @@ export const APP_CONFIG = {
   assets: {
     // Separate scene tracks; each is downloaded only when it first plays.
     backgroundMusic: new URL("../../public/assets/audio/pick-garden.mp3", import.meta.url).href,
-    menuMusic: new URL("../../public/assets/audio/pick-lobby.mp3", import.meta.url).href,
+    menuMusic: new URL("../../public/assets/audio/pick-tap-lobby.mp3", import.meta.url).href,
     studioSplash: new URL("../../public/assets/brand/tapeetepee-open2-06.png", import.meta.url).href,
     productCover: new URL("../../public/assets/brand/taptopick-cover.webp", import.meta.url).href,
     productLogo: new URL("../../public/assets/brand/TAPtoPICK-logo-01.webp", import.meta.url).href,

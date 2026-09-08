@@ -1,0 +1,43 @@
+{
+  "title": "Tap Parade",
+  "originalComposition": true,
+  "sampledAudio": false,
+  "bpm": 136,
+  "key": "D major",
+  "meterBeats": 4,
+  "bars": 24,
+  "seconds": 42.35294117647059,
+  "sampleRate": 44100,
+  "samplesPerChannel": 1867765,
+  "channels": 2,
+  "bits": 16,
+  "bytes": 7471104,
+  "peakDbFS": -3.4785039459834706,
+  "rmsDbFS": -17.9550005432555,
+  "loopBoundaryDelta": [
+    0.0011238312955851092,
+    0.0012875647065332325
+  ],
+  "mastering": {
+    "softSaturationDrive": 1.3,
+    "peakCeiling": 0.67,
+    "noHardClipping": true
+  },
+  "swingRatio": 0.62,
+  "instruments": [
+    "short bright piano",
+    "bouncing walking bass",
+    "synthesized metallic toe taps",
+    "synthesized wooden heel taps",
+    "light brushed backbeat"
+  ],
+  "arrangement": "New 24-bar A / B / A' swing composition. Toe/heel taps alternate under syncopated piano. The last two beats of bars 8, 16, and 24 make room for short tap breaks. No sampled footfalls or melodies; archived songs are not sped up or modified.",
+  "events": {
+    "pianoMelody": 115,
+    "pianoChords": 158,
+    "bass": 90,
+    "toe": 183,
+    "heel": 108,
+    "brushedSnare": 48
+  }
+}
