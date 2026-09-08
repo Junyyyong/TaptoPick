@@ -1,20 +1,25 @@
 /**
- * Pick Garden — original, deterministic instrumental composed for TAPtoPICK.
+ * Original, deterministic instrumentals composed for TAPtoPICK.
  * No samples, borrowed melodies, network services, or runtime dependencies.
- * 100 BPM (menu: 92 BPM), C major, 16 bars; tails wrap onto the loop start.
+ * Pick Garden: 100 BPM, C major, 4/4. Paper Lantern Waltz: 72 BPM, F major, 3/4.
+ * Both have 16 bars; tails wrap onto the loop start.
  * Run: node scripts/generate-pick-music.mjs
- * Menu variation: node scripts/generate-pick-music.mjs --menu
+ * Independent menu theme: node scripts/generate-pick-music.mjs --menu
+ * Archived menu variation: node scripts/generate-pick-music.mjs --legacy-menu
  * Web encode: ffmpeg -y -i public/assets/audio/pick-garden.wav -codec:a libmp3lame -q:a 4 public/assets/audio/pick-garden.mp3
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-const menu = process.argv.includes('--menu');
-const basename = menu ? 'pick-garden-menu' : 'pick-garden';
+const lobby = process.argv.includes('--menu');
+// Keep the prior arrangement available, including its exact deterministic output.
+const menu = !lobby && process.argv.includes('--legacy-menu');
+const basename = lobby ? 'pick-lobby' : menu ? 'pick-garden-menu' : 'pick-garden';
 const rate = 44100;
-const bpm = menu ? 92 : 100;
+const bpm = lobby ? 72 : menu ? 92 : 100;
 const beat = 60 / bpm;
-const duration = 16 * 4 * beat;
+const meterBeats = lobby ? 3 : 4;
+const duration = 16 * meterBeats * beat;
 const count = Math.round(rate * duration);
 const channels = [new Float64Array(count), new Float64Array(count)];
 const tau = Math.PI * 2;
@@ -69,6 +74,90 @@ function brush(when, accent) {
   }, 0.26, menu ? (accent ? 0.0075 : 0.0035) : (accent ? 0.015 : 0.007));
 }
 
+// Menu voices deliberately avoid the game's short, bright marimba attacks.
+// Rounded nylon-like strings carry a new, lower melody over soft electric piano.
+function nylon(midi, when, beats = 1, velocity = 1, pan = 0.12) {
+  const f = frequency(midi);
+  const length = beats * beat + 0.55;
+  add(when, length, t => {
+    const attack = 1 - Math.exp(-t / 0.011);
+    const end = Math.min(1, Math.max(0, (length - t) / 0.24));
+    const body = Math.sin(tau * f * t) * Math.exp(-t / 0.68);
+    const string = 0.36 * Math.sin(tau * f * 2 * t) * Math.exp(-t / 0.30)
+      + 0.13 * Math.sin(tau * f * 3 * t) * Math.exp(-t / 0.18)
+      + 0.035 * Math.sin(tau * f * 4 * t) * Math.exp(-t / 0.09);
+    return (body + string) * attack * end;
+  }, pan, 0.19 * velocity);
+}
+
+function softPiano(midi, when, velocity = 1) {
+  const f = frequency(midi);
+  add(when, 2.1, t => {
+    const envelope = (1 - Math.exp(-t / 0.032)) * Math.exp(-t / 0.52)
+      * Math.min(1, Math.max(0, (2.1 - t) / 0.24));
+    const tine = Math.sin(tau * f * t + 0.11 * Math.sin(tau * f * 2 * t) * Math.exp(-t / 0.3));
+    return (tine + 0.05 * Math.sin(tau * f * 3 * t)) * envelope;
+  }, -0.27, 0.14 * velocity);
+}
+
+function warmBass(midi, when) {
+  const f = frequency(midi);
+  add(when, 1.75, t => {
+    const envelope = (1 - Math.exp(-t / 0.045)) * Math.exp(-t / 0.43)
+      * Math.min(1, Math.max(0, (1.75 - t) / 0.20));
+    return (Math.sin(tau * f * t) + 0.06 * Math.sin(tau * f * 2 * t)) * envelope;
+  }, 0, 0.20);
+}
+
+if (lobby) {
+  // Paper Lantern Waltz: a wholly separate 3/4 tune, not a tempo or timbre remix.
+  // [beat position, MIDI note, held beats], written specifically for the lobby.
+  const waltzMelody = [
+    [[0, 65, 1.5], [1.5, 69, 0.75], [2.5, 72, 0.5]],
+    [[0, 74, 1], [1, 72, 0.75], [2, 69, 1]],
+    [[0, 70, 1.5], [1.5, 69, 0.5], [2, 65, 1]],
+    [[0.5, 67, 1], [1.5, 64, 1.5]],
+    [[0, 69, 1], [1, 72, 0.75], [2, 77, 1]],
+    [[0, 76, 1.5], [1.5, 72, 0.5], [2, 69, 1]],
+    [[0, 74, 1], [1.5, 72, 0.5], [2, 70, 0.75]],
+    [[0, 67, 2.5]],
+    [[0, 69, 1.5], [1.5, 65, 0.5], [2, 72, 1]],
+    [[0, 73, 1], [1.5, 69, 0.5], [2, 67, 1]],
+    [[0, 65, 1], [1, 69, 0.5], [2, 74, 1]],
+    [[0, 70, 1.5], [1.5, 69, 0.5], [2, 67, 1]],
+    [[0, 65, 1], [1, 70, 0.75], [2, 74, 1]],
+    [[0, 72, 1], [1.5, 70, 0.5], [2, 67, 1]],
+    [[0, 69, 1], [1, 67, 0.75], [2, 65, 1]],
+    [[0, 64, 1.25], [1.5, 67, 0.75]],
+  ];
+  // Fmaj9 / F6 / Bbmaj7 / C6 / Dm9 / Am7 / Bbmaj7 / C7,
+  // then Fmaj9 / A7 / Dm9 / Gm7 / Bbmaj7 / C7 / F6 / C7.
+  const waltzChords = [
+    [41, 57, 60, 64, 67], [41, 57, 60, 62, 65],
+    [46, 57, 62, 65], [48, 55, 57, 64],
+    [38, 57, 60, 64, 65], [45, 55, 60, 64],
+    [46, 57, 62, 65], [48, 58, 62, 64],
+    [41, 57, 60, 64, 67], [45, 55, 61, 64],
+    [38, 57, 60, 64, 65], [43, 58, 62, 65],
+    [46, 57, 62, 65], [48, 58, 62, 64],
+    [41, 57, 60, 62, 65], [48, 58, 62, 64],
+  ];
+  for (let bar = 0; bar < 16; bar++) {
+    const start = bar * 3 * beat;
+    const [root, ...voicing] = waltzChords[bar];
+    warmBass(root, start);
+    for (let pulse = 1; pulse <= 2; pulse++) {
+      for (let voice = 0; voice < voicing.length; voice++) {
+        softPiano(voicing[voice], start + pulse * beat + voice * 0.014,
+          pulse === 1 ? 0.30 : 0.22);
+      }
+    }
+    for (const [position, note, held] of waltzMelody[bar]) {
+      nylon(note, start + position * beat, held, position === 0 ? 0.83 : 0.69);
+    }
+    // No percussion: the bass / two piano pulses make the gentle waltz rhythm.
+  }
+} else {
 // Four-bar question/answer phrases, with open spaces for game sound effects.
 // Each pair is [eighth-note position, MIDI note]. This melody was composed here.
 const melody = [
@@ -106,6 +195,7 @@ for (let bar = 0; bar < 16; bar++) {
     brush(start + tick * beat / 2, tick === 2 || tick === 6);
   }
 }
+}
 
 // Quiet, circular stereo room. Wraparound avoids truncating the last notes.
 const dry = channels.map(channel => Float64Array.from(channel));
@@ -125,7 +215,7 @@ for (const channel of channels) {
     peak = Math.max(peak, Math.abs(channel[i]));
   }
 }
-const targetPeak = menu ? 0.58 : 0.67;
+const targetPeak = lobby ? 0.58 : menu ? 0.58 : 0.67;
 const gain = targetPeak / peak;
 const wav = Buffer.alloc(44 + count * 4);
 wav.write('RIFF', 0);
@@ -152,11 +242,13 @@ const directory = fileURLToPath(new URL('../public/assets/audio/', import.meta.u
 mkdirSync(directory, { recursive: true });
 writeFileSync(`${directory}/${basename}.wav`, wav);
 const report = {
-  title: menu ? 'Pick Garden — Menu' : 'Pick Garden', originalComposition: true, sampledAudio: false,
-  bpm, key: 'C major', bars: 16, seconds: duration, sampleRate: rate,
+  title: lobby ? 'Paper Lantern Waltz' : menu ? 'Pick Garden — Menu' : 'Pick Garden', originalComposition: true, sampledAudio: false,
+  bpm, key: lobby ? 'F major' : 'C major', bars: 16, seconds: duration, sampleRate: rate,
   samplesPerChannel: count, channels: 2, bits: 16, bytes: wav.length,
   peakDbFS: 20 * Math.log10(targetPeak), rmsDbFS: 20 * Math.log10(Math.sqrt(squareSum / (2 * count))),
   loopBoundaryDelta: channels.map(channel => Math.abs(channel[0] - channel[count - 1]) * gain),
+  ...(lobby ? { meterBeats, instruments: ['nylon-like lead', 'soft electric piano', 'warm bass'],
+    arrangement: 'Independent original waltz; no shared melody or arrangement with Pick Garden.' } : {}),
 };
 writeFileSync(`${directory}/${basename}.json`, `${JSON.stringify(report, null, 2)}\n`);
 console.log(report);

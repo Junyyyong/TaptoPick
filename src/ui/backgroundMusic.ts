@@ -1,4 +1,6 @@
-/** One optional, lazy-loaded loop. Music failure must never interrupt a game. */
+export type MusicPlaybackState = "idle" | "loading" | "playing" | "blocked" | "unavailable";
+
+/** One optional loop. Browser autoplay policy always has the final say. */
 export class BackgroundMusic {
   private context: AudioContext | undefined;
   private gain: GainNode | undefined;
@@ -7,36 +9,51 @@ export class BackgroundMusic {
   private source: AudioBufferSourceNode | undefined;
   private enabled = true;
   private playing = false;
-  private unlocked = false;
+  private canAttempt = false;
   private disposed = false;
   private revision = 0;
   private offset = 0;
   private startedAt = 0;
   private request: AbortController | undefined;
+  private blockedTimer: ReturnType<typeof setTimeout> | undefined;
+  private playbackState: MusicPlaybackState = "idle";
   private readonly visibility = () => this.sync();
 
-  constructor(private readonly src: string) {
+  constructor(private readonly src: string, private readonly onState: (state: MusicPlaybackState) => void = () => {}) {
     document.addEventListener("visibilitychange", this.visibility);
   }
 
-  /** Call from pointer/key input; never assumes browser autoplay permission. */
+  /** A gesture retries a blocked request without requiring entry into a game. */
   unlock(): void {
     if (this.disposed) return;
-    this.unlocked = true;
+    this.canAttempt = true;
+    this.ensureContext();
+    this.sync();
+  }
+
+  /** Try once on scene entry; browsers may deny or defer context.resume(). */
+  attemptAutoplay(): void {
+    if (this.disposed || !this.enabled || !this.playing || document.hidden) return;
+    this.canAttempt = true;
+    this.ensureContext();
+    this.sync();
+  }
+
+  private ensureContext(): void {
     if (!this.context) {
       const Constructor = window.AudioContext
         ?? (window as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-      if (!Constructor) return;
+      if (!Constructor) { this.report("unavailable"); return; }
       try {
         this.context = new Constructor();
         this.gain = this.context.createGain();
         this.gain.gain.value = 0;
         this.gain.connect(this.context.destination);
       } catch {
+        this.report("unavailable");
         return;
       }
     }
-    this.sync();
   }
 
   setEnabled(enabled: boolean): void {
@@ -53,14 +70,16 @@ export class BackgroundMusic {
   }
 
   private shouldPlay(): boolean {
-    return !this.disposed && this.unlocked && this.enabled && this.playing && !document.hidden;
+    return !this.disposed && this.canAttempt && this.enabled && this.playing && !document.hidden;
   }
 
   private sync(): void {
     const revision = ++this.revision;
+    clearTimeout(this.blockedTimer);
     const context = this.context;
     if (!this.shouldPlay()) {
       this.stop();
+      this.report("idle");
       if (context && context.state !== "closed") void context.suspend().catch(() => {});
       return;
     }
@@ -70,15 +89,22 @@ export class BackgroundMusic {
 
   private async start(context: AudioContext, revision: number): Promise<void> {
     try {
-      // Resume is invoked synchronously until its first await, within the gesture.
-      if (context.state !== "running") await context.resume();
-      if (!this.shouldPlay()) {
-        if (context.state !== "closed") await context.suspend();
-        return;
+      if (this.source && context.state === "running") { this.report("playing"); return; }
+      this.report("loading");
+      // Call resume synchronously so touchend/click activation is not lost.
+      const resumed = context.state === "running" ? Promise.resolve() : context.resume();
+      if (context.state !== "running") {
+        // Chrome can leave resume pending instead of rejecting blocked autoplay.
+        this.blockedTimer = setTimeout(() => {
+          if (revision === this.revision && this.shouldPlay() && context.state !== "running") this.report("blocked");
+        }, 500);
       }
-      const buffer = this.buffer ?? await this.load(context);
-      if (revision !== this.revision || !this.shouldPlay() || this.source
+      // Decode concurrently even when autoplay is blocked, making the first tap fast.
+      const [buffer] = await Promise.all([this.buffer ?? this.load(context), resumed]);
+      if (revision !== this.revision || !this.shouldPlay()
         || context.state !== "running" || !this.gain) return;
+      clearTimeout(this.blockedTimer);
+      if (this.source) { this.report("playing"); return; }
       const source = context.createBufferSource();
       source.buffer = buffer;
       source.loop = true;
@@ -91,12 +117,22 @@ export class BackgroundMusic {
       this.startedAt = context.currentTime;
       source.start(0, this.offset % buffer.duration);
       this.source = source;
+      this.report("playing");
     } catch {
-      // Autoplay, offline, unsupported decoding: stay silent; next gesture retries.
+      if (revision !== this.revision || !this.shouldPlay()) return;
+      clearTimeout(this.blockedTimer);
+      this.report(context.state === "suspended" ? "blocked" : "unavailable");
+      // Offline, unsupported decoding, or denied autoplay: next gesture retries.
       if (!this.source && this.context?.state === "running") {
         void this.context.suspend().catch(() => {});
       }
     }
+  }
+
+  private report(state: MusicPlaybackState): void {
+    if (this.playbackState === state) return;
+    this.playbackState = state;
+    this.onState(state);
   }
 
   private load(context: AudioContext): Promise<AudioBuffer> {
@@ -136,9 +172,11 @@ export class BackgroundMusic {
     if (this.disposed) return;
     this.disposed = true;
     this.revision++;
+    clearTimeout(this.blockedTimer);
     document.removeEventListener("visibilitychange", this.visibility);
     this.request?.abort();
     this.stop();
+    this.report("idle");
     this.gain?.disconnect();
     if (this.context && this.context.state !== "closed") void this.context.close().catch(() => {});
   }

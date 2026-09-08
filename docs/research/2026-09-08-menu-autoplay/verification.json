@@ -1,0 +1,776 @@
+[
+  {
+    "policy": "allowed",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 2,
+    "firstVisit": {
+      "activated": false,
+      "loops": [
+        {
+          "live": true,
+          "duration": 40,
+          "track": "menu"
+        }
+      ],
+      "contexts": [
+        "running"
+      ],
+      "titleVisible": true,
+      "hintVisible": false,
+      "hint": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "logo": {
+        "x": 30,
+        "y": 60.953125,
+        "width": 330,
+        "height": 299,
+        "top": 60.953125,
+        "right": 360,
+        "bottom": 359.953125,
+        "left": 30
+      },
+      "lastMode": {
+        "x": 25,
+        "y": 583.609375,
+        "width": 340,
+        "height": 79,
+        "top": 583.609375,
+        "right": 365,
+        "bottom": 662.609375,
+        "left": 25
+      }
+    },
+    "passed": true,
+    "maxSimultaneousBgm": 1,
+    "checks": [
+      {
+        "label": "first visit starts with hasBeenActive=false",
+        "expected": "menu"
+      },
+      {
+        "label": "unit: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "unit: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "unit: resume",
+        "expected": "game"
+      },
+      {
+        "label": "unit: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "montage: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "montage: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "montage: resume",
+        "expected": "game"
+      },
+      {
+        "label": "montage: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "memory: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "memory: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "memory: resume",
+        "expected": "game"
+      },
+      {
+        "label": "memory: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "settings keeps menu",
+        "expected": "menu"
+      },
+      {
+        "label": "mute works",
+        "expected": "silent"
+      },
+      {
+        "label": "muted game stays silent",
+        "expected": "silent"
+      },
+      {
+        "label": "muted menu stays silent",
+        "expected": "silent"
+      },
+      {
+        "label": "saved mute does not get overridden by autoplay on reload",
+        "expected": "silent"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "policy": "allowed",
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "deviceScaleFactor": 2,
+    "firstVisit": {
+      "activated": false,
+      "loops": [
+        {
+          "live": true,
+          "duration": 40,
+          "track": "menu"
+        }
+      ],
+      "contexts": [
+        "running"
+      ],
+      "titleVisible": true,
+      "hintVisible": false,
+      "hint": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "logo": {
+        "x": 45.5,
+        "y": 37,
+        "width": 284,
+        "height": 257.3125,
+        "top": 37,
+        "right": 329.5,
+        "bottom": 294.3125,
+        "left": 45.5
+      },
+      "lastMode": {
+        "x": 22,
+        "y": 463.3125,
+        "width": 331,
+        "height": 64,
+        "top": 463.3125,
+        "right": 353,
+        "bottom": 527.3125,
+        "left": 22
+      }
+    },
+    "passed": true,
+    "maxSimultaneousBgm": 1,
+    "checks": [
+      {
+        "label": "first visit starts with hasBeenActive=false",
+        "expected": "menu"
+      },
+      {
+        "label": "unit: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "unit: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "unit: resume",
+        "expected": "game"
+      },
+      {
+        "label": "unit: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "montage: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "montage: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "montage: resume",
+        "expected": "game"
+      },
+      {
+        "label": "montage: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "memory: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "memory: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "memory: resume",
+        "expected": "game"
+      },
+      {
+        "label": "memory: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "settings keeps menu",
+        "expected": "menu"
+      },
+      {
+        "label": "mute works",
+        "expected": "silent"
+      },
+      {
+        "label": "muted game stays silent",
+        "expected": "silent"
+      },
+      {
+        "label": "muted menu stays silent",
+        "expected": "silent"
+      },
+      {
+        "label": "saved mute does not get overridden by autoplay on reload",
+        "expected": "silent"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "policy": "allowed",
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "deviceScaleFactor": 2,
+    "firstVisit": {
+      "activated": false,
+      "loops": [
+        {
+          "live": true,
+          "duration": 40,
+          "track": "menu"
+        }
+      ],
+      "contexts": [
+        "running"
+      ],
+      "titleVisible": true,
+      "hintVisible": false,
+      "hint": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "logo": {
+        "x": 67.078125,
+        "y": 21.625,
+        "width": 185.84375,
+        "height": 168.375,
+        "top": 21.625,
+        "right": 252.921875,
+        "bottom": 190,
+        "left": 67.078125
+      },
+      "lastMode": {
+        "x": 22,
+        "y": 376.609375,
+        "width": 276,
+        "height": 79,
+        "top": 376.609375,
+        "right": 298,
+        "bottom": 455.609375,
+        "left": 22
+      }
+    },
+    "passed": true,
+    "maxSimultaneousBgm": 1,
+    "checks": [
+      {
+        "label": "first visit starts with hasBeenActive=false",
+        "expected": "menu"
+      },
+      {
+        "label": "unit: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "unit: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "unit: resume",
+        "expected": "game"
+      },
+      {
+        "label": "unit: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "montage: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "montage: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "montage: resume",
+        "expected": "game"
+      },
+      {
+        "label": "montage: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "memory: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "memory: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "memory: resume",
+        "expected": "game"
+      },
+      {
+        "label": "memory: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "settings keeps menu",
+        "expected": "menu"
+      },
+      {
+        "label": "mute works",
+        "expected": "silent"
+      },
+      {
+        "label": "muted game stays silent",
+        "expected": "silent"
+      },
+      {
+        "label": "muted menu stays silent",
+        "expected": "silent"
+      },
+      {
+        "label": "saved mute does not get overridden by autoplay on reload",
+        "expected": "silent"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "policy": "blocked",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 2,
+    "firstVisit": {
+      "activated": false,
+      "loops": [],
+      "contexts": [
+        "suspended"
+      ],
+      "titleVisible": true,
+      "hintVisible": true,
+      "hint": {
+        "x": 126.234375,
+        "y": 743.25,
+        "width": 137.515625,
+        "height": 44,
+        "top": 743.25,
+        "right": 263.75,
+        "bottom": 787.25,
+        "left": 126.234375
+      },
+      "logo": {
+        "x": 30,
+        "y": 60.953125,
+        "width": 330,
+        "height": 299,
+        "top": 60.953125,
+        "right": 360,
+        "bottom": 359.953125,
+        "left": 30
+      },
+      "lastMode": {
+        "x": 25,
+        "y": 583.609375,
+        "width": 340,
+        "height": 79,
+        "top": 583.609375,
+        "right": 365,
+        "bottom": 662.609375,
+        "left": 25
+      }
+    },
+    "passed": true,
+    "maxSimultaneousBgm": 1,
+    "checks": [
+      {
+        "label": "strict policy blocks with hasBeenActive=false",
+        "expected": "silent"
+      },
+      {
+        "label": "one logo tap / prompt tap / Enter starts music without entering a game",
+        "expected": "menu"
+      },
+      {
+        "label": "unit: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "unit: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "unit: resume",
+        "expected": "game"
+      },
+      {
+        "label": "unit: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "montage: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "montage: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "montage: resume",
+        "expected": "game"
+      },
+      {
+        "label": "montage: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "memory: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "memory: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "memory: resume",
+        "expected": "game"
+      },
+      {
+        "label": "memory: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "settings keeps menu",
+        "expected": "menu"
+      },
+      {
+        "label": "mute works",
+        "expected": "silent"
+      },
+      {
+        "label": "muted game stays silent",
+        "expected": "silent"
+      },
+      {
+        "label": "muted menu stays silent",
+        "expected": "silent"
+      },
+      {
+        "label": "saved mute does not get overridden by autoplay on reload",
+        "expected": "silent"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "policy": "blocked",
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "deviceScaleFactor": 2,
+    "firstVisit": {
+      "activated": false,
+      "loops": [],
+      "contexts": [
+        "suspended"
+      ],
+      "titleVisible": true,
+      "hintVisible": true,
+      "hint": {
+        "x": 118.734375,
+        "y": 589.328125,
+        "width": 137.515625,
+        "height": 44,
+        "top": 589.328125,
+        "right": 256.25,
+        "bottom": 633.328125,
+        "left": 118.734375
+      },
+      "logo": {
+        "x": 45.5,
+        "y": 37,
+        "width": 284,
+        "height": 257.3125,
+        "top": 37,
+        "right": 329.5,
+        "bottom": 294.3125,
+        "left": 45.5
+      },
+      "lastMode": {
+        "x": 22,
+        "y": 463.3125,
+        "width": 331,
+        "height": 64,
+        "top": 463.3125,
+        "right": 353,
+        "bottom": 527.3125,
+        "left": 22
+      }
+    },
+    "passed": true,
+    "maxSimultaneousBgm": 1,
+    "checks": [
+      {
+        "label": "strict policy blocks with hasBeenActive=false",
+        "expected": "silent"
+      },
+      {
+        "label": "one logo tap / prompt tap / Enter starts music without entering a game",
+        "expected": "menu"
+      },
+      {
+        "label": "unit: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "unit: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "unit: resume",
+        "expected": "game"
+      },
+      {
+        "label": "unit: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "montage: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "montage: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "montage: resume",
+        "expected": "game"
+      },
+      {
+        "label": "montage: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "memory: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "memory: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "memory: resume",
+        "expected": "game"
+      },
+      {
+        "label": "memory: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "settings keeps menu",
+        "expected": "menu"
+      },
+      {
+        "label": "mute works",
+        "expected": "silent"
+      },
+      {
+        "label": "muted game stays silent",
+        "expected": "silent"
+      },
+      {
+        "label": "muted menu stays silent",
+        "expected": "silent"
+      },
+      {
+        "label": "saved mute does not get overridden by autoplay on reload",
+        "expected": "silent"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "policy": "blocked",
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "deviceScaleFactor": 2,
+    "firstVisit": {
+      "activated": false,
+      "loops": [],
+      "contexts": [
+        "suspended"
+      ],
+      "titleVisible": true,
+      "hintVisible": true,
+      "hint": {
+        "x": 91.234375,
+        "y": 505.203125,
+        "width": 137.515625,
+        "height": 44,
+        "top": 505.203125,
+        "right": 228.75,
+        "bottom": 549.203125,
+        "left": 91.234375
+      },
+      "logo": {
+        "x": 67.078125,
+        "y": 21.625,
+        "width": 185.84375,
+        "height": 168.375,
+        "top": 21.625,
+        "right": 252.921875,
+        "bottom": 190,
+        "left": 67.078125
+      },
+      "lastMode": {
+        "x": 22,
+        "y": 376.609375,
+        "width": 276,
+        "height": 79,
+        "top": 376.609375,
+        "right": 298,
+        "bottom": 455.609375,
+        "left": 22
+      }
+    },
+    "passed": true,
+    "maxSimultaneousBgm": 1,
+    "checks": [
+      {
+        "label": "strict policy blocks with hasBeenActive=false",
+        "expected": "silent"
+      },
+      {
+        "label": "one logo tap / prompt tap / Enter starts music without entering a game",
+        "expected": "menu"
+      },
+      {
+        "label": "unit: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "unit: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "unit: resume",
+        "expected": "game"
+      },
+      {
+        "label": "unit: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "montage: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "montage: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "montage: resume",
+        "expected": "game"
+      },
+      {
+        "label": "montage: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "memory: unchanged original theme",
+        "expected": "game"
+      },
+      {
+        "label": "memory: pause",
+        "expected": "silent"
+      },
+      {
+        "label": "memory: resume",
+        "expected": "game"
+      },
+      {
+        "label": "memory: return to distinct menu theme",
+        "expected": "menu"
+      },
+      {
+        "label": "settings keeps menu",
+        "expected": "menu"
+      },
+      {
+        "label": "mute works",
+        "expected": "silent"
+      },
+      {
+        "label": "muted game stays silent",
+        "expected": "silent"
+      },
+      {
+        "label": "muted menu stays silent",
+        "expected": "silent"
+      },
+      {
+        "label": "saved mute does not get overridden by autoplay on reload",
+        "expected": "silent"
+      }
+    ],
+    "errors": []
+  }
+]

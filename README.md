@@ -2,7 +2,9 @@
 
 2026-09-08 사용자 승인으로 정답 반응·완성 연출·개인 기록·배경음악을 `main`에 반영했습니다. 이전 버전은 복구 태그에 보관되어 있습니다. [변경 범위와 복구 방법](docs/EXPERIMENT-game-feel.md)을 참고하세요.
 
-대기화면에는 같은 멜로디의 잔잔한 변주를, 게임에는 기존 음악을 사용합니다. 첫 터치 후 재생하며 Settings의 Background music에서 함께 끌 수 있습니다. [대기화면 음악 연구기록](docs/research/2026-09-08-menu-music/README.md)
+대기화면에는 새 독립곡 **Paper Lantern Waltz**(72 BPM·F장조·3/4박자·40초), 게임에는 기존 **Pick Garden**을 사용합니다. 인트로는 무음이며 첫 게임선택화면에서 자동 재생을 시도합니다. 브라우저가 소리를 차단하면 하단의 **Tap for music**이나 로고 등 메뉴 영역을 터치해 게임에 들어가지 않고 음악을 시작할 수 있습니다. Settings의 Background music에서 함께 끌 수 있으며 기존 꺼짐 설정을 우선합니다. [첫 방문 음악·새 메뉴곡 연구기록](docs/research/2026-09-08-menu-autoplay/README.md)
+
+이전의 같은 멜로디 메뉴 변주곡은 복구용 파일과 [당시 연구기록](docs/research/2026-09-08-menu-music/README.md)에 보존합니다.
 
 TAPtoTALK의 모바일 화면 구조와 폰트, 종이 질감 디자인을 바탕으로 만든 이미지 찾기 게임입니다.
 완성 캐릭터 PNG와 정사각형 JPG 조각을 이용해 세 가지 모드를 플레이합니다.

@@ -9,6 +9,7 @@ import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
 import { SceneMusic } from "./sceneMusic";
+import type { MusicPlaybackState } from "./backgroundMusic";
 import { savePickResult, type RunSummary } from "./pickRecords";
 import { renderPickResult } from "./pickResultView";
 import "./styles/pickExperience.css";
@@ -27,13 +28,11 @@ function formatTime(ms: number): string {
 
 export class TalkApp {
   private readonly cheer = new Cheer();
-  private readonly music = new SceneMusic({
-    menu: APP_CONFIG.assets.menuMusic,
-    game: APP_CONFIG.assets.backgroundMusic,
-  });
+  private readonly music: SceneMusic;
   private readonly studioSplash = el("screen-studio-splash");
   private readonly splash = el("screen-splash");
   private readonly title = el("screen-title");
+  private readonly musicPrompt = el<HTMLButtonElement>("btn-title-music");
   private readonly game = el("screen-game");
   private readonly board = el("picture-board");
   private readonly clock = el("run-clock");
@@ -53,6 +52,7 @@ export class TalkApp {
   private readonly helpBody = el("help-body");
 
   private preferences: TalkPreferences = loadTalkPreferences();
+  private menuMusicState: MusicPlaybackState = "idle";
   private mode: Mode = "unit";
   private active = false;
   private disposePractice?: () => void;
@@ -89,6 +89,13 @@ export class TalkApp {
   private readonly memoryButtons = new Map<number, HTMLButtonElement>();
 
   constructor() {
+    this.music = new SceneMusic({
+      menu: APP_CONFIG.assets.menuMusic,
+      game: APP_CONFIG.assets.backgroundMusic,
+    }, undefined, (scene, state) => {
+      this.menuMusicState = scene === "menu" ? state : "idle";
+      this.updateMusicPrompt();
+    });
     this.helpBody.addEventListener("practice-done", () => this.closeHelp());
     this.damageFlash.addEventListener("animationend", () => {
       this.damageFlash.classList.remove("is-active");
@@ -105,7 +112,11 @@ export class TalkApp {
     el("btn-title-settings").addEventListener("click", () => this.showSettings());
     el("btn-title-rules").addEventListener("click", () => this.showRules());
     el("btn-help-close").addEventListener("click", () => this.closeHelp());
+    this.musicPrompt.addEventListener("click", () => this.music.unlock());
     document.addEventListener("pointerdown", () => { this.cheer.unlock(); feedback.unlock(); this.music.unlock(); }, { capture: true });
+    // Touch browsers grant activation on release/click, not always pointerdown.
+    document.addEventListener("pointerup", () => this.music.unlock(), { capture: true });
+    document.addEventListener("click", () => this.music.unlock(), { capture: true });
     document.addEventListener("keydown", () => { feedback.unlock(); this.music.unlock(); }, { capture: true });
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && this.active && !this.paused) this.pauseGame();
@@ -691,6 +702,7 @@ export class TalkApp {
   private closeHelp(): void {
     this.disposePractice?.();
     this.help.classList.add("hidden");
+    this.updateMusicPrompt();
     if (this.paused && this.active) {
       this.paused = false;
       this.game.classList.remove("is-input-locked");
@@ -704,6 +716,7 @@ export class TalkApp {
     this.helpTitle.textContent = title;
     this.helpBody.innerHTML = html;
     this.help.classList.remove("hidden");
+    this.updateMusicPrompt();
   }
 
   private showHowToPlay(): void {
@@ -720,7 +733,7 @@ export class TalkApp {
     const musicRow = document.createElement("button");
     musicRow.className = "switch-row";
     musicRow.dataset.setting = "music";
-    musicRow.innerHTML = `<span class="switch-text"><b>Background music</b><small>Gentle in menus, lively during play.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.musicOn}"><i class="switch-knob"></i></span>`;
+    musicRow.innerHTML = `<span class="switch-text"><b>Background music</b><small>Different tunes for the menu and games.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.musicOn}"><i class="switch-knob"></i></span>`;
     this.helpBody.querySelector(".switch-list")!.append(musicRow);
     this.helpBody.querySelectorAll<HTMLButtonElement>("[data-setting]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -739,11 +752,24 @@ export class TalkApp {
     feedback.setHaptics(this.preferences.hapticsOn);
     this.cheer.setSound(this.preferences.soundOn);
     this.music.setEnabled(this.preferences.musicOn);
+    this.updateMusicPrompt();
   }
 
   private updateMusicScene(): void {
     this.music.setScene(document.hidden ? "silent"
       : this.active && !this.paused ? "game"
       : !this.title.classList.contains("hidden") ? "menu" : "silent");
+    this.updateMusicPrompt();
+  }
+
+  private updateMusicPrompt(): void {
+    const show = this.menuMusicState === "blocked" && this.preferences.musicOn
+      && !document.hidden && !this.title.classList.contains("hidden")
+      && this.help.classList.contains("hidden");
+    if (!show && document.activeElement === this.musicPrompt) {
+      // Do not strand keyboard focus on a control hidden by successful playback.
+      el("title-heading").focus({ preventScroll: true });
+    }
+    this.musicPrompt.classList.toggle("hidden", !show);
   }
 }

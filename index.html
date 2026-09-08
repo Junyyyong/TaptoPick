@@ -17,7 +17,7 @@
       </section>
       <section class="screen title-screen hidden" id="screen-title">
         <header class="brand-block">
-          <h1 class="brand"><img class="brand-mark" id="brand-mark" alt="TAP to PICK" /></h1>
+          <h1 class="brand" id="title-heading" tabindex="-1"><img class="brand-mark" id="brand-mark" alt="TAP to PICK" /></h1>
         </header>
         <nav class="mode-list" aria-label="Game modes">
           <button class="mode-btn" id="mode-unit"><span class="mode-name">Picture Pieces</span><span class="mode-desc">Find every piece on a 7×7 board with 5 chances.</span></button>
@@ -28,6 +28,12 @@
           <button class="text-btn" id="btn-title-tutorial">How to play</button>
           <button class="text-btn" id="btn-title-settings">Settings</button>
           <button class="text-btn" id="btn-title-rules">Rules</button>
+          <div class="title-music-slot">
+            <button class="title-music-prompt hidden" id="btn-title-music" aria-label="Play background music">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"></path><path d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"></path></svg>
+              <span>Tap for music</span>
+            </button>
+          </div>
         </div>
       </section>
 

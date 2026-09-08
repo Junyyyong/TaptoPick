@@ -1,0 +1,27 @@
+{
+  "title": "Paper Lantern Waltz",
+  "originalComposition": true,
+  "sampledAudio": false,
+  "bpm": 72,
+  "key": "F major",
+  "bars": 16,
+  "seconds": 40,
+  "sampleRate": 44100,
+  "samplesPerChannel": 1764000,
+  "channels": 2,
+  "bits": 16,
+  "bytes": 7056044,
+  "peakDbFS": -4.731440128741254,
+  "rmsDbFS": -19.00003033941806,
+  "loopBoundaryDelta": [
+    0.0008455594765514857,
+    0.0005885267618785207
+  ],
+  "meterBeats": 3,
+  "instruments": [
+    "nylon-like lead",
+    "soft electric piano",
+    "warm bass"
+  ],
+  "arrangement": "Independent original waltz; no shared melody or arrangement with Pick Garden."
+}

@@ -44,6 +44,7 @@ beforeEach(() => {
 
 afterEach(() => {
   music.dispose();
+  vi.useRealTimers();
   vi.unstubAllGlobals();
 });
 
@@ -53,6 +54,108 @@ describe("optional background music", () => {
     await flush();
     expect(FakeContext.instances).toHaveLength(0);
     expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("tries autoplay without a gesture only when explicitly requested by a visible scene", async () => {
+    const states = vi.fn();
+    music.dispose();
+    music = new BackgroundMusic("menu.mp3", states);
+    music.attemptAutoplay();
+    expect(FakeContext.instances).toHaveLength(0);
+    music.setPlaying(true);
+    music.attemptAutoplay();
+    await flush();
+    expect(FakeContext.instances[0]?.sources).toHaveLength(1);
+    expect(states.mock.calls.map(([state]) => state)).toEqual(["loading", "playing"]);
+  });
+
+  it("does not force autoplay when muted or hidden", async () => {
+    music.setPlaying(true);
+    music.setEnabled(false);
+    music.attemptAutoplay();
+    expect(FakeContext.instances).toHaveLength(0);
+    music.setEnabled(true);
+    doc.hidden = true;
+    music.attemptAutoplay();
+    await flush();
+    expect(FakeContext.instances).toHaveLength(0);
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("reports pending autoplay as blocked, preloads, then starts on a tap without a second download", async () => {
+    vi.useFakeTimers();
+    const states = vi.fn();
+    music.dispose();
+    music = new BackgroundMusic("menu.mp3", states);
+    music.unlock();
+    const context = FakeContext.instances[0]!;
+    let resumeOld!: () => void;
+    context.resume.mockImplementationOnce(() => new Promise<void>(resolve => { resumeOld = resolve; }));
+    music.setPlaying(true);
+    await flush();
+    expect(fetch).toHaveBeenCalledOnce();
+    expect(context.decodeAudioData).toHaveBeenCalledOnce();
+    expect(context.sources).toHaveLength(0);
+    vi.advanceTimersByTime(500);
+    expect(states).toHaveBeenLastCalledWith("blocked");
+    music.unlock();
+    await flush();
+    expect(states).toHaveBeenLastCalledWith("playing");
+    expect(context.sources).toHaveLength(1);
+    expect(fetch).toHaveBeenCalledOnce();
+    resumeOld();
+    await flush();
+    expect(context.sources).toHaveLength(1);
+  });
+
+  it("reports rejected autoplay and retries on a later gesture", async () => {
+    const states = vi.fn();
+    music.dispose();
+    music = new BackgroundMusic("menu.mp3", states);
+    music.unlock();
+    const context = FakeContext.instances[0]!;
+    context.resume.mockRejectedValueOnce(new DOMException("Gesture required", "NotAllowedError"));
+    music.setPlaying(true);
+    await flush();
+    expect(states).toHaveBeenLastCalledWith("blocked");
+    music.unlock();
+    await flush();
+    expect(states).toHaveBeenLastCalledWith("playing");
+    expect(context.sources).toHaveLength(1);
+  });
+
+  it("cancels the blocked prompt and stale pending resume when the scene ends", async () => {
+    vi.useFakeTimers();
+    const states = vi.fn();
+    music.dispose();
+    music = new BackgroundMusic("menu.mp3", states);
+    music.unlock();
+    const context = FakeContext.instances[0]!;
+    let finish!: () => void;
+    context.resume.mockImplementationOnce(() => new Promise<void>(resolve => { finish = resolve; }));
+    music.setPlaying(true);
+    await flush();
+    music.setPlaying(false);
+    vi.advanceTimersByTime(1000);
+    finish();
+    await flush();
+    expect(states).toHaveBeenLastCalledWith("idle");
+    expect(states).not.toHaveBeenCalledWith("blocked");
+    expect(context.sources).toHaveLength(0);
+  });
+
+  it("reports failed audio loading without interrupting a scene and permits a retry", async () => {
+    const states = vi.fn();
+    music.dispose();
+    music = new BackgroundMusic("menu.mp3", states);
+    vi.mocked(fetch).mockRejectedValueOnce(new Error("offline"));
+    music.setPlaying(true);
+    music.attemptAutoplay();
+    await flush();
+    expect(states).toHaveBeenLastCalledWith("unavailable");
+    music.unlock();
+    await flush();
+    expect(states).toHaveBeenLastCalledWith("playing");
   });
 
   it("starts one decoded loop and reuses it through repeated gestures", async () => {
