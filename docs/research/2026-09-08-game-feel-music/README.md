@@ -11,7 +11,7 @@
 - 결과의 이번 기록·최고 기록·다음 목표. 기기 저장 실패에도 게임은 계속되고 세션 기록임을 표시.
 - 38.4초 오리지널 마림바풍 반복곡. 음악은 플레이에서만 사용하며 설정과 일시정지에서 끌 수 있음.
 
-기준 커밋 `c8c01aa`, 복구 태그 `backup-before-game-feel-2026-09-08`, 실험 브랜치 `codex/game-feel-music`. 기존 main과 TAPtoTALK는 수정하지 않았다. 복구 절차는 [체험판 문서](../../EXPERIMENT-game-feel.md).
+기준 커밋 `c8c01aa`, 복구 태그 `backup-before-game-feel-2026-09-08`, 실험 브랜치 `codex/game-feel-music`. 체험 당시 main을 보존했고, 2026-09-08 사용자가 긍정적인 피드백과 함께 메인 반영을 요청하여 체험 커밋 `4b3b488`을 main에 반영했다. TAPtoTALK는 수정하지 않았다. 복구 절차는 [체험판 문서](../../EXPERIMENT-game-feel.md).
 
 ## 화면
 
@@ -41,4 +41,4 @@
 - `lifecycle.cjs` / `lifecycle.json`: Continue 접근성, 탭 숨김·복귀, 중단 후 예약 취소. 이 검증의 영상/음성 재생 메서드는 모킹이며 실제 디코딩·동기화 품질을 입증하지 않는다.
 - `scripts/verify-pick-music.mjs`: WAV/MP3 38.4초, 클리핑 여유, 루프 경계. 음악 컨트롤러 Vitest 10개, 기록 저장 Vitest24개.
 
-음악은 [MP3](../../../public/assets/audio/pick-garden.mp3) / [WAV](../../../public/assets/audio/pick-garden.wav). 사용자 휴대폰에서 실제 음량·손맛·반복 피로도를 확인한 뒤 main 반영 여부를 결정한다.
+음악은 [MP3](../../../public/assets/audio/pick-garden.mp3) / [WAV](../../../public/assets/audio/pick-garden.wav). 사용자 승인으로 main 반영했으며, 실제 휴대폰에서 장시간 사용했을 때의 반복 피로도는 추가 확인 대상이다.
