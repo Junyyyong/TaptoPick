@@ -1,15 +1,18 @@
 /**
  * Pick Garden — original, deterministic instrumental composed for TAPtoPICK.
  * No samples, borrowed melodies, network services, or runtime dependencies.
- * 100 BPM, C major, 16 bars; note/reverb tails wrap onto the loop start.
+ * 100 BPM (menu: 92 BPM), C major, 16 bars; tails wrap onto the loop start.
  * Run: node scripts/generate-pick-music.mjs
+ * Menu variation: node scripts/generate-pick-music.mjs --menu
  * Web encode: ffmpeg -y -i public/assets/audio/pick-garden.wav -codec:a libmp3lame -q:a 4 public/assets/audio/pick-garden.mp3
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
+const menu = process.argv.includes('--menu');
+const basename = menu ? 'pick-garden-menu' : 'pick-garden';
 const rate = 44100;
-const bpm = 100;
+const bpm = menu ? 92 : 100;
 const beat = 60 / bpm;
 const duration = 16 * 4 * beat;
 const count = Math.round(rate * duration);
@@ -37,11 +40,11 @@ function add(when, length, sample, pan = 0, level = 1) {
 function marimba(midi, when, velocity = 1, pan = 0) {
   const f = frequency(midi);
   add(when, 1.7, t => {
-    const attack = 1 - Math.exp(-t / 0.004);
+    const attack = 1 - Math.exp(-t / (menu ? 0.007 : 0.004));
     const release = Math.min(1, Math.max(0, (1.7 - t) / 0.09));
-    const fundamental = Math.sin(tau * f * t) * Math.exp(-t / 0.29);
-    const wood = 0.22 * Math.sin(tau * f * 4 * t) * Math.exp(-t / 0.055);
-    const bell = 0.055 * Math.sin(tau * f * 9 * t) * Math.exp(-t / 0.022);
+    const fundamental = Math.sin(tau * f * t) * Math.exp(-t / (menu ? 0.34 : 0.29));
+    const wood = (menu ? 0.13 : 0.22) * Math.sin(tau * f * 4 * t) * Math.exp(-t / 0.055);
+    const bell = (menu ? 0.024 : 0.055) * Math.sin(tau * f * 9 * t) * Math.exp(-t / 0.022);
     return (fundamental + wood + bell) * attack * release;
   }, pan, 0.19 * velocity);
 }
@@ -63,7 +66,7 @@ function brush(when, accent) {
     previous = noise;
     return high * (1 - Math.exp(-t / 0.002)) * Math.exp(-t / 0.019)
       * Math.max(0, 1 - t / 0.095);
-  }, 0.26, accent ? 0.015 : 0.007);
+  }, 0.26, menu ? (accent ? 0.0075 : 0.0035) : (accent ? 0.015 : 0.007));
 }
 
 // Four-bar question/answer phrases, with open spaces for game sound effects.
@@ -99,7 +102,9 @@ for (let bar = 0; bar < 16; bar++) {
   for (const [position, note] of melody[bar]) {
     marimba(note, start + position * beat / 2, position % 2 === 0 ? 0.84 : 0.66, 0.16);
   }
-  for (let tick = 0; tick < 8; tick++) brush(start + tick * beat / 2, tick === 2 || tick === 6);
+  for (let tick = 0; tick < 8; tick += menu ? 2 : 1) {
+    brush(start + tick * beat / 2, tick === 2 || tick === 6);
+  }
 }
 
 // Quiet, circular stereo room. Wraparound avoids truncating the last notes.
@@ -120,7 +125,8 @@ for (const channel of channels) {
     peak = Math.max(peak, Math.abs(channel[i]));
   }
 }
-const gain = 0.67 / peak;
+const targetPeak = menu ? 0.58 : 0.67;
+const gain = targetPeak / peak;
 const wav = Buffer.alloc(44 + count * 4);
 wav.write('RIFF', 0);
 wav.writeUInt32LE(wav.length - 8, 4);
@@ -144,13 +150,13 @@ for (let i = 0; i < count; i++) {
 }
 const directory = fileURLToPath(new URL('../public/assets/audio/', import.meta.url));
 mkdirSync(directory, { recursive: true });
-writeFileSync(`${directory}/pick-garden.wav`, wav);
+writeFileSync(`${directory}/${basename}.wav`, wav);
 const report = {
-  title: 'Pick Garden', originalComposition: true, sampledAudio: false,
+  title: menu ? 'Pick Garden — Menu' : 'Pick Garden', originalComposition: true, sampledAudio: false,
   bpm, key: 'C major', bars: 16, seconds: duration, sampleRate: rate,
   samplesPerChannel: count, channels: 2, bits: 16, bytes: wav.length,
-  peakDbFS: 20 * Math.log10(0.67), rmsDbFS: 20 * Math.log10(Math.sqrt(squareSum / (2 * count))),
+  peakDbFS: 20 * Math.log10(targetPeak), rmsDbFS: 20 * Math.log10(Math.sqrt(squareSum / (2 * count))),
   loopBoundaryDelta: channels.map(channel => Math.abs(channel[0] - channel[count - 1]) * gain),
 };
-writeFileSync(`${directory}/pick-garden.json`, `${JSON.stringify(report, null, 2)}\n`);
+writeFileSync(`${directory}/${basename}.json`, `${JSON.stringify(report, null, 2)}\n`);
 console.log(report);

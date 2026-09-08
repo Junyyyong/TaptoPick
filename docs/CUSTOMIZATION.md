@@ -4,7 +4,7 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 
 ## 자주 수정할 곳
 
-- 게임 반응 체험판: `ui/styles/pickExperience.css`, `ui/feedback.ts`, `ui/talkApp.ts`. 기록은 `ui/pickRecords.ts`, 결과 표현은 `ui/pickResultView.ts`. 음악 재생은 `ui/backgroundMusic.ts`, 경로는 `config/app.ts`, 생성 원본은 `scripts/generate-pick-music.mjs`. 음악 설정은 효과음과 독립하며 플레이 외에는 중지한다. `docs/EXPERIMENT-game-feel.md`에 기준 버전과 복구 절차를 기록했다. 게임 규칙은 변경하지 않았다.
+- 게임 반응 체험판: `ui/styles/pickExperience.css`, `ui/feedback.ts`, `ui/talkApp.ts`. 기록은 `ui/pickRecords.ts`, 결과 표현은 `ui/pickResultView.ts`. 음악 재생기는 `ui/backgroundMusic.ts`에 유지하고, 화면별 음원 선택·중복 방지는 `ui/sceneMusic.ts`에서 관리한다. 경로는 `config/app.ts`, 생성 원본은 `scripts/generate-pick-music.mjs`다. 메뉴·메뉴에서 연 설정·How to play는 92 BPM 메뉴 변주곡, 실제 플레이는 기존 100 BPM 원곡을 사용한다. 첫 터치 또는 키 입력 후 재생하며 일시정지·영상·결과·숨긴 탭에서는 중지한다. 공통 Music 켜기/끄기 설정은 두 음악에 모두 적용되며 효과음 설정과 독립이다. `docs/EXPERIMENT-game-feel.md`에 기준 버전과 복구 절차를 기록했다. 게임 규칙은 변경하지 않았다.
 
 - 최신 안내: 첫 조각 연습은 3×3의 티피 정답 4조각과 다른 캐릭터 오답 5조각으로 구성한다. 개별 카드 크기는 이전 2×2와 동일하며 오답은 흔들림만 주고 진행하지 않는다. 정답 영역은 회색에서 컬러로 복원한다. 페어는 이미지 로딩 후 컬러로 3·2·1을 각 1초 표시한다. 완료 체크 없이 Next/Done으로 진행한다. 서체와 금색 맥동·흔들림은 TALK 안내 스타일을 참조한다.
 

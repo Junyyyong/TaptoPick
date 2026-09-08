@@ -8,7 +8,7 @@ import { mountPickTutorial } from "./pickTutorial";
 import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
-import { BackgroundMusic } from "./backgroundMusic";
+import { SceneMusic } from "./sceneMusic";
 import { savePickResult, type RunSummary } from "./pickRecords";
 import { renderPickResult } from "./pickResultView";
 import "./styles/pickExperience.css";
@@ -27,7 +27,10 @@ function formatTime(ms: number): string {
 
 export class TalkApp {
   private readonly cheer = new Cheer();
-  private readonly music = new BackgroundMusic(APP_CONFIG.assets.backgroundMusic);
+  private readonly music = new SceneMusic({
+    menu: APP_CONFIG.assets.menuMusic,
+    game: APP_CONFIG.assets.backgroundMusic,
+  });
   private readonly studioSplash = el("screen-studio-splash");
   private readonly splash = el("screen-splash");
   private readonly title = el("screen-title");
@@ -106,7 +109,7 @@ export class TalkApp {
     document.addEventListener("keydown", () => { feedback.unlock(); this.music.unlock(); }, { capture: true });
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && this.active && !this.paused) this.pauseGame();
-      this.music.setPlaying(this.active && !this.paused && !document.hidden);
+      this.updateMusicScene();
       this.cheer.setHidden(document.hidden);
       if (!document.hidden && this.pendingVideo) { const play = this.pendingVideo; this.pendingVideo = undefined; play(); }
     });
@@ -122,7 +125,7 @@ export class TalkApp {
 
   private showTitle(): void {
     this.clearPresentation();
-    this.music.setPlaying(false);
+    this.music.setScene("silent");
     this.disposePractice?.();
     this.active = false;
     this.paused = false;
@@ -136,6 +139,7 @@ export class TalkApp {
     this.splash.classList.add("hidden");
     this.game.classList.add("hidden");
     this.title.classList.remove("hidden");
+    this.updateMusicScene();
   }
 
   private startMode(mode: Mode): void {
@@ -179,7 +183,7 @@ export class TalkApp {
     if (mode === "montage") this.startMontageRound();
     if (mode === "memory") this.startMemoryRound();
     this.startClock();
-    this.music.setPlaying(!document.hidden);
+    this.updateMusicScene();
   }
 
   private startUnitRound(): void {
@@ -591,7 +595,7 @@ export class TalkApp {
     this.active = false;
     this.stopClock();
     this.game.classList.add("is-input-locked");
-    this.music.setPlaying(false);
+    this.music.setScene("silent");
     const won = headline !== "GAME OVER" && headline !== "TIME UP";
     if (won) feedback.complete(); else feedback.fail();
     const memory = this.memoryRun;
@@ -664,7 +668,7 @@ export class TalkApp {
     if (this.mode === "memory") this.advanceMemoryClock(performance.now());
     if (!this.active) return;
     this.paused = true;
-    this.music.setPlaying(false);
+    this.music.setScene("silent");
     this.stopClock();
     this.game.classList.add("is-input-locked");
     this.openHelp("Paused", `<div class="pause-card"><p>Take a break. Your game is paused.</p><button class="wood-btn" id="btn-resume">Resume</button><button class="text-btn" id="btn-pause-menu">Main menu</button></div>`);
@@ -691,7 +695,7 @@ export class TalkApp {
       this.paused = false;
       this.game.classList.remove("is-input-locked");
       this.startClock();
-      this.music.setPlaying(!document.hidden);
+      this.updateMusicScene();
     }
   }
 
@@ -716,7 +720,7 @@ export class TalkApp {
     const musicRow = document.createElement("button");
     musicRow.className = "switch-row";
     musicRow.dataset.setting = "music";
-    musicRow.innerHTML = `<span class="switch-text"><b>Background music</b><small>Soft marimba loop during play.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.musicOn}"><i class="switch-knob"></i></span>`;
+    musicRow.innerHTML = `<span class="switch-text"><b>Background music</b><small>Gentle in menus, lively during play.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.musicOn}"><i class="switch-knob"></i></span>`;
     this.helpBody.querySelector(".switch-list")!.append(musicRow);
     this.helpBody.querySelectorAll<HTMLButtonElement>("[data-setting]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -735,5 +739,11 @@ export class TalkApp {
     feedback.setHaptics(this.preferences.hapticsOn);
     this.cheer.setSound(this.preferences.soundOn);
     this.music.setEnabled(this.preferences.musicOn);
+  }
+
+  private updateMusicScene(): void {
+    this.music.setScene(document.hidden ? "silent"
+      : this.active && !this.paused ? "game"
+      : !this.title.classList.contains("hidden") ? "menu" : "silent");
   }
 }

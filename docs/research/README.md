@@ -1,5 +1,7 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-08 — 대기화면 음악과 플레이 음악 분리](2026-09-08-menu-music/README.md)
+
 - [2026-09-08 — 게임 반응·성취감·배경음악 체험판](2026-09-08-game-feel-music/README.md)
 
 - [2026-09-06 — 다른 캐릭터 오답과 TALK 스타일 안내](2026-09-06-help-decoys/README.md)

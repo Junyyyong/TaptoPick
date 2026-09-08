@@ -1,0 +1,20 @@
+{
+  "title": "Pick Garden — Menu",
+  "originalComposition": true,
+  "sampledAudio": false,
+  "bpm": 92,
+  "key": "C major",
+  "bars": 16,
+  "seconds": 41.73913043478261,
+  "sampleRate": 44100,
+  "samplesPerChannel": 1840696,
+  "channels": 2,
+  "bits": 16,
+  "bytes": 7362828,
+  "peakDbFS": -4.731440128741254,
+  "rmsDbFS": -19.36327333589576,
+  "loopBoundaryDelta": [
+    0.0015490204953151083,
+    0.002560375906148441
+  ]
+}

@@ -1,0 +1,452 @@
+[
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 2,
+    "passed": true,
+    "checks": [
+      {
+        "label": "initial menu waits for gesture",
+        "track": "silent"
+      },
+      {
+        "label": "first key starts menu music",
+        "track": "menu"
+      },
+      {
+        "label": "settings keeps menu music",
+        "track": "menu"
+      },
+      {
+        "label": "settings mute",
+        "track": "silent"
+      },
+      {
+        "label": "settings unmute",
+        "track": "menu"
+      },
+      {
+        "label": "How to play keeps menu music",
+        "track": "menu"
+      },
+      {
+        "label": "hidden menu pauses",
+        "track": "silent"
+      },
+      {
+        "label": "visible menu resumes",
+        "track": "menu"
+      },
+      {
+        "label": "unit: original gameplay track",
+        "track": "game"
+      },
+      {
+        "label": "unit: paused",
+        "track": "silent"
+      },
+      {
+        "label": "unit: resumed",
+        "track": "game"
+      },
+      {
+        "label": "unit: hidden",
+        "track": "silent"
+      },
+      {
+        "label": "unit: stays paused after returning",
+        "track": "silent"
+      },
+      {
+        "label": "unit: main menu from pause",
+        "track": "menu"
+      },
+      {
+        "label": "montage: original gameplay track",
+        "track": "game"
+      },
+      {
+        "label": "montage: paused",
+        "track": "silent"
+      },
+      {
+        "label": "montage: resumed",
+        "track": "game"
+      },
+      {
+        "label": "montage: hidden",
+        "track": "silent"
+      },
+      {
+        "label": "montage: stays paused after returning",
+        "track": "silent"
+      },
+      {
+        "label": "montage: main menu from pause",
+        "track": "menu"
+      },
+      {
+        "label": "memory: original gameplay track",
+        "track": "game"
+      },
+      {
+        "label": "memory: paused",
+        "track": "silent"
+      },
+      {
+        "label": "memory: resumed",
+        "track": "game"
+      },
+      {
+        "label": "memory: hidden",
+        "track": "silent"
+      },
+      {
+        "label": "memory: stays paused after returning",
+        "track": "silent"
+      },
+      {
+        "label": "memory: main menu from pause",
+        "track": "menu"
+      },
+      {
+        "label": "rapid scene changes leave only menu",
+        "track": "menu"
+      },
+      {
+        "label": "failure setup",
+        "track": "game"
+      },
+      {
+        "label": "video does not overlap BGM",
+        "track": "silent"
+      },
+      {
+        "label": "result stays silent",
+        "track": "silent"
+      },
+      {
+        "label": "result Home resumes menu",
+        "track": "menu"
+      },
+      {
+        "label": "saved menu mute applies to game",
+        "track": "silent"
+      },
+      {
+        "label": "muted preference survives reload and gesture",
+        "track": "silent"
+      },
+      {
+        "label": "unmute after reload starts menu",
+        "track": "menu"
+      }
+    ],
+    "maxSimultaneousBgm": 1,
+    "errors": [],
+    "maxBeforeReload": 1,
+    "visibilityTest": "synthetic visibilitychange with document.hidden overridden; not a physical device test"
+  },
+  {
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "deviceScaleFactor": 2,
+    "passed": true,
+    "checks": [
+      {
+        "label": "initial menu waits for gesture",
+        "track": "silent"
+      },
+      {
+        "label": "first key starts menu music",
+        "track": "menu"
+      },
+      {
+        "label": "settings keeps menu music",
+        "track": "menu"
+      },
+      {
+        "label": "settings mute",
+        "track": "silent"
+      },
+      {
+        "label": "settings unmute",
+        "track": "menu"
+      },
+      {
+        "label": "How to play keeps menu music",
+        "track": "menu"
+      },
+      {
+        "label": "hidden menu pauses",
+        "track": "silent"
+      },
+      {
+        "label": "visible menu resumes",
+        "track": "menu"
+      },
+      {
+        "label": "unit: original gameplay track",
+        "track": "game"
+      },
+      {
+        "label": "unit: paused",
+        "track": "silent"
+      },
+      {
+        "label": "unit: resumed",
+        "track": "game"
+      },
+      {
+        "label": "unit: hidden",
+        "track": "silent"
+      },
+      {
+        "label": "unit: stays paused after returning",
+        "track": "silent"
+      },
+      {
+        "label": "unit: main menu from pause",
+        "track": "menu"
+      },
+      {
+        "label": "montage: original gameplay track",
+        "track": "game"
+      },
+      {
+        "label": "montage: paused",
+        "track": "silent"
+      },
+      {
+        "label": "montage: resumed",
+        "track": "game"
+      },
+      {
+        "label": "montage: hidden",
+        "track": "silent"
+      },
+      {
+        "label": "montage: stays paused after returning",
+        "track": "silent"
+      },
+      {
+        "label": "montage: main menu from pause",
+        "track": "menu"
+      },
+      {
+        "label": "memory: original gameplay track",
+        "track": "game"
+      },
+      {
+        "label": "memory: paused",
+        "track": "silent"
+      },
+      {
+        "label": "memory: resumed",
+        "track": "game"
+      },
+      {
+        "label": "memory: hidden",
+        "track": "silent"
+      },
+      {
+        "label": "memory: stays paused after returning",
+        "track": "silent"
+      },
+      {
+        "label": "memory: main menu from pause",
+        "track": "menu"
+      },
+      {
+        "label": "rapid scene changes leave only menu",
+        "track": "menu"
+      },
+      {
+        "label": "failure setup",
+        "track": "game"
+      },
+      {
+        "label": "video does not overlap BGM",
+        "track": "silent"
+      },
+      {
+        "label": "result stays silent",
+        "track": "silent"
+      },
+      {
+        "label": "result Home resumes menu",
+        "track": "menu"
+      },
+      {
+        "label": "saved menu mute applies to game",
+        "track": "silent"
+      },
+      {
+        "label": "muted preference survives reload and gesture",
+        "track": "silent"
+      },
+      {
+        "label": "unmute after reload starts menu",
+        "track": "menu"
+      }
+    ],
+    "maxSimultaneousBgm": 1,
+    "errors": [],
+    "maxBeforeReload": 1,
+    "visibilityTest": "synthetic visibilitychange with document.hidden overridden; not a physical device test"
+  },
+  {
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "deviceScaleFactor": 2,
+    "passed": true,
+    "checks": [
+      {
+        "label": "initial menu waits for gesture",
+        "track": "silent"
+      },
+      {
+        "label": "first key starts menu music",
+        "track": "menu"
+      },
+      {
+        "label": "settings keeps menu music",
+        "track": "menu"
+      },
+      {
+        "label": "settings mute",
+        "track": "silent"
+      },
+      {
+        "label": "settings unmute",
+        "track": "menu"
+      },
+      {
+        "label": "How to play keeps menu music",
+        "track": "menu"
+      },
+      {
+        "label": "hidden menu pauses",
+        "track": "silent"
+      },
+      {
+        "label": "visible menu resumes",
+        "track": "menu"
+      },
+      {
+        "label": "unit: original gameplay track",
+        "track": "game"
+      },
+      {
+        "label": "unit: paused",
+        "track": "silent"
+      },
+      {
+        "label": "unit: resumed",
+        "track": "game"
+      },
+      {
+        "label": "unit: hidden",
+        "track": "silent"
+      },
+      {
+        "label": "unit: stays paused after returning",
+        "track": "silent"
+      },
+      {
+        "label": "unit: main menu from pause",
+        "track": "menu"
+      },
+      {
+        "label": "montage: original gameplay track",
+        "track": "game"
+      },
+      {
+        "label": "montage: paused",
+        "track": "silent"
+      },
+      {
+        "label": "montage: resumed",
+        "track": "game"
+      },
+      {
+        "label": "montage: hidden",
+        "track": "silent"
+      },
+      {
+        "label": "montage: stays paused after returning",
+        "track": "silent"
+      },
+      {
+        "label": "montage: main menu from pause",
+        "track": "menu"
+      },
+      {
+        "label": "memory: original gameplay track",
+        "track": "game"
+      },
+      {
+        "label": "memory: paused",
+        "track": "silent"
+      },
+      {
+        "label": "memory: resumed",
+        "track": "game"
+      },
+      {
+        "label": "memory: hidden",
+        "track": "silent"
+      },
+      {
+        "label": "memory: stays paused after returning",
+        "track": "silent"
+      },
+      {
+        "label": "memory: main menu from pause",
+        "track": "menu"
+      },
+      {
+        "label": "rapid scene changes leave only menu",
+        "track": "menu"
+      },
+      {
+        "label": "failure setup",
+        "track": "game"
+      },
+      {
+        "label": "video does not overlap BGM",
+        "track": "silent"
+      },
+      {
+        "label": "result stays silent",
+        "track": "silent"
+      },
+      {
+        "label": "result Home resumes menu",
+        "track": "menu"
+      },
+      {
+        "label": "saved menu mute applies to game",
+        "track": "silent"
+      },
+      {
+        "label": "muted preference survives reload and gesture",
+        "track": "silent"
+      },
+      {
+        "label": "unmute after reload starts menu",
+        "track": "menu"
+      }
+    ],
+    "maxSimultaneousBgm": 1,
+    "errors": [],
+    "maxBeforeReload": 1,
+    "visibilityTest": "synthetic visibilitychange with document.hidden overridden; not a physical device test"
+  }
+]
