@@ -1,6 +1,7 @@
 import { PRACTICE_EXAMPLES } from "../content/pickTutorial";
 import { PracticeRun } from "../core/pick/tutorial";
 import { feedback } from "./feedback";
+import { MEMORY_QUESTION_ICON } from "./memoryQuestionIcon";
 
 /** Guided practice has no game clock or shared game state. */
 export function mountPickTutorial(root: HTMLElement): () => void {
@@ -48,8 +49,12 @@ export function mountPickTutorial(root: HTMLElement): () => void {
       button.className=`practice-tile${example.mode==="memory"?` practice-back practice-color-${index}`:""}`;
       button.dataset.target=String(tile.target);
       const img=new Image();img.src=tile.src;img.alt="";
-      const back=document.createElement("span");back.textContent="?";back.className="practice-question";
-      button.append(img,back);root.querySelector(".practice-board")!.append(button);
+      button.append(img);
+      if(example.mode==="memory") {
+        const back=document.createElement("span");back.innerHTML=MEMORY_QUESTION_ICON;back.className="practice-question";
+        button.append(back);
+      }
+      root.querySelector(".practice-board")!.append(button);
       button.addEventListener("click",()=>{
         if(example.mode==="unit" && !tile.target && !run.complete){
           run.pick(index);button.classList.remove("is-wrong");void button.offsetWidth;button.classList.add("is-wrong");

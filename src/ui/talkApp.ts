@@ -5,6 +5,7 @@ import { MontageProgress, PickLives, createStagedMontageBoard, montageMotion, pl
 import { MEMORY_STAGES, MemoryRun } from "../core/pick/memory";
 import { el } from "./dom";
 import { mountPickTutorial } from "./pickTutorial";
+import { MEMORY_QUESTION_ICON } from "./memoryQuestionIcon";
 import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
@@ -375,7 +376,7 @@ export class TalkApp {
       }
       const back = document.createElement("span");
       back.className = "memory-back";
-      back.textContent = "?";
+      back.innerHTML = MEMORY_QUESTION_ICON;
       const image = document.createElement("img");
       image.src = card.src;
       image.alt = "";

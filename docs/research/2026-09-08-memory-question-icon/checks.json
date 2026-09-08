@@ -1,0 +1,292 @@
+{
+  "capturedAt": "2026-09-08T08:02:03.034Z",
+  "browserVersion": "152.0.7977.76",
+  "method": "Chromium mobile emulation, DPR 2, seeded random and controlled clock. Real UI interactions; not a physical-device or user-study measurement.",
+  "cases": [
+    {
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "deviceScaleFactor": 2,
+      "stages": [
+        {
+          "size": 4,
+          "card": {
+            "width": 64,
+            "height": 64,
+            "free": false,
+            "backText": "",
+            "opacity": "1",
+            "label": "Face-down picture card",
+            "icon": {
+              "width": 35.953125,
+              "height": 35.953125,
+              "centered": true,
+              "decorative": true,
+              "vectorOnly": true
+            }
+          },
+          "cardCount": 16,
+          "freeCount": 0,
+          "screenshot": null
+        },
+        {
+          "size": 5,
+          "card": {
+            "width": 50.390625,
+            "height": 50.390625,
+            "free": false,
+            "backText": "",
+            "opacity": "1",
+            "label": "Face-down picture card",
+            "icon": {
+              "width": 28.0625,
+              "height": 28.0625,
+              "centered": true,
+              "decorative": true,
+              "vectorOnly": true
+            }
+          },
+          "cardCount": 25,
+          "freeCount": 1,
+          "screenshot": null
+        },
+        {
+          "size": 6,
+          "card": {
+            "width": 42,
+            "height": 42,
+            "free": false,
+            "backText": "",
+            "opacity": "1",
+            "label": "Face-down picture card",
+            "icon": {
+              "width": 23.1875,
+              "height": 23.1875,
+              "centered": true,
+              "decorative": true,
+              "vectorOnly": true
+            }
+          },
+          "cardCount": 36,
+          "freeCount": 0,
+          "screenshot": null
+        },
+        {
+          "size": 7,
+          "card": {
+            "width": 35.546875,
+            "height": 35.546875,
+            "free": false,
+            "backText": "",
+            "opacity": "1",
+            "label": "Face-down picture card",
+            "icon": {
+              "width": 19.453125,
+              "height": 19.453125,
+              "centered": true,
+              "decorative": true,
+              "vectorOnly": true
+            }
+          },
+          "cardCount": 49,
+          "freeCount": 1,
+          "screenshot": null
+        }
+      ],
+      "tutorialCompleted": true,
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "deviceScaleFactor": 2,
+      "stages": [
+        {
+          "size": 4,
+          "card": {
+            "width": 85.375,
+            "height": 85.375,
+            "free": false,
+            "backText": "",
+            "opacity": "1",
+            "label": "Face-down picture card",
+            "icon": {
+              "width": 48.34375,
+              "height": 48.34375,
+              "centered": true,
+              "decorative": true,
+              "vectorOnly": true
+            }
+          },
+          "cardCount": 16,
+          "freeCount": 0,
+          "screenshot": null
+        },
+        {
+          "size": 5,
+          "card": {
+            "width": 67.390625,
+            "height": 67.390625,
+            "free": false,
+            "backText": "",
+            "opacity": "1",
+            "label": "Face-down picture card",
+            "icon": {
+              "width": 37.921875,
+              "height": 37.921875,
+              "centered": true,
+              "decorative": true,
+              "vectorOnly": true
+            }
+          },
+          "cardCount": 25,
+          "freeCount": 1,
+          "screenshot": null
+        },
+        {
+          "size": 6,
+          "card": {
+            "width": 56.03125,
+            "height": 56.03125,
+            "free": false,
+            "backText": "",
+            "opacity": "1",
+            "label": "Face-down picture card",
+            "icon": {
+              "width": 31.328125,
+              "height": 31.328125,
+              "centered": true,
+              "decorative": true,
+              "vectorOnly": true
+            }
+          },
+          "cardCount": 36,
+          "freeCount": 0,
+          "screenshot": null
+        },
+        {
+          "size": 7,
+          "card": {
+            "width": 47.5,
+            "height": 47.5,
+            "free": false,
+            "backText": "",
+            "opacity": "1",
+            "label": "Face-down picture card",
+            "icon": {
+              "width": 26.375,
+              "height": 26.375,
+              "centered": true,
+              "decorative": true,
+              "vectorOnly": true
+            }
+          },
+          "cardCount": 49,
+          "freeCount": 1,
+          "screenshot": null
+        }
+      ],
+      "tutorialCompleted": true,
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "deviceScaleFactor": 2,
+      "stages": [
+        {
+          "size": 4,
+          "card": {
+            "width": 88.984375,
+            "height": 88.984375,
+            "free": false,
+            "backText": "",
+            "opacity": "1",
+            "label": "Face-down picture card",
+            "icon": {
+              "width": 50.4375,
+              "height": 50.4375,
+              "centered": true,
+              "decorative": true,
+              "vectorOnly": true
+            }
+          },
+          "cardCount": 16,
+          "freeCount": 0,
+          "screenshot": "after-memory-4x4.png"
+        },
+        {
+          "size": 5,
+          "card": {
+            "width": 70.25,
+            "height": 70.25,
+            "free": false,
+            "backText": "",
+            "opacity": "1",
+            "label": "Face-down picture card",
+            "icon": {
+              "width": 39.578125,
+              "height": 39.578125,
+              "centered": true,
+              "decorative": true,
+              "vectorOnly": true
+            }
+          },
+          "cardCount": 25,
+          "freeCount": 1,
+          "screenshot": null
+        },
+        {
+          "size": 6,
+          "card": {
+            "width": 58.421875,
+            "height": 58.421875,
+            "free": false,
+            "backText": "",
+            "opacity": "1",
+            "label": "Face-down picture card",
+            "icon": {
+              "width": 32.71875,
+              "height": 32.71875,
+              "centered": true,
+              "decorative": true,
+              "vectorOnly": true
+            }
+          },
+          "cardCount": 36,
+          "freeCount": 0,
+          "screenshot": null
+        },
+        {
+          "size": 7,
+          "card": {
+            "width": 49.515625,
+            "height": 49.515625,
+            "free": false,
+            "backText": "",
+            "opacity": "1",
+            "label": "Face-down picture card",
+            "icon": {
+              "width": 27.546875,
+              "height": 27.546875,
+              "centered": true,
+              "decorative": true,
+              "vectorOnly": true
+            }
+          },
+          "cardCount": 49,
+          "freeCount": 1,
+          "screenshot": "after-memory-7x7.png"
+        }
+      ],
+      "tutorialCompleted": true,
+      "errors": []
+    }
+  ]
+}

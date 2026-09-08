@@ -1,0 +1,54 @@
+{
+  "capturedAt": "2026-09-08T07:54:17.438Z",
+  "revision": "4156989b42a152b80c4dd5c38727a34b463ab0e0",
+  "seed": 20260908,
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "deviceScaleFactor": 2,
+  "pixelSize": {
+    "width": 780,
+    "height": 1688
+  },
+  "method": "Actual pre-icon Git revision exported into an isolated temporary directory. Chromium mobile emulation, seeded Math.random and controlled browser clock; not a real-device photograph or user-study measurement. Music, sound and haptics disabled through stored preferences. Stage 1 selected through the real UI; its normal three-second preview elapses before capture.",
+  "captures": [
+    {
+      "file": "before-memory.png",
+      "mode": "memory",
+      "scenario": "Stage 1, 4×4, sixteen closed font-rendered question-mark cards after preview.",
+      "ui": {
+        "boardCount": 16,
+        "hiddenCards": 16,
+        "backText": [
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?",
+          "?"
+        ],
+        "svgCount": 0,
+        "firstCard": {
+          "x": 10,
+          "y": 381,
+          "width": 88.984375,
+          "height": 88.984375
+        }
+      },
+      "errors": [],
+      "sha256": "ca4baec24ef4701036bd8f6727cfddfb0d4a275edff914fc358e1fac6f07e086"
+    }
+  ],
+  "browserVersion": "152.0.7977.76"
+}

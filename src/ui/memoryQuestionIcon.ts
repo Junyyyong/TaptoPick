@@ -1,0 +1,2 @@
+/** Shared, font-independent card-back symbol. The button supplies its own label. */
+export const MEMORY_QUESTION_ICON = `<svg class="memory-question-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M7 8a5 5 0 0 1 10 0c0 3-5 3-5 6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="19.5" r="1.5" fill="currentColor"/></svg>`;
