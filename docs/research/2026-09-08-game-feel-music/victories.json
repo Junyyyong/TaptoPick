@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "montage": {
+    "mode": "montage",
+    "won": true,
+    "elapsedMs": 6847,
+    "mistakes": 0,
+    "found": 18,
+    "total": 18,
+    "stage": 4,
+    "score": 18,
+    "characterId": "jaepi"
+  },
+  "memory": {
+    "mode": "memory",
+    "won": true,
+    "elapsedMs": 25749,
+    "mistakes": 0,
+    "found": 24,
+    "total": 24,
+    "stage": 4,
+    "score": 6970
+  },
+  "errors": []
+}

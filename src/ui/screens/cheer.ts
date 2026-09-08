@@ -118,6 +118,11 @@ export class Cheer {
   private readonly scoreEl = el<HTMLParagraphElement>("cheer-score");
   private readonly sound = el<HTMLAudioElement>("cheer-sound");
   private timer: number | undefined;
+  private timerAction?: () => void;
+  private timerDeadline = 0;
+  private timerRemaining = 0;
+  private hidden = false;
+  private resumeMedia = false;
   private soundOn = true;
   /** Whether the sound element has been played inside a touch yet. */
   private primed = false;
@@ -126,6 +131,8 @@ export class Cheer {
   private pick: Clip | null = null;
 
   constructor() {
+    // Optional in the reference test fixture; available in PICK's experiment.
+    document.getElementById("btn-cheer-continue")?.addEventListener("click", () => this.finish());
     // The clip stops on its own last frame; the player decides when to leave it.
     this.clip.addEventListener("ended", () => this.hold());
     this.clip.addEventListener("error", () => this.finish());
@@ -181,6 +188,15 @@ export class Cheer {
     this.begin(headline, 0, text, then, failureClip());
   }
 
+  /** PICK already held the completed board. Go directly to the character clip. */
+  playOutcome(headline: string, value: number, then: () => void, characterId: string | undefined, won: boolean): void {
+    const clip = characterId ? characterClipFor(characterId, value) : randomClipFor(value);
+    this.begin(headline, value, won ? "NICE PICK!" : "TRY AGAIN", then, clip);
+    window.clearTimeout(this.timer);
+    this.root.classList.toggle("is-unsuccessful", !won);
+    this.dance();
+  }
+
   private begin(headline: string, score: number, text: string, then: () => void, pick: Clip | null, scoreLabel = "SCORE"): void {
     this.word.textContent = text;
     this.headline.textContent = headline;
@@ -189,6 +205,9 @@ export class Cheer {
     this.done = then;
 
     this.root.classList.remove("hidden", "cheer-hold", "cheer-run", "cheer-layout-compact", "cheer-layout-standard", "cheer-layout-large", "cheer-layout-hero");
+    this.root.classList.remove("is-unsuccessful");
+    this.root.setAttribute("aria-hidden", "false");
+    document.getElementById("btn-cheer-continue")?.focus();
     this.card.classList.remove("hidden");
 
     this.pick = pick;
@@ -199,7 +218,7 @@ export class Cheer {
     }
 
     window.clearTimeout(this.timer);
-    this.timer = window.setTimeout(() => this.dance(), CARD_MS);
+    this.schedule(() => this.dance(), CARD_MS);
   }
 
   /** Second beat: the word and the dance. */
@@ -217,7 +236,7 @@ export class Cheer {
     window.clearTimeout(this.timer);
     if (!pick) {
       this.clip.classList.add("hidden");
-      this.timer = window.setTimeout(() => this.finish(), WORD_ONLY_MS);
+      this.schedule(() => this.finish(), WORD_ONLY_MS);
       return;
     }
 
@@ -233,7 +252,7 @@ export class Cheer {
       void start(this.sound, pick.sound).catch(() => undefined);
     }
 
-    this.timer = window.setTimeout(() => this.hold(), CLIP_CAP_MS);
+    this.schedule(() => this.hold(), CLIP_CAP_MS);
   }
 
   /**
@@ -243,6 +262,7 @@ export class Cheer {
   private hold(): void {
     if (!this.done) return;
     window.clearTimeout(this.timer);
+    this.timerAction = undefined;
     this.sound.pause();
     this.root.classList.add("cheer-hold");
   }
@@ -250,10 +270,13 @@ export class Cheer {
   /** Takes it off screen at once — for a run left before it finished. */
   stop(): void {
     window.clearTimeout(this.timer);
+    this.timerAction = undefined;
+    this.resumeMedia = false;
     this.done = undefined;
     this.pick = null;
     this.hush();
     this.root.classList.add("hidden");
+    this.root.setAttribute("aria-hidden", "true");
     this.root.classList.remove("cheer-hold");
     this.card.classList.remove("hidden");
   }
@@ -262,6 +285,40 @@ export class Cheer {
   setSound(on: boolean): void {
     this.soundOn = on;
     if (!on) this.sound.pause();
+  }
+
+  /** Freeze both the video and its fallback timer while the page is hidden. */
+  setHidden(hidden: boolean): void {
+    if (this.hidden === hidden) return;
+    this.hidden = hidden;
+    if (hidden) {
+      this.resumeMedia = !!this.done && !this.clip.paused && !this.clip.ended;
+      if (this.timerAction) this.timerRemaining = Math.max(0, this.timerDeadline - performance.now());
+      window.clearTimeout(this.timer);
+      this.hush();
+    } else if (this.done) {
+      const action = this.timerAction;
+      if (action) this.schedule(action, this.timerRemaining);
+      if (this.resumeMedia) {
+        void this.clip.play().catch(() => this.hold());
+        if (this.soundOn && this.pick?.sound) {
+          try { this.sound.currentTime = this.clip.currentTime; } catch { /* Media may not be ready. */ }
+          void this.sound.play().catch(() => {});
+        }
+      }
+      this.resumeMedia = false;
+    }
+  }
+
+  private schedule(action: () => void, ms: number): void {
+    window.clearTimeout(this.timer);
+    this.timerAction = action;
+    this.timerRemaining = ms;
+    this.timerDeadline = performance.now() + ms;
+    if (!this.hidden) this.timer = window.setTimeout(() => {
+      this.timerAction = undefined;
+      action();
+    }, ms);
   }
 
   private hush(): void {
@@ -274,8 +331,11 @@ export class Cheer {
     if (!then) return;
     this.done = undefined;
     window.clearTimeout(this.timer);
+    this.timerAction = undefined;
+    this.resumeMedia = false;
     this.hush();
     this.root.classList.add("hidden");
+    this.root.setAttribute("aria-hidden", "true");
     this.root.classList.remove("cheer-hold");
     then();
   }

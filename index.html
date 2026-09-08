@@ -41,6 +41,7 @@
         <div class="pick-progress"><span id="progress-label">0 / 0</span><div class="progress-track"><i id="progress-fill"></i></div></div>
         <div class="picture-board picture-board--7" id="picture-board" aria-label="Picture puzzle board"></div>
         <p id="montage-status" class="montage-status hidden" aria-live="polite"></p>
+        <div id="pick-moment" class="pick-moment" role="status" aria-live="polite"></div>
       </section>
 
       <div id="damage-flash" class="damage-flash" aria-hidden="true"></div>
@@ -50,9 +51,10 @@
         <video class="cheer-clip hidden" id="cheer-clip" muted playsinline disablepictureinpicture preload="auto"></video>
         <audio id="cheer-sound" preload="auto"></audio>
         <p class="cheer-tap" id="cheer-tap">Tap to continue</p>
+        <button class="text-btn cheer-continue" id="btn-cheer-continue">Continue</button>
       </div>
       <div class="result-layer hidden" id="result-layer" role="dialog" aria-modal="true">
-        <div class="result-panel"><p class="result-kicker">FINISH</p><h2 id="result-title">Complete!</h2><p id="result-detail"></p><button class="wood-btn" id="btn-again">Play again</button><button class="text-btn" id="btn-result-menu">Menu</button></div>
+        <div class="result-panel"><p class="result-kicker" id="result-kicker">YOUR RUN</p><h2 id="result-title">Complete!</h2><div id="result-metrics"></div><p id="result-detail"></p><p id="result-next-goal"></p><p id="result-storage-note" class="result-storage-note"></p><button class="wood-btn" id="btn-again">Play again</button><button class="text-btn" id="btn-result-menu">Home</button></div>
       </div>
       <div class="help-layer hidden" id="help-layer" role="dialog" aria-modal="true" aria-labelledby="help-title">
         <section class="help-panel"><header class="help-head"><button class="icon-btn" id="btn-help-close" aria-label="Close"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg></button><h2 id="help-title">How to play</h2><span class="icon-spacer" aria-hidden="true"></span></header><div class="help-body" id="help-body"></div></section>

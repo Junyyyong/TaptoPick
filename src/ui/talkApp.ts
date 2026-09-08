@@ -8,6 +8,10 @@ import { mountPickTutorial } from "./pickTutorial";
 import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
+import { BackgroundMusic } from "./backgroundMusic";
+import { savePickResult, type RunSummary } from "./pickRecords";
+import { renderPickResult } from "./pickResultView";
+import "./styles/pickExperience.css";
 
 type Mode = "unit" | "montage" | "memory";
 
@@ -23,6 +27,7 @@ function formatTime(ms: number): string {
 
 export class TalkApp {
   private readonly cheer = new Cheer();
+  private readonly music = new BackgroundMusic(APP_CONFIG.assets.backgroundMusic);
   private readonly studioSplash = el("screen-studio-splash");
   private readonly splash = el("screen-splash");
   private readonly title = el("screen-title");
@@ -39,7 +44,7 @@ export class TalkApp {
   private readonly progressFill = el("progress-fill");
   private readonly result = el("result-layer");
   private readonly resultTitle = el("result-title");
-  private readonly resultDetail = el("result-detail");
+  private readonly moment = el("pick-moment");
   private readonly help = el("help-layer");
   private readonly helpTitle = el("help-title");
   private readonly helpBody = el("help-body");
@@ -53,6 +58,12 @@ export class TalkApp {
   private elapsedMs = 0;
   private frame?: number;
   private mistakes = 0;
+  private streak = 0;
+  private outcomeTimer?: ReturnType<typeof setTimeout>;
+  private momentTimer?: ReturnType<typeof setTimeout>;
+  private pendingVideo?: () => void;
+  private runVersion = 0;
+  private memoryStageHoldRemaining = 0;
   private targetCharacter = PUZZLE_CHARACTERS[0]!;
   private montageCharacter: MontageCharacter = MONTAGE_CHARACTERS[0]!;
   private montageCharacterIndex = -1;
@@ -91,9 +102,13 @@ export class TalkApp {
     el("btn-title-settings").addEventListener("click", () => this.showSettings());
     el("btn-title-rules").addEventListener("click", () => this.showRules());
     el("btn-help-close").addEventListener("click", () => this.closeHelp());
-    document.addEventListener("pointerdown", () => { this.cheer.unlock(); feedback.unlock(); }, { capture: true });
+    document.addEventListener("pointerdown", () => { this.cheer.unlock(); feedback.unlock(); this.music.unlock(); }, { capture: true });
+    document.addEventListener("keydown", () => { feedback.unlock(); this.music.unlock(); }, { capture: true });
     document.addEventListener("visibilitychange", () => {
       if (document.hidden && this.active && !this.paused) this.pauseGame();
+      this.music.setPlaying(this.active && !this.paused && !document.hidden);
+      this.cheer.setHidden(document.hidden);
+      if (!document.hidden && this.pendingVideo) { const play = this.pendingVideo; this.pendingVideo = undefined; play(); }
     });
     this.applyPreferences();
     window.setTimeout(() => this.showProductSplash(), APP_CONFIG.timing.studioSplashMs);
@@ -106,6 +121,8 @@ export class TalkApp {
   }
 
   private showTitle(): void {
+    this.clearPresentation();
+    this.music.setPlaying(false);
     this.disposePractice?.();
     this.active = false;
     this.paused = false;
@@ -122,6 +139,10 @@ export class TalkApp {
   }
 
   private startMode(mode: Mode): void {
+    this.clearPresentation();
+    this.streak = 0;
+    feedback.resetCombo();
+    this.memoryStageHoldRemaining = 0;
     this.disposePractice?.();
     this.mode = mode;
     this.active = true;
@@ -158,6 +179,7 @@ export class TalkApp {
     if (mode === "montage") this.startMontageRound();
     if (mode === "memory") this.startMemoryRound();
     this.startClock();
+    this.music.setPlaying(!document.hidden);
   }
 
   private startUnitRound(): void {
@@ -182,7 +204,7 @@ export class TalkApp {
         this.revealUnitPiece(tile.pieceIndex);
         button.classList.add("is-found");
         button.disabled = true;
-        feedback.pick(this.unitFound.size);
+        this.correctPick([button]);
         this.updateProgress(this.unitFound.size, this.targetCharacter.pieces.length, `${this.unitFound.size} / ${this.targetCharacter.pieces.length} pieces`);
         if (this.unitFound.size === this.targetCharacter.pieces.length) this.finishUnit();
       });
@@ -250,8 +272,9 @@ export class TalkApp {
           this.montageNoticeUntil = this.elapsedMs + 2000;
           this.montageStatus.textContent = "+1 HEART!";
         }
-        this.montageNextAt = this.elapsedMs + 180;
-        feedback.clear(1);
+        this.montageNextAt = this.elapsedMs + (result.promoted ? 850 : 200);
+        this.correctPick([button]);
+        if (result.promoted) this.stageMoment(result.bonus ? "STAGE CLEAR · +1 HEART" : "STAGE CLEAR");
         button.classList.add("is-found");
         this.progressLabel.textContent = `${this.montage.found} found`;
       });
@@ -308,6 +331,7 @@ export class TalkApp {
   }
 
   private renderMemoryStage(): void {
+    this.board.classList.remove("is-stage-clear");
     const run = this.memoryRun!;
     this.setBoardSize(run.stage.size);
     this.targetPreview.replaceChildren();
@@ -372,9 +396,16 @@ export class TalkApp {
     if (!this.active) return;
     const pick = this.memoryRun!.choose(card.id);
     if (pick === "ignored") return;
-    feedback.tap();
-    if (pick === "match") feedback.clear(2);
-    if (pick === "mismatch") feedback.reject();
+    if (pick === "first") feedback.tap();
+    if (pick === "match") {
+      const run = this.memoryRun!;
+      this.correctPick([...run.openIds].map(id => this.memoryButtons.get(id)!));
+      if (run.matchedPairs === run.stage.pairs) {
+        this.memoryStageHoldRemaining = 750;
+        if (run.stageIndex < MEMORY_STAGES.length - 1) this.stageMoment("STAGE CLEAR");
+      }
+    }
+    if (pick === "mismatch") { this.streak = 0; feedback.reject(); }
     this.updateMemoryBoard();
   }
 
@@ -382,8 +413,14 @@ export class TalkApp {
     const run = this.memoryRun!;
     const phase = run.phase;
     const stage = run.stageIndex;
-    run.advance(now - this.memoryUpdatedAt);
+    const delta = now - this.memoryUpdatedAt;
     this.memoryUpdatedAt = now;
+    if (this.memoryStageHoldRemaining > 0) {
+      this.memoryStageHoldRemaining = Math.max(0, this.memoryStageHoldRemaining - delta);
+      if (this.memoryStageHoldRemaining > 0) return;
+      // Only hold an already cleared board; never spend the next stage's time.
+      run.advance(MEMORY_REVEAL_DELAY_MS.match);
+    } else run.advance(delta);
     if (stage !== run.stageIndex) this.renderMemoryStage();
     else if (phase !== run.phase) this.updateMemoryBoard();
     this.clock.textContent = run.phase === "preview"
@@ -520,6 +557,7 @@ export class TalkApp {
   }
 
   private wrongPick(): void {
+    this.streak = 0;
     this.mistakes += 1;
     this.lives.lose();
     feedback.reject();
@@ -553,20 +591,72 @@ export class TalkApp {
     this.active = false;
     this.stopClock();
     this.game.classList.add("is-input-locked");
-    feedback.complete();
-    const showResult = (): void => {
-      this.resultTitle.textContent = headline;
-      this.resultDetail.textContent = detail;
-      this.result.classList.remove("hidden");
+    this.music.setPlaying(false);
+    const won = headline !== "GAME OVER" && headline !== "TIME UP";
+    if (won) feedback.complete(); else feedback.fail();
+    const memory = this.memoryRun;
+    const summary: RunSummary = {
+      mode: this.mode, won, score,
+      elapsedMs: this.mode === "memory" ? memory!.totalElapsedMs : this.elapsedMs,
+      mistakes: this.mode === "memory" ? memory!.mistakes : this.mistakes,
+      found: this.mode === "unit" ? this.unitFound.size : this.mode === "montage" ? this.montage.found : memory!.matchedPairs,
+      total: this.mode === "unit" ? this.targetCharacter.pieces.length : this.mode === "montage" ? 18 : memory!.stage.pairs,
+      stage: this.mode === "montage" ? this.montage.stageIndex + 1 : this.mode === "memory" ? memory!.stageIndex + 1 : 1,
+      characterId: this.mode === "unit" ? this.targetCharacter.id : celebrationCharacterId,
     };
-    const videoCaption = headline === "GAME OVER" ? "GAME OVER" : "NICE PICK!";
-    if (celebrationCharacterId && metric === "found") {
-      this.cheer.playFoundForCharacter(headline, score, videoCaption, celebrationCharacterId, showResult);
-    } else if (celebrationCharacterId) {
-      this.cheer.playForCharacter(headline, score, videoCaption, celebrationCharacterId, showResult);
-    } else {
-      this.cheer.play(headline, score, "NICE PICK!", showResult, score);
-    }
+    const record = savePickResult(summary);
+    const version = this.runVersion;
+    const showResult = (): void => {
+      if (version !== this.runVersion) return;
+      this.resultTitle.textContent = headline;
+      renderPickResult(record);
+      this.result.setAttribute("aria-label", detail);
+      this.result.classList.remove("hidden");
+      el("btn-again").focus();
+    };
+    const video = (): void => {
+      if (version !== this.runVersion) return;
+      if (document.hidden) { this.pendingVideo = video; return; }
+      this.cheer.playOutcome(headline, metric === "found" ? 1000 : score, showResult, celebrationCharacterId, won);
+    };
+    if (won) {
+      this.game.classList.add("is-complete-moment");
+      this.moment.textContent = this.mode === "unit" ? "PICTURE COMPLETE" : "ALL STAGES CLEAR";
+      this.moment.classList.add("is-visible");
+      this.outcomeTimer = setTimeout(video, 1100);
+    } else video();
+  }
+
+  private correctPick(buttons: HTMLButtonElement[]): void {
+    this.streak++;
+    feedback.correct(this.streak);
+    buttons.forEach(button => {
+      button.classList.remove("is-pick-hit");
+      void button.offsetWidth;
+      button.classList.add("is-pick-hit");
+    });
+  }
+
+  private stageMoment(text: string): void {
+    feedback.complete();
+    this.board.classList.add("is-stage-clear");
+    this.moment.textContent = text;
+    this.moment.classList.add("is-visible");
+    clearTimeout(this.momentTimer);
+    this.momentTimer = setTimeout(() => {
+      this.board.classList.remove("is-stage-clear");
+      if (!this.game.classList.contains("is-complete-moment")) this.moment.classList.remove("is-visible");
+    }, 750);
+  }
+
+  private clearPresentation(): void {
+    this.runVersion++;
+    clearTimeout(this.outcomeTimer);
+    clearTimeout(this.momentTimer);
+    this.pendingVideo = undefined;
+    this.moment.classList.remove("is-visible");
+    this.board.classList.remove("is-stage-clear");
+    this.game.classList.remove("is-complete-moment");
   }
 
   private pauseGame(): void {
@@ -574,11 +664,24 @@ export class TalkApp {
     if (this.mode === "memory") this.advanceMemoryClock(performance.now());
     if (!this.active) return;
     this.paused = true;
+    this.music.setPlaying(false);
     this.stopClock();
     this.game.classList.add("is-input-locked");
     this.openHelp("Paused", `<div class="pause-card"><p>Take a break. Your game is paused.</p><button class="wood-btn" id="btn-resume">Resume</button><button class="text-btn" id="btn-pause-menu">Main menu</button></div>`);
     el("btn-resume").addEventListener("click", () => this.closeHelp());
     el("btn-pause-menu").addEventListener("click", () => this.showTitle());
+    const music = document.createElement("button");
+    music.className = "text-btn";
+    music.id = "btn-pause-music";
+    const label = (): void => { music.textContent = `Music: ${this.preferences.musicOn ? "On" : "Off"}`; music.setAttribute("aria-pressed", String(this.preferences.musicOn)); };
+    label();
+    music.addEventListener("click", () => {
+      this.preferences.musicOn = !this.preferences.musicOn;
+      saveTalkPreferences(this.preferences);
+      this.applyPreferences();
+      label();
+    });
+    this.helpBody.querySelector(".pause-card")!.append(music);
   }
 
   private closeHelp(): void {
@@ -588,6 +691,7 @@ export class TalkApp {
       this.paused = false;
       this.game.classList.remove("is-input-locked");
       this.startClock();
+      this.music.setPlaying(!document.hidden);
     }
   }
 
@@ -609,10 +713,16 @@ export class TalkApp {
 
   private showSettings(): void {
     this.openHelp("Settings", `<div class="switch-list"><button class="switch-row" data-setting="sound"><span class="switch-text"><b>Sound effects</b><small>Play sounds for picks and completed games.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><i class="switch-knob"></i></span></button><button class="switch-row" data-setting="haptics"><span class="switch-text"><b>Haptics</b><small>Use touch feedback on supported devices.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><i class="switch-knob"></i></span></button></div>`);
+    const musicRow = document.createElement("button");
+    musicRow.className = "switch-row";
+    musicRow.dataset.setting = "music";
+    musicRow.innerHTML = `<span class="switch-text"><b>Background music</b><small>Soft marimba loop during play.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.musicOn}"><i class="switch-knob"></i></span>`;
+    this.helpBody.querySelector(".switch-list")!.append(musicRow);
     this.helpBody.querySelectorAll<HTMLButtonElement>("[data-setting]").forEach((button) => {
       button.addEventListener("click", () => {
         if (button.dataset.setting === "sound") this.preferences.soundOn = !this.preferences.soundOn;
         if (button.dataset.setting === "haptics") this.preferences.hapticsOn = !this.preferences.hapticsOn;
+        if (button.dataset.setting === "music") this.preferences.musicOn = !this.preferences.musicOn;
         saveTalkPreferences(this.preferences);
         this.applyPreferences();
         this.showSettings();
@@ -624,5 +734,6 @@ export class TalkApp {
     feedback.setSound(this.preferences.soundOn);
     feedback.setHaptics(this.preferences.hapticsOn);
     this.cheer.setSound(this.preferences.soundOn);
+    this.music.setEnabled(this.preferences.musicOn);
   }
 }

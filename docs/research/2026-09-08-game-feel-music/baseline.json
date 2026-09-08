@@ -1,0 +1,75 @@
+{
+  "capturedAt": "2026-09-08T02:52:01.799Z",
+  "revision": "c8c01aaaa7ab5cff8de8c5a6431167f370b3ecb1",
+  "seed": 20260908,
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "deviceScaleFactor": 2,
+  "pixelSize": {
+    "width": 780,
+    "height": 1688
+  },
+  "method": "Actual stable Git snapshot exported into a fresh temporary directory, not a working-tree checkout. Chromium mobile emulation with seeded Math.random and a controlled browser clock; not original device photographs or user-study measurements. All choices use the real UI; image source/ARIA labels identify test inputs. The normal video timeout is fast-forwarded before tapping to show results.",
+  "captures": [
+    {
+      "file": "before-unit-result.png",
+      "mode": "unit",
+      "scenario": "Picture Pieces: zero pieces found, five wrong picks, Game Over.",
+      "ui": {
+        "title": "GAME OVER",
+        "detail": "You found 0 of 12 Bbogles pieces.\nAll 5 chances used.",
+        "targetName": "뽀글스 Bbogles",
+        "boardCount": 49,
+        "resultBox": {
+          "x": 24,
+          "y": 270.703125,
+          "width": 342,
+          "height": 302.59375
+        }
+      },
+      "errors": [],
+      "sha256": "cb22abb4daac9527e693e6818bf51cfbe64b1e2d7786466b38955f9fd1c6ab9c"
+    },
+    {
+      "file": "before-montage-result.png",
+      "mode": "montage",
+      "scenario": "Montage Hunt: three exact matches, then five wrong picks, Game Over at 3×3.",
+      "ui": {
+        "title": "GAME OVER",
+        "detail": "You found 3 exact matches.\nNo hearts remaining.",
+        "targetName": "티피 Tepee",
+        "boardCount": 9,
+        "resultBox": {
+          "x": 24,
+          "y": 270.703125,
+          "width": 342,
+          "height": 302.59375
+        }
+      },
+      "errors": [],
+      "sha256": "2fb5d352502d88e9743c6297a050c947f423c8ed80c19ba7e33e7dc1808bfe80"
+    },
+    {
+      "file": "before-memory-result.png",
+      "mode": "memory",
+      "scenario": "Pair Memory: first-stage preview completed, no pairs selected, timer expired.",
+      "ui": {
+        "title": "TIME UP",
+        "detail": "Stage 1/4 · 4×4\n0 / 8 pairs found. Try again from 4×4!",
+        "targetName": "",
+        "boardCount": 16,
+        "resultBox": {
+          "x": 24,
+          "y": 270.703125,
+          "width": 342,
+          "height": 302.59375
+        }
+      },
+      "errors": [],
+      "sha256": "46f773cdc4613f6493571f6d72b712cef8c2d805c3bdc8ef954940b03b6047b4"
+    }
+  ],
+  "browserVersion": "152.0.7977.76"
+}

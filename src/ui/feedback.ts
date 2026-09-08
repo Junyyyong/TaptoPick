@@ -149,6 +149,16 @@ export class Feedback {
     this.step = 0;
   }
 
+  /** A short, softly rising note for a correct picture pick (never blocks input). */
+  correct(streak: number): void {
+    const root = LADDER[Math.min(Math.max(0, streak - 1), LADDER.length - 1)]!;
+    this.play([
+      { from: root, ms: 150, gain: 0.16, shape: "sine" },
+      { from: root * 2, ms: 100, gain: 0.035, shape: "triangle", delay: .02 },
+    ]);
+    this.buzz(10);
+  }
+
   /** Anything the player deliberately pressed. */
   tap(): void {
     this.play([{ from: 660, to: 880, ms: 70, gain: 0.12, shape: "sine" }]);

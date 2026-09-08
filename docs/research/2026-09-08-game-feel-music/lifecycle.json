@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-09-08T02:54:21.982Z",
+  "url": "http://127.0.0.1:5189",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "deviceScaleFactor": 2,
+  "method": "Local Chromium. Isolated Cheer fixture imports the actual source module. Media src/play/pause/currentTime are mocked, and the browser clock is controlled; this checks lifecycle and accessibility state, not real playback, decoding, synchronization accuracy, or visual design. The final cancellation check uses the actual game UI with sound disabled.",
+  "checks": [
+    {
+      "name": "Outcome immediately shows clip, exposes aria state, and focuses Continue",
+      "passed": true
+    },
+    {
+      "name": "Hiding pauses both media and freezes the 15-second fallback timer",
+      "hiddenMs": 30000,
+      "passed": true
+    },
+    {
+      "name": "Resume restarts both tracks at the clip position and retains only the remaining 10 seconds",
+      "remainingMs": 10000,
+      "passed": true
+    },
+    {
+      "name": "Continue hides the overlay, pauses media, and invokes completion exactly once",
+      "passed": true
+    },
+    {
+      "name": "Stop while hidden cancels callbacks and prevents resume or stale overlays",
+      "passed": true
+    },
+    {
+      "name": "Actual game: leaving the 1.1-second completion hold cancels its pending video/result",
+      "characterId": "hoo",
+      "pieces": 12,
+      "waitAfterExitMs": 2500,
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

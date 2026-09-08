@@ -4,6 +4,8 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 
 ## 자주 수정할 곳
 
+- 게임 반응 체험판: `ui/styles/pickExperience.css`, `ui/feedback.ts`, `ui/talkApp.ts`. 기록은 `ui/pickRecords.ts`, 결과 표현은 `ui/pickResultView.ts`. 음악 재생은 `ui/backgroundMusic.ts`, 경로는 `config/app.ts`, 생성 원본은 `scripts/generate-pick-music.mjs`. 음악 설정은 효과음과 독립하며 플레이 외에는 중지한다. `docs/EXPERIMENT-game-feel.md`에 기준 버전과 복구 절차를 기록했다. 게임 규칙은 변경하지 않았다.
+
 - 최신 안내: 첫 조각 연습은 3×3의 티피 정답 4조각과 다른 캐릭터 오답 5조각으로 구성한다. 개별 카드 크기는 이전 2×2와 동일하며 오답은 흔들림만 주고 진행하지 않는다. 정답 영역은 회색에서 컬러로 복원한다. 페어는 이미지 로딩 후 컬러로 3·2·1을 각 1초 표시한다. 완료 체크 없이 Next/Done으로 진행한다. 서체와 금색 맥동·흔들림은 TALK 안내 스타일을 참조한다.
 
 - 체험형 How to play: `src/content/pickTutorial.ts`(예제·이미지), `src/core/pick/tutorial.ts`(연습 규칙·다음 대상), `src/ui/pickTutorial.ts`(버튼·표시). 상단 진행 점·Skip, 그림 중심 안내, 단일 컬러 강조 버튼, 완료 후 Next/Done을 사용합니다. 손가락·화살표·다시하기는 표시하지 않습니다. 페어 안내는 별도 제시 그림 없이 카드 이미지 로딩 후 2초간 앞면을 보여주고 가린 다음 빛나는 카드로 유도합니다. 화면 전환·닫기 시 미리보기 예약을 취소합니다. 연습은 본 게임과 상태·제한시간을 공유하지 않습니다. 화면 문구는 최소화하고 보조기기용 안내는 유지합니다.

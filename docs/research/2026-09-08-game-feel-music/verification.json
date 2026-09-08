@@ -1,0 +1,29 @@
+[
+  {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 2,
+    "passed": true,
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 375,
+      "height": 667
+    },
+    "deviceScaleFactor": 2,
+    "passed": true,
+    "errors": []
+  },
+  {
+    "viewport": {
+      "width": 320,
+      "height": 568
+    },
+    "deviceScaleFactor": 2,
+    "passed": true,
+    "errors": []
+  }
+]
