@@ -1,0 +1,177 @@
+{
+  "method": "Mobile Chromium emulation, DPR 2; controlled clock and seeded random. The next random draw before START selects each artwork for coverage; no gameplay state is modified.",
+  "pixelChecks": [
+    {
+      "folder": "HapeeCarrot",
+      "exactPixelReconstruction": true
+    },
+    {
+      "folder": "HapeeCarrot02",
+      "exactPixelReconstruction": true
+    },
+    {
+      "folder": "TapeeBack",
+      "exactPixelReconstruction": true
+    },
+    {
+      "folder": "TepeeBack",
+      "exactPixelReconstruction": true
+    },
+    {
+      "folder": "HooopeeBack",
+      "exactPixelReconstruction": true
+    }
+  ],
+  "cases": [
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "HapeeCarrot",
+      "targets": 9,
+      "decoys": 40,
+      "wrongPickDoesNotReveal": true,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "HapeeCarrot02",
+      "targets": 9,
+      "decoys": 40,
+      "wrongPickDoesNotReveal": true,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "TapeeBack",
+      "targets": 9,
+      "decoys": 40,
+      "wrongPickDoesNotReveal": true,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "TepeeBack",
+      "targets": 9,
+      "decoys": 40,
+      "wrongPickDoesNotReveal": true,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "HooopeeBack",
+      "targets": 9,
+      "decoys": 40,
+      "wrongPickDoesNotReveal": true,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "HapeeCarrot",
+      "targets": 9,
+      "decoys": 40,
+      "wrongPickDoesNotReveal": true,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "HapeeCarrot02",
+      "targets": 9,
+      "decoys": 40,
+      "wrongPickDoesNotReveal": true,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "TapeeBack",
+      "targets": 9,
+      "decoys": 40,
+      "wrongPickDoesNotReveal": true,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "TepeeBack",
+      "targets": 9,
+      "decoys": 40,
+      "wrongPickDoesNotReveal": true,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "HooopeeBack",
+      "targets": 9,
+      "decoys": 40,
+      "wrongPickDoesNotReveal": true,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      }
+    }
+  ]
+}

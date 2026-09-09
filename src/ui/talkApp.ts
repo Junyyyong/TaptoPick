@@ -235,7 +235,7 @@ export class TalkApp {
     this.targetCharacter = UNIT_TARGET_CHARACTERS[Math.floor(Math.random() * UNIT_TARGET_CHARACTERS.length)]!;
     const tiles = createUnitBoard(this.targetCharacter.id, ALL_PIECES);
     this.setBoardSize(7);
-    this.runMode.textContent = "Picture Pieces";
+    this.runMode.textContent = PICK_MODES.unit.title;
     this.renderUnitPreview(this.targetCharacter);
     this.updateProgress(0, this.targetCharacter.pieces.length, `0 / ${this.targetCharacter.pieces.length} pieces`);
 
@@ -263,7 +263,7 @@ export class TalkApp {
   }
 
   private startMontageRound(): void {
-    this.runMode.textContent = "Montage Hunt";
+    this.runMode.textContent = PICK_MODES.montage.title;
     this.renderNextMontage();
   }
 
@@ -370,7 +370,7 @@ export class TalkApp {
 
   private startMemoryRound(): void {
     this.memoryRun = new MemoryRun(MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS);
-    this.runMode.textContent = "Pair Memory";
+    this.runMode.textContent = PICK_MODES.memory.title;
     this.renderMemoryStage();
   }
 
@@ -608,7 +608,7 @@ export class TalkApp {
   private finishUnit(): void {
     this.elapsedMs = performance.now() - this.startedAt;
     const score = tieredTimeScore(this.elapsedMs, PICTURE_PIECES_SCORE_BANDS);
-    this.finishGame("PUZZLE COMPLETE", `You found every ${this.targetCharacter.name} piece.\n${formatTime(this.elapsedMs)} · ${this.mistakes} wrong picks · ${score.toLocaleString()} points`, score, this.targetCharacter.id);
+    this.finishGame("PUZZLE COMPLETE", `You found every ${this.targetCharacter.name} piece.\n${formatTime(this.elapsedMs)} · ${this.mistakes} wrong picks · ${score.toLocaleString()} points`, score, this.targetCharacter.celebrationId);
   }
 
   private updateChances(effect?: "loss" | "gain"): void {

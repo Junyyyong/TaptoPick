@@ -4,10 +4,15 @@ import { tieredTimeScore } from "../core/pick/game";
 import { ALL_PIECES, PUZZLE_CHARACTERS, UNIT_TARGET_CHARACTERS } from "./puzzles";
 import { createUnitBoard } from "../core/pick/game";
 import { createStagedMontageBoard } from "../core/pick/montage";
+import { PICK_MODES } from "./pickModes";
+import { APP_CONFIG } from "../config/app";
 
-describe("Picture Pieces scoring content", () => {
-  it("offers the carrot trial with nine square pieces and forty other-character decoys", () => {
-    expect(UNIT_TARGET_CHARACTERS).toHaveLength(1);
+describe("Puzzle content", () => {
+  it("uses the three approved single-word mode names", () => {
+    expect(Object.values(PICK_MODES).map(mode => mode.title)).toEqual(["Puzzle", "Montage", "Memory"]);
+  });
+  it("keeps the original carrot alongside four new nine-piece artworks", () => {
+    expect(UNIT_TARGET_CHARACTERS).toHaveLength(5);
     const target=UNIT_TARGET_CHARACTERS[0]!;
     expect(target.id).toBe("ha");
     expect(target.showGrid).toBe(true);
@@ -20,6 +25,27 @@ describe("Picture Pieces scoring content", () => {
     expect(board.filter(tile=>!tile.target)).toHaveLength(40);
     expect(ALL_PIECES.some(piece=>piece.src.includes("/Ha/"))).toBe(false);
     for(const src of [target.preview,...target.pieces])expect(GAME_IMAGE_URLS).toContain(src);
+  });
+  it("gives each artwork its own nine targets and the correct character movie", () => {
+    expect(UNIT_TARGET_CHARACTERS.map(c => [c.folder, c.celebrationId])).toEqual([
+      ["HapeeCarrot", "ha"], ["HapeeCarrot02", "ha"], ["TapeeBack", "tapee"],
+      ["TepeeBack", "tepee"], ["HooopeeBack", "hoo"],
+    ]);
+    expect(new Set(UNIT_TARGET_CHARACTERS.map(c => c.id)).size).toBe(5);
+    for (const target of UNIT_TARGET_CHARACTERS) {
+      expect(target.showGrid).toBe(true);
+      expect([target.columns, target.rows]).toEqual([3, 3]);
+      expect(target.pieces).toHaveLength(9);
+      expect(target.celebrationId in APP_CONFIG.assets.characterCelebrations).toBe(true);
+      for (const src of [target.preview, ...target.pieces]) expect(GAME_IMAGE_URLS).toContain(src);
+      for (const seed of [0.1, 0.42, 0.9]) {
+        const board = createUnitBoard(target.id, ALL_PIECES, 49, () => seed);
+        expect(board).toHaveLength(49);
+        expect(board.filter(tile => tile.target).map(tile => tile.src).sort()).toEqual([...target.pieces].sort());
+        expect(board.filter(tile => !tile.target)).toHaveLength(40);
+        expect(board.filter(tile => !tile.target).every(tile => !target.pieces.includes(tile.src))).toBe(true);
+      }
+    }
   });
   it("shares the approved Korean and English names between games 1 and 2", () => {
     const expected = ["태피 Tapee", "티피 Tepee", "후피 Hooopee", "재피 Zapee", "해피 Hapee", "뽀글스 Bbogles", "피노팬 PinoPan"].sort();
@@ -74,7 +100,7 @@ describe("Picture Pieces scoring content", () => {
   });
 
   it("exposes every active game image once for splash-screen preloading", () => {
-    expect(GAME_IMAGE_URLS).toHaveLength(213);
+    expect(GAME_IMAGE_URLS).toHaveLength(253);
     expect(new Set(GAME_IMAGE_URLS)).toHaveLength(GAME_IMAGE_URLS.length);
     expect(GAME_IMAGE_URLS.every((url) => url.includes(".webp"))).toBe(true);
   });

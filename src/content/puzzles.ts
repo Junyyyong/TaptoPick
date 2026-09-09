@@ -1,5 +1,6 @@
 export interface PuzzleCharacter {
   id: string;
+  celebrationId: string;
   name: string;
   displayName: string;
   folder: string;
@@ -36,6 +37,10 @@ const pieceModules = import.meta.glob<string>(
     "/optimized/Bb/*.webp",
     "/optimized/Ha/*.webp",
     "/optimized/HapeeCarrot/*.webp",
+    "/optimized/HapeeCarrot02/*.webp",
+    "/optimized/TapeeBack/*.webp",
+    "/optimized/TepeeBack/*.webp",
+    "/optimized/HooopeeBack/*.webp",
     "/optimized/Hoo/*.webp",
     "/optimized/Ja/*.webp",
     "/optimized/Pino/*.webp",
@@ -61,7 +66,7 @@ const montageModules = import.meta.glob<string>(
 
 const natural = new Intl.Collator("en", { numeric: true });
 
-function character(id: string, name: string, folder: string, showGrid = false): PuzzleCharacter {
+function character(id: string, name: string, folder: string, showGrid = false, celebrationId = id): PuzzleCharacter {
   const files = Object.entries(pieceModules)
     .filter(([path]) => path.startsWith(`/optimized/${folder}/`))
     .sort(([a], [b]) => natural.compare(a, b));
@@ -75,6 +80,7 @@ function character(id: string, name: string, folder: string, showGrid = false): 
 
   return {
     id,
+    celebrationId,
     name,
     displayName: bilingualName(name),
     folder,
@@ -96,13 +102,21 @@ export const PUZZLE_CHARACTERS: readonly PuzzleCharacter[] = [
   character("tepee", "Tepee", "Tepee"),
 ];
 
-// Temporary image trial: use undefined to restore random selection of all seven.
-export const UNIT_TRIAL_CHARACTER_ID: string | undefined = "ha";
-export const UNIT_TARGET_CHARACTERS = UNIT_TRIAL_CHARACTER_ID
-  ? PUZZLE_CHARACTERS.filter(character => character.id === UNIT_TRIAL_CHARACTER_ID)
-  : PUZZLE_CHARACTERS;
+// Each artwork has its own puzzle ID, even when it depicts the same character.
+// Keep character identity separate so new poses still select the correct movie.
+const ADDITIONAL_UNIT_PUZZLES: readonly PuzzleCharacter[] = [
+  character("hapee-carrot-02", "Hapee", "HapeeCarrot02", true, "ha"),
+  character("tapee-back", "Tapee", "TapeeBack", true, "tapee"),
+  character("tepee-back", "Tepee", "TepeeBack", true, "tepee"),
+  character("hooopee-back", "Hooopee", "HooopeeBack", true, "hoo"),
+];
+export const UNIT_TARGET_CHARACTERS: readonly PuzzleCharacter[] = [
+  PUZZLE_CHARACTERS.find(character => character.id === "ha")!,
+  ...ADDITIONAL_UNIT_PUZZLES,
+];
+const UNIT_PIECE_SOURCES = [...PUZZLE_CHARACTERS, ...ADDITIONAL_UNIT_PUZZLES];
 
-export const ALL_PIECES = PUZZLE_CHARACTERS.flatMap((entry) =>
+export const ALL_PIECES = UNIT_PIECE_SOURCES.flatMap((entry) =>
   // Natural filename order maps 1..9/12 to left-to-right, top-to-bottom cells.
   entry.pieces.map((src, pieceIndex) => ({ characterId: entry.id, pieceIndex, src })),
 );
@@ -155,7 +169,7 @@ function montageCharacter(id: string, name: string, expectedVariations: number):
   });
 
   if (!answer || sourceEntries.length !== expectedVariations) {
-    throw new Error(`Montage Hunt requires one ${name} answer and ${expectedVariations} variations`);
+    throw new Error(`Montage requires one ${name} answer and ${expectedVariations} variations`);
   }
   return { id, name, displayName: bilingualName(name), answer, variations, easyVariations: indicesFor(MONTAGE_DIFFICULTY[id]!.easy), hardVariations: indicesFor(MONTAGE_DIFFICULTY[id]!.hard) };
 }
@@ -171,7 +185,7 @@ export const MONTAGE_CHARACTERS: readonly MontageCharacter[] = [
 ];
 
 export const GAME_IMAGE_URLS = [
-  ...PUZZLE_CHARACTERS.map((character) => character.preview),
+  ...UNIT_PIECE_SOURCES.map((character) => character.preview),
   ...MONTAGE_CHARACTERS.map((character) => character.answer),
   ...ALL_PIECES.map((piece) => piece.src),
   ...MONTAGE_CHARACTERS.flatMap((character) => character.variations),
