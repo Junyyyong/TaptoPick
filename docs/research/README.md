@@ -1,5 +1,7 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-09 — 페어 메모리 정답 빛 효과 완화](2026-09-09-memory-glow/README.md)
+
 - [2026-09-09 — 제시 이미지 테두리와 조각 경계 정렬](2026-09-09-preview-grid/README.md)
 
 - [2026-09-09 — TALK·TEN 방식의 START 화면과 짧은 메뉴 설명](2026-09-09-start-screen/README.md)

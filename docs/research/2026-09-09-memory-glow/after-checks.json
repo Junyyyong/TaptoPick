@@ -1,0 +1,17 @@
+{
+  "before": false,
+  "method": "390×844 CSS pixels, DPR 2 mobile Chromium emulation; real pair clicks, seeded random; match CSS animation paused at 154ms (70%).",
+  "pair": [
+    0,
+    10
+  ],
+  "glow": {
+    "gradient": "radial-gradient(rgba(255, 225, 130, 0.5), rgba(0, 0, 0, 0) 70%)",
+    "shadow": "rgba(255, 181, 0, 0.22) 0px 0px 8px 0px",
+    "animation": "0.22s"
+  },
+  "matchedCards": 2,
+  "geometryUnchanged": true,
+  "reducedMotionHonored": true,
+  "errors": []
+}
