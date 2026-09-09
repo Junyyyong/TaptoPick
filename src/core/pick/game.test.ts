@@ -1,9 +1,30 @@
 import { describe, expect, it } from "vitest";
-import { createMemoryBoard, createMontageBoard, createRandomIndexCycle, createUnitBoard, PICK_MISTAKE_LIMIT, pickChances, tieredTimeScore, timeScore, type SourcePiece } from "./game";
+import { createMemoryBoard, createMontageBoard, createRandomIndexCycle, RandomIndexCycle, createUnitBoard, PICK_MISTAKE_LIMIT, pickChances, tieredTimeScore, timeScore, type SourcePiece } from "./game";
 
 const pieces: SourcePiece[] = Array.from({ length: 75 }, (_, index) => ({ characterId: `c${Math.floor(index / 12)}`, pieceIndex: index, src: `${index}.jpg` }));
 
 describe("TAP to PICK game rules", () => {
+  it("keeps a character bag through interrupted runs and all cycle boundaries", () => {
+    for (let seed=1; seed<=50; seed++) {
+      let state=seed;
+      const random=()=>{state=(Math.imul(state,1664525)+1013904223)>>>0;return state/4294967296;};
+      const cycle=new RandomIndexCycle(7,random);
+      // Call groups simulate 1-question exits, failures, full 18-question runs and replays.
+      const sequence=[1,3,18,2,11].flatMap(length=>Array.from({length},()=>cycle.next()));
+      for(let i=0;i<sequence.length;i+=7) {
+        const group=sequence.slice(i,i+7);
+        expect(new Set(group).size).toBe(group.length);
+        if(i>0)expect(group[0]).not.toBe(sequence[i-1]);
+      }
+    }
+  });
+
+  it("reshuffles bags, supports one character and rejects invalid counts", () => {
+    const low=new RandomIndexCycle(7,()=>0),high=new RandomIndexCycle(7,()=>.99);
+    expect(Array.from({length:7},()=>low.next())).not.toEqual(Array.from({length:7},()=>high.next()));
+    const single=new RandomIndexCycle(1);expect([single.next(),single.next()]).toEqual([0,0]);
+    for(const count of [0,-1,1.5,Infinity,NaN])expect(()=>new RandomIndexCycle(count)).toThrow();
+  });
   it("puts every target unit into a 7x7 board", () => {
     const board = createUnitBoard("c0", pieces, 49, () => 0.25);
     expect(board).toHaveLength(49);

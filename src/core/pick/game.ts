@@ -41,13 +41,29 @@ export function shuffle<T>(values: readonly T[], random: Random = Math.random): 
 }
 
 export function createRandomIndexCycle(itemCount: number, previousIndex = -1, random: Random = Math.random): number[] {
-  if (itemCount < 1) throw new Error("At least one item is required");
+  if (!Number.isInteger(itemCount) || itemCount < 1) throw new Error("A positive integer item count is required");
   const indices = Array.from({ length: itemCount }, (_, index) => index);
   if (itemCount === 1 || previousIndex < 0 || previousIndex >= itemCount) return shuffle(indices, random);
 
   const firstChoices = indices.filter((index) => index !== previousIndex);
   const first = firstChoices[Math.floor(random() * firstChoices.length)]!;
   return [first, ...shuffle(indices.filter((index) => index !== first), random)];
+}
+
+/** Consume every character once, including across game restarts in this session. */
+export class RandomIndexCycle {
+  private remaining: number[] = [];
+  private previous = -1;
+
+  constructor(private readonly itemCount: number, private readonly random: Random = Math.random) {
+    if (!Number.isInteger(itemCount) || itemCount < 1) throw new Error("A positive integer item count is required");
+  }
+
+  next(): number {
+    if (!this.remaining.length) this.remaining = createRandomIndexCycle(this.itemCount, this.previous, this.random);
+    this.previous = this.remaining.shift()!;
+    return this.previous;
+  }
 }
 
 export function createUnitBoard(targetId: string, pieces: readonly SourcePiece[], size = 49, random: Random = Math.random): UnitTile[] {

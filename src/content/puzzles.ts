@@ -7,6 +7,7 @@ export interface PuzzleCharacter {
   pieces: readonly string[];
   columns: 3;
   rows: 3 | 4;
+  showGrid?: boolean;
 }
 
 export interface MontageCharacter {
@@ -34,6 +35,7 @@ const pieceModules = import.meta.glob<string>(
   [
     "/optimized/Bb/*.webp",
     "/optimized/Ha/*.webp",
+    "/optimized/HapeeCarrot/*.webp",
     "/optimized/Hoo/*.webp",
     "/optimized/Ja/*.webp",
     "/optimized/Pino/*.webp",
@@ -59,7 +61,7 @@ const montageModules = import.meta.glob<string>(
 
 const natural = new Intl.Collator("en", { numeric: true });
 
-function character(id: string, name: string, folder: string): PuzzleCharacter {
+function character(id: string, name: string, folder: string, showGrid = false): PuzzleCharacter {
   const files = Object.entries(pieceModules)
     .filter(([path]) => path.startsWith(`/optimized/${folder}/`))
     .sort(([a], [b]) => natural.compare(a, b));
@@ -80,18 +82,25 @@ function character(id: string, name: string, folder: string): PuzzleCharacter {
     pieces,
     columns: 3,
     rows: pieces.length === 9 ? 3 : 4,
+    showGrid,
   };
 }
 
 export const PUZZLE_CHARACTERS: readonly PuzzleCharacter[] = [
   character("bb", "Bbogles", "Bb"),
-  character("ha", "Hapee", "Ha"),
+  character("ha", "Hapee", "HapeeCarrot", true),
   character("hoo", "Hooopee", "Hoo"),
   character("ja", "Zapee", "Ja"),
   character("pino", "PinoPan", "Pino"),
   character("tapee", "Tapee", "Tapee"),
   character("tepee", "Tepee", "Tepee"),
 ];
+
+// Temporary image trial: use undefined to restore random selection of all seven.
+export const UNIT_TRIAL_CHARACTER_ID: string | undefined = "ha";
+export const UNIT_TARGET_CHARACTERS = UNIT_TRIAL_CHARACTER_ID
+  ? PUZZLE_CHARACTERS.filter(character => character.id === UNIT_TRIAL_CHARACTER_ID)
+  : PUZZLE_CHARACTERS;
 
 export const ALL_PIECES = PUZZLE_CHARACTERS.flatMap((entry) =>
   // Natural filename order maps 1..9/12 to left-to-right, top-to-bottom cells.

@@ -1,10 +1,26 @@
 import { describe, expect, it } from "vitest";
 import { GAME_IMAGE_URLS, MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS } from "./puzzles";
 import { tieredTimeScore } from "../core/pick/game";
-import { PUZZLE_CHARACTERS } from "./puzzles";
+import { ALL_PIECES, PUZZLE_CHARACTERS, UNIT_TARGET_CHARACTERS } from "./puzzles";
+import { createUnitBoard } from "../core/pick/game";
 import { createStagedMontageBoard } from "../core/pick/montage";
 
 describe("Picture Pieces scoring content", () => {
+  it("offers the carrot trial with nine square pieces and forty other-character decoys", () => {
+    expect(UNIT_TARGET_CHARACTERS).toHaveLength(1);
+    const target=UNIT_TARGET_CHARACTERS[0]!;
+    expect(target.id).toBe("ha");
+    expect(target.showGrid).toBe(true);
+    expect([target.columns,target.rows]).toEqual([3,3]);
+    expect(target.preview).toContain("HapeeCarrot.webp");
+    expect(target.pieces).toHaveLength(9);
+    expect(target.pieces.every((src,i)=>src.includes(`/HapeeCarrot/${i+1}.webp`))).toBe(true);
+    const board=createUnitBoard(target.id,ALL_PIECES);
+    expect(board.filter(tile=>tile.target)).toHaveLength(9);
+    expect(board.filter(tile=>!tile.target)).toHaveLength(40);
+    expect(ALL_PIECES.some(piece=>piece.src.includes("/Ha/"))).toBe(false);
+    for(const src of [target.preview,...target.pieces])expect(GAME_IMAGE_URLS).toContain(src);
+  });
   it("shares the approved Korean and English names between games 1 and 2", () => {
     const expected = ["태피 Tapee", "티피 Tepee", "후피 Hooopee", "재피 Zapee", "해피 Hapee", "뽀글스 Bbogles", "피노팬 PinoPan"].sort();
     expect(PUZZLE_CHARACTERS.map(c => c.displayName).sort()).toEqual(expected);

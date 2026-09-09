@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "../config/app";
-import { ALL_PIECES, MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PUZZLE_CHARACTERS, type MontageCharacter, type PuzzleCharacter } from "../content/puzzles";
-import { createRandomIndexCycle, createUnitBoard, PICK_MISTAKE_LIMIT, tieredTimeScore, timeScore, type MemoryCard, type MontageTile } from "../core/pick/game";
+import { ALL_PIECES, MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PUZZLE_CHARACTERS, UNIT_TARGET_CHARACTERS, type MontageCharacter, type PuzzleCharacter } from "../content/puzzles";
+import { RandomIndexCycle, createUnitBoard, PICK_MISTAKE_LIMIT, tieredTimeScore, timeScore, type MemoryCard, type MontageTile } from "../core/pick/game";
 import { MontageProgress, PickLives, createStagedMontageBoard, montageMotion, planMontageSwap } from "../core/pick/montage";
 import { MEMORY_STAGES, MemoryRun } from "../core/pick/memory";
 import { el } from "./dom";
@@ -68,8 +68,7 @@ export class TalkApp {
   private memoryStageHoldRemaining = 0;
   private targetCharacter = PUZZLE_CHARACTERS[0]!;
   private montageCharacter: MontageCharacter = MONTAGE_CHARACTERS[0]!;
-  private montageCharacterIndex = -1;
-  private montageCharacterCycle: number[] = [];
+  private readonly montageCharacterOrder = new RandomIndexCycle(MONTAGE_CHARACTERS.length);
   private unitFound = new Set<number>();
   private lives = new PickLives();
   private montage = new MontageProgress();
@@ -192,7 +191,7 @@ export class TalkApp {
   }
 
   private startUnitRound(): void {
-    this.targetCharacter = PUZZLE_CHARACTERS[Math.floor(Math.random() * PUZZLE_CHARACTERS.length)]!;
+    this.targetCharacter = UNIT_TARGET_CHARACTERS[Math.floor(Math.random() * UNIT_TARGET_CHARACTERS.length)]!;
     const tiles = createUnitBoard(this.targetCharacter.id, ALL_PIECES);
     this.setBoardSize(7);
     this.runMode.textContent = "Picture Pieces";
@@ -224,7 +223,6 @@ export class TalkApp {
 
   private startMontageRound(): void {
     this.runMode.textContent = "Montage Hunt";
-    this.montageCharacterCycle = createRandomIndexCycle(MONTAGE_CHARACTERS.length, this.montageCharacterIndex);
     this.renderNextMontage();
   }
 
@@ -236,11 +234,7 @@ export class TalkApp {
     this.montageSwapApplied = false;
     this.montageMotionPhase = "ready";
     this.montagePointerVersion += 1;
-    if (!this.montageCharacterCycle.length) {
-      this.montageCharacterCycle = createRandomIndexCycle(MONTAGE_CHARACTERS.length, this.montageCharacterIndex);
-    }
-    this.montageCharacterIndex = this.montageCharacterCycle.shift()!;
-    this.montageCharacter = MONTAGE_CHARACTERS[this.montageCharacterIndex]!;
+    this.montageCharacter = MONTAGE_CHARACTERS[this.montageCharacterOrder.next()]!;
     const stage = this.montage.stage;
     const pool = stage.difficulty === "easy" ? this.montageCharacter.easyVariations
       : stage.difficulty === "hard" ? this.montageCharacter.hardVariations
@@ -467,6 +461,9 @@ export class TalkApp {
     this.targetCharacterName.textContent = character.displayName;
     const reveal = document.createElement("div");
     reveal.className = `unit-reveal unit-reveal--${character.pieces.length}`;
+    reveal.classList.toggle("unit-reveal--grid", Boolean(character.showGrid));
+    reveal.style.setProperty("--unit-columns", String(character.columns));
+    reveal.style.setProperty("--unit-rows", String(character.rows));
     reveal.setAttribute("aria-label", `${character.name} picture progress`);
 
     const grayscale = document.createElement("img");
