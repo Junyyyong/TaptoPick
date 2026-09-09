@@ -1,5 +1,7 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-09 — 기존 퍼즐 7종 제시 목록 복구](2026-09-09-restore-original-puzzles/README.md)
+
 - [2026-09-09 — 게임 이름 정리와 원본 한 장 퍼즐 4종 추가](2026-09-09-puzzle-artworks/README.md)
 
 - [2026-09-09 — 페어 메모리 정답 빛 효과 완화](2026-09-09-memory-glow/README.md)

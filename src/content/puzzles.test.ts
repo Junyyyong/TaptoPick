@@ -12,9 +12,9 @@ describe("Puzzle content", () => {
     expect(Object.values(PICK_MODES).map(mode => mode.title)).toEqual(["Puzzle", "Montage", "Memory"]);
   });
   it("keeps the original carrot alongside four new nine-piece artworks", () => {
-    expect(UNIT_TARGET_CHARACTERS).toHaveLength(5);
-    const target=UNIT_TARGET_CHARACTERS[0]!;
-    expect(target.id).toBe("ha");
+    expect(UNIT_TARGET_CHARACTERS).toHaveLength(12);
+    const target=UNIT_TARGET_CHARACTERS.find(c => c.folder === "HapeeCarrot")!;
+    expect(target.id).toBe("hapee-carrot");
     expect(target.showGrid).toBe(true);
     expect([target.columns,target.rows]).toEqual([3,3]);
     expect(target.preview).toContain("HapeeCarrot.webp");
@@ -23,26 +23,34 @@ describe("Puzzle content", () => {
     const board=createUnitBoard(target.id,ALL_PIECES);
     expect(board.filter(tile=>tile.target)).toHaveLength(9);
     expect(board.filter(tile=>!tile.target)).toHaveLength(40);
-    expect(ALL_PIECES.some(piece=>piece.src.includes("/Ha/"))).toBe(false);
+    expect(ALL_PIECES.some(piece=>piece.src.includes("/Ha/"))).toBe(true);
     for(const src of [target.preview,...target.pieces])expect(GAME_IMAGE_URLS).toContain(src);
   });
-  it("gives each artwork its own nine targets and the correct character movie", () => {
+  it("preserves all seven original puzzles alongside the five additions", () => {
+    expect(PUZZLE_CHARACTERS.map(c => c.folder)).toEqual(["Bb", "Ha", "Hoo", "Ja", "Pino", "Tapee", "Tepee"]);
+    for (const original of PUZZLE_CHARACTERS) expect(UNIT_TARGET_CHARACTERS).toContain(original);
+    expect(UNIT_TARGET_CHARACTERS.find(c => c.id === "ha")!.preview).toContain("/Ha.webp");
+    expect(UNIT_TARGET_CHARACTERS.find(c => c.id === "tapee")!.pieces).toHaveLength(12);
+  });
+  it("gives every original and added artwork its own targets and the correct movie", () => {
     expect(UNIT_TARGET_CHARACTERS.map(c => [c.folder, c.celebrationId])).toEqual([
+      ["Bb", "bb"], ["Ha", "ha"], ["Hoo", "hoo"], ["Ja", "ja"],
+      ["Pino", "pino"], ["Tapee", "tapee"], ["Tepee", "tepee"],
       ["HapeeCarrot", "ha"], ["HapeeCarrot02", "ha"], ["TapeeBack", "tapee"],
       ["TepeeBack", "tepee"], ["HooopeeBack", "hoo"],
     ]);
-    expect(new Set(UNIT_TARGET_CHARACTERS.map(c => c.id)).size).toBe(5);
+    expect(new Set(UNIT_TARGET_CHARACTERS.map(c => c.id)).size).toBe(12);
     for (const target of UNIT_TARGET_CHARACTERS) {
-      expect(target.showGrid).toBe(true);
-      expect([target.columns, target.rows]).toEqual([3, 3]);
-      expect(target.pieces).toHaveLength(9);
+      if (!PUZZLE_CHARACTERS.includes(target)) expect(target.showGrid).toBe(true);
+      expect(target.columns).toBe(3);
+      expect(target.pieces).toHaveLength(target.columns * target.rows);
       expect(target.celebrationId in APP_CONFIG.assets.characterCelebrations).toBe(true);
       for (const src of [target.preview, ...target.pieces]) expect(GAME_IMAGE_URLS).toContain(src);
       for (const seed of [0.1, 0.42, 0.9]) {
         const board = createUnitBoard(target.id, ALL_PIECES, 49, () => seed);
         expect(board).toHaveLength(49);
         expect(board.filter(tile => tile.target).map(tile => tile.src).sort()).toEqual([...target.pieces].sort());
-        expect(board.filter(tile => !tile.target)).toHaveLength(40);
+        expect(board.filter(tile => !tile.target)).toHaveLength(49 - target.pieces.length);
         expect(board.filter(tile => !tile.target).every(tile => !target.pieces.includes(tile.src))).toBe(true);
       }
     }
@@ -100,7 +108,7 @@ describe("Puzzle content", () => {
   });
 
   it("exposes every active game image once for splash-screen preloading", () => {
-    expect(GAME_IMAGE_URLS).toHaveLength(253);
+    expect(GAME_IMAGE_URLS).toHaveLength(263);
     expect(new Set(GAME_IMAGE_URLS)).toHaveLength(GAME_IMAGE_URLS.length);
     expect(GAME_IMAGE_URLS.every((url) => url.includes(".webp"))).toBe(true);
   });

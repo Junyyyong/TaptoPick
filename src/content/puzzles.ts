@@ -94,7 +94,7 @@ function character(id: string, name: string, folder: string, showGrid = false, c
 
 export const PUZZLE_CHARACTERS: readonly PuzzleCharacter[] = [
   character("bb", "Bbogles", "Bb"),
-  character("ha", "Hapee", "HapeeCarrot", true),
+  character("ha", "Hapee", "Ha"),
   character("hoo", "Hooopee", "Hoo"),
   character("ja", "Zapee", "Ja"),
   character("pino", "PinoPan", "Pino"),
@@ -105,13 +105,14 @@ export const PUZZLE_CHARACTERS: readonly PuzzleCharacter[] = [
 // Each artwork has its own puzzle ID, even when it depicts the same character.
 // Keep character identity separate so new poses still select the correct movie.
 const ADDITIONAL_UNIT_PUZZLES: readonly PuzzleCharacter[] = [
+  character("hapee-carrot", "Hapee", "HapeeCarrot", true, "ha"),
   character("hapee-carrot-02", "Hapee", "HapeeCarrot02", true, "ha"),
   character("tapee-back", "Tapee", "TapeeBack", true, "tapee"),
   character("tepee-back", "Tepee", "TepeeBack", true, "tepee"),
   character("hooopee-back", "Hooopee", "HooopeeBack", true, "hoo"),
 ];
 export const UNIT_TARGET_CHARACTERS: readonly PuzzleCharacter[] = [
-  PUZZLE_CHARACTERS.find(character => character.id === "ha")!,
+  ...PUZZLE_CHARACTERS,
   ...ADDITIONAL_UNIT_PUZZLES,
 ];
 const UNIT_PIECE_SOURCES = [...PUZZLE_CHARACTERS, ...ADDITIONAL_UNIT_PUZZLES];

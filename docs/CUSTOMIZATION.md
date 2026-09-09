@@ -29,7 +29,8 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 
 - 제시 그림의 테두리·구획선은 `renderUnitPreview`의 SVG 오버레이로 그린다. `viewBox`를 실제 열·행 수로 지정하고 내부 선을 정수 경계에 놓아 컬러 이미지의 비율 기반 `clip-path`와 정렬한다. 이전의 반복 CSS 배경 구획선은 사용하지 않는다. 외곽선은 이미지 위에 겹치므로 크기·분할 좌표를 바꾸지 않으며, `showGrid`가 꺼져도 외곽 테두리는 유지한다.
 
-- 원본 한 장 퍼즐: `Ha/carrot-original.png`와 `assets/puzzle-originals/game1-02.png`~`game1-05.png`는 제공 원본 보관본이다. `scripts/split-unit-image.cjs`가 비율을 보존한 960×960 완성 WebP와 320×320 조각 9장을 생성하고 재조립 픽셀 일치를 검사한다. 게임은 WebP만 불러온다. `content/puzzles.ts`의 `UNIT_TARGET_CHARACTERS`에는 기존 해피 당근과 추가 네 장, 총 5개 그림을 등록한다. `ADDITIONAL_UNIT_PUZZLES`의 그림별 고유 `id`로 정답·개인 기록을 구분하고, `celebrationId`는 같은 캐릭터의 완료 영상을 연결한다. 서로 다른 그림의 조각은 같은 캐릭터라도 오답이다. `showGrid`는 위쪽 제시 그림에만 SVG 구획선을 표시한다. 게임 2·3은 이 추가 그림을 사용하지 않는다. 기존 파일은 보관 중이다. 단일 해피 테스트로 되돌리려면 `UNIT_TARGET_CHARACTERS`에 기존 `ha`만 남긴다.
+- 퍼즐 목록: `PUZZLE_CHARACTERS`는 기존 7종(`Bb`, `Ha`, `Hoo`, `Ja`, `Pino`, `Tapee`, `Tepee`)을 원래 그림·9/12조각으로 유지한다. `UNIT_TARGET_CHARACTERS`는 이 7종과 `ADDITIONAL_UNIT_PUZZLES`의 새 그림 5종을 합친 총 12종이다. **사용자가 이미지를 추가해 달라고 할 때 기존 제시 목록을 대체하거나 제외하지 않는다.** 해피 원본 `ha`와 해피 당근 `hapee-carrot`도 별도 퍼즐이다.
+- 원본 한 장 퍼즐: `Ha/carrot-original.png`와 `assets/puzzle-originals/game1-02.png`~`game1-05.png`는 제공 원본 보관본이다. `scripts/split-unit-image.cjs`가 비율을 보존한 960×960 완성 WebP와 320×320 조각 9장을 생성하고 재조립 픽셀 일치를 검사한다. 게임은 WebP만 불러온다. `ADDITIONAL_UNIT_PUZZLES`의 그림별 고유 `id`로 정답·개인 기록을 구분하고, `celebrationId`는 같은 캐릭터의 완료 영상을 연결한다. 서로 다른 그림의 조각은 같은 캐릭터라도 오답이다. `showGrid`는 위쪽 제시 그림에만 SVG 구획선을 표시한다. 게임 2·3은 이 추가 그림을 사용하지 않는다.
 - 추후 콘텐츠 방향(참고용, 미구현): 3D 재질의 이미지나 만화 한 컷도 원본 한 장을 제공받아 정사각형으로 맞추고 분할하는 방식으로 추가할 수 있다. 만화처럼 여러 캐릭터가 등장하는 경우 표시 이름·완료 영상과 구획별 가독성을 검토한 뒤 등록한다. 이번에는 별도 재질 선택이나 만화 모드를 추가하지 않는다.
 - 게임 2의 `core/pick/game.ts` → `RandomIndexCycle`은 앱 실행 동안 남은 캐릭터 순서를 보관한다. 매 묶음에 일곱 명을 한 번씩 섞고 묶음 사이 연속 중복을 막는다. `startMode`나 단계 진급에서는 초기화하지 않으며 페이지 새로고침 시에는 새 인스턴스로 시작한다. 오답·일시정지는 순서를 소비하지 않는다.
 

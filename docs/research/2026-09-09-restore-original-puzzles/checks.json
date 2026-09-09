@@ -1,0 +1,341 @@
+{
+  "method": "Mobile Chromium emulation, controlled clock and seeded random; the next random draw before START selects each of the 12 artworks for coverage.",
+  "cases": [
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "Bb",
+      "targets": 12,
+      "decoys": 37,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 95.984375,
+        "y": 112.421875,
+        "width": 198,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "Ha",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "Hoo",
+      "targets": 12,
+      "decoys": 37,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 95.984375,
+        "y": 112.421875,
+        "width": 198,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "Ja",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "Pino",
+      "targets": 12,
+      "decoys": 37,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 95.984375,
+        "y": 112.421875,
+        "width": 198,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "Tapee",
+      "targets": 12,
+      "decoys": 37,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 95.984375,
+        "y": 112.421875,
+        "width": 198,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "Tepee",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "HapeeCarrot",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "HapeeCarrot02",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "TapeeBack",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "TepeeBack",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "folder": "HooopeeBack",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "Bb",
+      "targets": 12,
+      "decoys": 37,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 91.75,
+        "y": 90.5,
+        "width": 136.5,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "Ha",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "Hoo",
+      "targets": 12,
+      "decoys": 37,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 91.75,
+        "y": 90.5,
+        "width": 136.5,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "Ja",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "Pino",
+      "targets": 12,
+      "decoys": 37,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 91.75,
+        "y": 90.5,
+        "width": 136.5,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "Tapee",
+      "targets": 12,
+      "decoys": 37,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 91.75,
+        "y": 90.5,
+        "width": 136.5,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "Tepee",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "HapeeCarrot",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "HapeeCarrot02",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "TapeeBack",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "TepeeBack",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "folder": "HooopeeBack",
+      "targets": 9,
+      "decoys": 40,
+      "allPiecesRevealed": true,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      }
+    }
+  ]
+}
