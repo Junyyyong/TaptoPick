@@ -1,0 +1,124 @@
+{
+  "before": false,
+  "sourcePixelsMatch": true,
+  "method": "Mobile Chromium emulation, DPR 2/3; controlled clock and seeded random, not a real-device capture.",
+  "cases": [
+    {
+      "width": 390,
+      "height": 844,
+      "dpr": 2,
+      "box": {
+        "x": 62.984375,
+        "y": 112.421875,
+        "width": 264,
+        "height": 264
+      },
+      "alignment": {
+        "lineCenters": [
+          88,
+          176,
+          88,
+          176
+        ],
+        "clipEdges": [
+          87.99991200000001,
+          176.000088,
+          176.000088,
+          87.99991200000001
+        ],
+        "frameCount": 1,
+        "box": {
+          "x": 62.984375,
+          "y": 112.421875,
+          "width": 264,
+          "height": 264,
+          "top": 112.421875,
+          "right": 326.984375,
+          "bottom": 376.421875,
+          "left": 62.984375
+        },
+        "pointerEvents": "none"
+      },
+      "file": "after-390.png",
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "dpr": 2,
+      "box": {
+        "x": 69,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      },
+      "alignment": {
+        "lineCenters": [
+          60.66666666666666,
+          121.33333333333331,
+          60.66666666666666,
+          121.33333333333331
+        ],
+        "clipEdges": [
+          60.666606,
+          121.333394,
+          121.333394,
+          60.666606
+        ],
+        "frameCount": 1,
+        "box": {
+          "x": 69,
+          "y": 90.5,
+          "width": 182,
+          "height": 182,
+          "top": 90.5,
+          "right": 251,
+          "bottom": 272.5,
+          "left": 69
+        },
+        "pointerEvents": "none"
+      },
+      "file": "after-320.png",
+      "errors": []
+    },
+    {
+      "width": 375,
+      "height": 667,
+      "dpr": 3,
+      "box": {
+        "x": 96.5,
+        "y": 90.5,
+        "width": 182,
+        "height": 182
+      },
+      "alignment": {
+        "lineCenters": [
+          60.66666666666666,
+          121.33333333333331,
+          60.66666666666666,
+          121.33333333333331
+        ],
+        "clipEdges": [
+          60.666606,
+          121.333394,
+          121.333394,
+          60.666606
+        ],
+        "frameCount": 1,
+        "box": {
+          "x": 96.5,
+          "y": 90.5,
+          "width": 182,
+          "height": 182,
+          "top": 90.5,
+          "right": 278.5,
+          "bottom": 272.5,
+          "left": 96.5
+        },
+        "pointerEvents": "none"
+      },
+      "file": "after-375.png",
+      "errors": []
+    }
+  ]
+}

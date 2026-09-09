@@ -27,6 +27,8 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 
 ## 이미지 규칙
 
+- 제시 그림의 테두리·구획선은 `renderUnitPreview`의 SVG 오버레이로 그린다. `viewBox`를 실제 열·행 수로 지정하고 내부 선을 정수 경계에 놓아 컬러 이미지의 비율 기반 `clip-path`와 정렬한다. 이전의 반복 CSS 배경 구획선은 사용하지 않는다. 외곽선은 이미지 위에 겹치므로 크기·분할 좌표를 바꾸지 않으며, `showGrid`가 꺼져도 외곽 테두리는 유지한다.
+
 - 해피 당근 테스트: `Ha/carrot-original.png`는 제공 원본 보관본이다. `scripts/split-unit-image.cjs`로 여백을 추가해 비율을 보존한 960×960 완성 WebP와 320×320 조각 9장을 생성한다. 조각을 재조립해 완성 이미지와 픽셀 일치를 검사한다. `character("ha", "Hapee", "HapeeCarrot", true)`가 이를 연결하고 `UNIT_TRIAL_CHARACTER_ID = "ha"`로 게임 1에서 항상 제시한다. 다른 캐릭터 조각은 오답으로 유지한다. `showGrid`는 위쪽 제시 그림에만 CSS 구획선을 그린다. 이전 해피 PNG·JPG·WebP는 보관 중이다. 전체 무작위 선택은 `UNIT_TRIAL_CHARACTER_ID`를 `undefined`로, 옛 해피 이미지는 캐릭터 정의를 `character("ha", "Hapee", "Ha")`로 복원한다.
 - 게임 2의 `core/pick/game.ts` → `RandomIndexCycle`은 앱 실행 동안 남은 캐릭터 순서를 보관한다. 매 묶음에 일곱 명을 한 번씩 섞고 묶음 사이 연속 중복을 막는다. `startMode`나 단계 진급에서는 초기화하지 않으며 페이지 새로고침 시에는 새 인스턴스로 시작한다. 오답·일시정지는 순서를 소비하지 않는다.
 

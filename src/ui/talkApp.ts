@@ -503,8 +503,6 @@ export class TalkApp {
     const reveal = document.createElement("div");
     reveal.className = `unit-reveal unit-reveal--${character.pieces.length}`;
     reveal.classList.toggle("unit-reveal--grid", Boolean(character.showGrid));
-    reveal.style.setProperty("--unit-columns", String(character.columns));
-    reveal.style.setProperty("--unit-rows", String(character.rows));
     reveal.setAttribute("aria-label", `${character.name} picture progress`);
 
     const grayscale = document.createElement("img");
@@ -524,6 +522,24 @@ export class TalkApp {
       color.style.clipPath = `inset(${row / character.rows * 100}% ${(character.columns - column - 1) / character.columns * 100}% ${(character.rows - row - 1) / character.rows * 100}% ${column / character.columns * 100}%)`;
       reveal.append(color);
     });
+    // Share the image's exact row/column coordinate system. Unlike repeated
+    // backgrounds, strokes are centered on the same boundaries as the clips.
+    const grid = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    grid.classList.add("unit-reveal-grid");
+    grid.setAttribute("viewBox", `0 0 ${character.columns} ${character.rows}`);
+    grid.setAttribute("preserveAspectRatio", "none");
+    grid.setAttribute("aria-hidden", "true");
+    grid.setAttribute("focusable", "false");
+    grid.innerHTML = `<rect x="0" y="0" width="${character.columns}" height="${character.rows}"/>`;
+    if (character.showGrid) {
+      for (let column = 1; column < character.columns; column++) {
+        grid.innerHTML += `<line x1="${column}" y1="0" x2="${column}" y2="${character.rows}"/>`;
+      }
+      for (let row = 1; row < character.rows; row++) {
+        grid.innerHTML += `<line x1="0" y1="${row}" x2="${character.columns}" y2="${row}"/>`;
+      }
+    }
+    reveal.append(grid);
     this.targetPreview.replaceChildren(reveal);
   }
 
