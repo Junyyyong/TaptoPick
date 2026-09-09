@@ -4,6 +4,8 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 
 ## 자주 수정할 곳
 
+- 게임 시작 화면: `src/content/pickModes.ts`의 짧은 설명·안내, `src/ui/pickIntroIcons.ts`의 벡터 아이콘, `talkApp.ts`의 `showModeIntro`/`startMode`, `talk.css`의 `.pick-intro-*`로 구성한다. 모드 선택과 Play again은 안내 화면만 열고 START가 실제 플레이를 시작한다. 안내 중 메뉴 음악을 유지하고 타이머·메모리 미리보기·몽타주 순서는 진행하지 않는다. 뒤로가기·Escape는 선택했던 메뉴 버튼으로 포커스를 돌려준다. 기존 How to play·Rules는 다시 추가하지 않는다.
+
 - 2026-09-09: 메인 메뉴의 How to play·Rules 버튼과 실행 연결을 제거했다. Settings·음악 시작 안내·일시정지 창은 유지한다. 아래 튜토리얼 관련 설명과 소스는 보관용이며 현재 게임 진입점에서 불러오지 않는다.
 
 - 게임 반응 체험판: `ui/styles/pickExperience.css`, `ui/feedback.ts`, `ui/talkApp.ts`. 기록은 `ui/pickRecords.ts`, 결과 표현은 `ui/pickResultView.ts`. `docs/EXPERIMENT-game-feel.md`에 기준 버전과 복구 절차를 기록했다. 게임 규칙은 변경하지 않았다.

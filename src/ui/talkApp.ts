@@ -12,9 +12,10 @@ import { SceneMusic } from "./sceneMusic";
 import type { MusicPlaybackState } from "./backgroundMusic";
 import { savePickResult, type RunSummary } from "./pickRecords";
 import { renderPickResult } from "./pickResultView";
+import { PICK_MODES, type PickMode as Mode } from "../content/pickModes";
+import { PICK_INTRO_ICONS } from "./pickIntroIcons";
 import "./styles/pickExperience.css";
 
-type Mode = "unit" | "montage" | "memory";
 
 const memoryColorAt = (index: number): number => ((index * 5 + Math.floor(index / 7) * 2) % 9) + 1;
 
@@ -54,6 +55,8 @@ export class TalkApp {
   private preferences: TalkPreferences = loadTalkPreferences();
   private menuMusicState: MusicPlaybackState = "idle";
   private mode: Mode = "unit";
+  private introMode: Mode = "unit";
+  private readonly intro = el("screen-mode-intro");
   private active = false;
   private paused = false;
   private startedAt = 0;
@@ -98,12 +101,21 @@ export class TalkApp {
       this.damageFlash.classList.remove("is-active");
       this.game.classList.remove("is-hit");
     });
-    el("mode-unit").addEventListener("click", () => this.startMode("unit"));
-    el("mode-montage").addEventListener("click", () => this.startMode("montage"));
-    el("mode-memory").addEventListener("click", () => this.startMode("memory"));
+    for (const mode of ["unit", "montage", "memory"] as const) {
+      const button = el(`mode-${mode}`);
+      button.querySelector(".mode-desc")!.textContent = PICK_MODES[mode].description;
+      button.addEventListener("click", () => this.showModeIntro(mode));
+    }
+    el("btn-mode-intro-back").addEventListener("click", () => this.closeModeIntro());
+    el("btn-mode-intro-start").addEventListener("click", () => {
+      if (!this.intro.classList.contains("hidden")) this.startMode(this.introMode);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !this.intro.classList.contains("hidden")) this.closeModeIntro();
+    });
     el("btn-back").addEventListener("click", () => this.showTitle());
     el("btn-pause").addEventListener("click", () => this.pauseGame());
-    el("btn-again").addEventListener("click", () => this.startMode(this.mode));
+    el("btn-again").addEventListener("click", () => this.showModeIntro(this.mode));
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
     el("btn-title-settings").addEventListener("click", () => this.showSettings());
     el("btn-help-close").addEventListener("click", () => this.closeHelp());
@@ -130,6 +142,7 @@ export class TalkApp {
   }
 
   private showTitle(): void {
+    this.intro.classList.add("hidden");
     this.clearPresentation();
     this.music.setScene("silent");
     this.active = false;
@@ -147,7 +160,33 @@ export class TalkApp {
     this.updateMusicScene();
   }
 
+  private showModeIntro(mode: Mode): void {
+    this.clearPresentation();
+    this.active = false;
+    this.paused = false;
+    this.stopClock();
+    this.cheer.stop();
+    this.introMode = mode;
+    el("mode-intro-title").textContent = PICK_MODES[mode].title.toUpperCase();
+    el("mode-intro-mark").innerHTML = PICK_INTRO_ICONS[mode];
+    el("mode-intro-note").textContent = PICK_MODES[mode].note;
+    this.result.classList.add("hidden");
+    this.help.classList.add("hidden");
+    this.title.classList.add("hidden");
+    this.splash.classList.add("hidden");
+    this.game.classList.add("hidden");
+    this.intro.classList.remove("hidden");
+    this.updateMusicScene();
+    el("btn-mode-intro-start").focus({ preventScroll: true });
+  }
+
+  private closeModeIntro(): void {
+    this.showTitle();
+    el(`mode-${this.introMode}`).focus({ preventScroll: true });
+  }
+
   private startMode(mode: Mode): void {
+    this.intro.classList.add("hidden");
     this.clearPresentation();
     this.streak = 0;
     feedback.resetCombo();
@@ -188,6 +227,8 @@ export class TalkApp {
     if (mode === "memory") this.startMemoryRound();
     this.startClock();
     this.updateMusicScene();
+    this.game.setAttribute("aria-label", PICK_MODES[mode].title);
+    this.game.focus({ preventScroll: true });
   }
 
   private startUnitRound(): void {
@@ -738,7 +779,7 @@ export class TalkApp {
   private updateMusicScene(): void {
     this.music.setScene(document.hidden ? "silent"
       : this.active && !this.paused ? "game"
-      : !this.title.classList.contains("hidden") ? "menu" : "silent");
+      : !this.title.classList.contains("hidden") || !this.intro.classList.contains("hidden") ? "menu" : "silent");
     this.updateMusicPrompt();
   }
 

@@ -20,9 +20,9 @@
           <h1 class="brand" id="title-heading" tabindex="-1"><img class="brand-mark" id="brand-mark" alt="TAP to PICK" /></h1>
         </header>
         <nav class="mode-list" aria-label="Game modes">
-          <button class="mode-btn" id="mode-unit"><span class="mode-name">Picture Pieces</span><span class="mode-desc">Find every piece on a 7×7 board with 5 chances.</span></button>
-          <button class="mode-btn" id="mode-montage"><span class="mode-name">Montage Hunt</span><span class="mode-desc">Clear 4 stages with 5 hearts, from 2×2 to 5×5.</span></button>
-          <button class="mode-btn" id="mode-memory"><span class="mode-name">Pair Memory</span><span class="mode-desc">Match the faces through 4 stages, from 4×4 to 7×7.</span></button>
+          <button class="mode-btn" id="mode-unit"><span class="mode-name">Picture Pieces</span><span class="mode-desc">Find every puzzle piece.</span></button>
+          <button class="mode-btn" id="mode-montage"><span class="mode-name">Montage Hunt</span><span class="mode-desc">Find the matching face.</span></button>
+          <button class="mode-btn" id="mode-memory"><span class="mode-name">Pair Memory</span><span class="mode-desc">Flip cards. Match pairs.</span></button>
         </nav>
         <div class="title-links">
           <button class="text-btn" id="btn-title-settings">Settings</button>
@@ -35,7 +35,19 @@
         </div>
       </section>
 
-      <section class="screen talk-screen pick-screen hidden" id="screen-game">
+      <section class="screen pick-intro-screen hidden" id="screen-mode-intro" aria-labelledby="mode-intro-title">
+        <header class="hud">
+          <button class="icon-btn" id="btn-mode-intro-back" aria-label="Back to menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <span class="icon-spacer" aria-hidden="true"></span><span class="icon-spacer" aria-hidden="true"></span>
+        </header>
+        <div class="pick-intro-body">
+          <h2 id="mode-intro-title"></h2>
+          <div class="pick-intro-mark" id="mode-intro-mark" aria-hidden="true"></div>
+          <p id="mode-intro-note"></p>
+          <button class="wood-btn" id="btn-mode-intro-start">START</button>
+        </div>
+      </section>
+      <section class="screen talk-screen pick-screen hidden" id="screen-game" tabindex="-1">
         <header class="hud">
           <button class="icon-btn" id="btn-back" aria-label="Back to menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
           <div class="run-heading"><span id="run-mode">Picture Pieces</span><strong id="run-clock">00:00.0</strong><div id="run-lives" class="life-meter hidden" role="img" aria-label="5 of 5 lives remaining" aria-live="polite"></div></div>

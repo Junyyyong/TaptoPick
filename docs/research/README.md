@@ -1,5 +1,7 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-09 — TALK·TEN 방식의 START 화면과 짧은 메뉴 설명](2026-09-09-start-screen/README.md)
+
 - [2026-09-09 — 해피 원본 한 장으로 조각 퍼즐 테스트·캐릭터 순환 유지](2026-09-09-carrot-and-character-cycle/README.md)
 
 - [2026-09-09 — How to play·Rules 메뉴 제거](2026-09-09-menu-simplification/README.md)
