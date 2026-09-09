@@ -1,5 +1,7 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-09 — How to play·Rules 메뉴 제거](2026-09-09-menu-simplification/README.md)
+
 - [2026-09-08 — 페어 카드 물음표를 기본형 아이콘으로 교체](2026-09-08-memory-question-icon/README.md)
 
 - [2026-09-08 — 탭댄스 느낌의 경쾌한 메인 음악](2026-09-08-tap-menu-music/README.md)

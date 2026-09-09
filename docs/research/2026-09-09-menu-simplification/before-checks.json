@@ -1,0 +1,28 @@
+{
+  "revision": "88a69f65e0b117423e017a65ca8706145f974bf8",
+  "before": true,
+  "source": "Clean working tree at recorded revision",
+  "method": "Chromium mobile emulation, not a physical-device screenshot. Music, effects and haptics muted. Controlled clock.",
+  "cases": [
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "deviceScaleFactor": 2,
+      "screenshot": "before-menu-390.png",
+      "settingsAndThreeGames": true,
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "deviceScaleFactor": 2,
+      "screenshot": "before-menu-320.png",
+      "settingsAndThreeGames": true,
+      "errors": []
+    }
+  ]
+}

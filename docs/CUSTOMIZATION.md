@@ -4,6 +4,8 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 
 ## 자주 수정할 곳
 
+- 2026-09-09: 메인 메뉴의 How to play·Rules 버튼과 실행 연결을 제거했다. Settings·음악 시작 안내·일시정지 창은 유지한다. 아래 튜토리얼 관련 설명과 소스는 보관용이며 현재 게임 진입점에서 불러오지 않는다.
+
 - 게임 반응 체험판: `ui/styles/pickExperience.css`, `ui/feedback.ts`, `ui/talkApp.ts`. 기록은 `ui/pickRecords.ts`, 결과 표현은 `ui/pickResultView.ts`. `docs/EXPERIMENT-game-feel.md`에 기준 버전과 복구 절차를 기록했다. 게임 규칙은 변경하지 않았다.
 
 - 음악: 재생기는 `ui/backgroundMusic.ts`, 화면별 음원 선택·중복 방지는 `ui/sceneMusic.ts`, 경로는 `config/app.ts`에 둔다. 현재 메뉴·메뉴에서 연 설정·How to play는 **Tap Parade**(`pick-tap-lobby.mp3`, 136 BPM·D장조·4/4박자·24마디·약 42.35초)를 사용한다. `scripts/generate-tap-lobby.mjs`가 합성 발끝·뒤꿈치 타격음과 피아노·워킹 베이스의 스윙을 생성한다. 실제 플레이는 기존 **Pick Garden**(100 BPM·C장조·4/4박자·38.4초)을 유지한다. 이전 왈츠 **Paper Lantern Waltz**와 92 BPM 메뉴 변주곡은 복구·연구용으로 보존한다. 기존 `scripts/generate-pick-music.mjs`의 `--menu`는 보관된 왈츠, `--legacy-menu`는 이전 변주곡, 옵션 없음은 게임곡을 재생성한다. 새 메뉴곡은 반드시 별도 탭 생성기를 사용한다.

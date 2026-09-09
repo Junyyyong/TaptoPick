@@ -4,7 +4,6 @@ import { createRandomIndexCycle, createUnitBoard, PICK_MISTAKE_LIMIT, tieredTime
 import { MontageProgress, PickLives, createStagedMontageBoard, montageMotion, planMontageSwap } from "../core/pick/montage";
 import { MEMORY_STAGES, MemoryRun } from "../core/pick/memory";
 import { el } from "./dom";
-import { mountPickTutorial } from "./pickTutorial";
 import { MEMORY_QUESTION_ICON } from "./memoryQuestionIcon";
 import { feedback } from "./feedback";
 import { Cheer } from "./screens/cheer";
@@ -56,7 +55,6 @@ export class TalkApp {
   private menuMusicState: MusicPlaybackState = "idle";
   private mode: Mode = "unit";
   private active = false;
-  private disposePractice?: () => void;
   private paused = false;
   private startedAt = 0;
   private elapsedMs = 0;
@@ -97,7 +95,6 @@ export class TalkApp {
       this.menuMusicState = scene === "menu" ? state : "idle";
       this.updateMusicPrompt();
     });
-    this.helpBody.addEventListener("practice-done", () => this.closeHelp());
     this.damageFlash.addEventListener("animationend", () => {
       this.damageFlash.classList.remove("is-active");
       this.game.classList.remove("is-hit");
@@ -109,9 +106,7 @@ export class TalkApp {
     el("btn-pause").addEventListener("click", () => this.pauseGame());
     el("btn-again").addEventListener("click", () => this.startMode(this.mode));
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
-    el("btn-title-tutorial").addEventListener("click", () => this.showHowToPlay());
     el("btn-title-settings").addEventListener("click", () => this.showSettings());
-    el("btn-title-rules").addEventListener("click", () => this.showRules());
     el("btn-help-close").addEventListener("click", () => this.closeHelp());
     this.musicPrompt.addEventListener("click", () => this.music.unlock());
     document.addEventListener("pointerdown", () => { this.cheer.unlock(); feedback.unlock(); this.music.unlock(); }, { capture: true });
@@ -138,7 +133,6 @@ export class TalkApp {
   private showTitle(): void {
     this.clearPresentation();
     this.music.setScene("silent");
-    this.disposePractice?.();
     this.active = false;
     this.paused = false;
     this.stopClock();
@@ -159,7 +153,6 @@ export class TalkApp {
     this.streak = 0;
     feedback.resetCombo();
     this.memoryStageHoldRemaining = 0;
-    this.disposePractice?.();
     this.mode = mode;
     this.active = true;
     this.paused = false;
@@ -701,7 +694,6 @@ export class TalkApp {
   }
 
   private closeHelp(): void {
-    this.disposePractice?.();
     this.help.classList.add("hidden");
     this.updateMusicPrompt();
     if (this.paused && this.active) {
@@ -713,20 +705,10 @@ export class TalkApp {
   }
 
   private openHelp(title: string, html: string): void {
-    this.disposePractice?.();
     this.helpTitle.textContent = title;
     this.helpBody.innerHTML = html;
     this.help.classList.remove("hidden");
     this.updateMusicPrompt();
-  }
-
-  private showHowToPlay(): void {
-    this.openHelp("How to play", "");
-    this.disposePractice = mountPickTutorial(this.helpBody);
-  }
-
-  private showRules(): void {
-    this.openHelp("Scoring rules", `<div class="rules-list"><p><b>Picture Pieces</b><span>Up to 10 sec: 1,500 · 20 sec: 1,200 · 30 sec: 900 · 45 sec: 600 · longer: 300 points. No time limit. Game Over after 5 wrong picks: 0 points.</span></p><p><b>Pair Memory</b><span>Finish faster and avoid missed pairs for a higher score.</span></p><p><b>Montage Hunt</b><span>Your result is the number of exact matches found. Clear all 18 to win. Completing 3×3 restores one heart, up to 5; an unused bonus is not saved. No time limit.</span></p></div>`);
   }
 
   private showSettings(): void {
