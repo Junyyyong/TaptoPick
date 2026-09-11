@@ -1,5 +1,7 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-11 — 메모리 물음표 통일과 뒤집기 빛 완화](2026-09-11-memory-question-light/README.md)
+
 - [2026-09-11 — 시작 화면의 퍼즐·메모리 아이콘 변경](2026-09-11-mode-icons/README.md)
 
 - [2026-09-09 — 기존 퍼즐 7종 제시 목록 복구](2026-09-09-restore-original-puzzles/README.md)

@@ -5,7 +5,8 @@
 .title-music-prompt:focus-visible { outline: 2px solid var(--cool); outline-offset: 1px; }
 .picture-tile.is-pick-hit { animation: pick-hit 220ms cubic-bezier(.2,.8,.2,1); }
 .picture-tile.is-pick-hit::before { background: radial-gradient(ellipse,rgba(255,225,130,var(--pick-hit-light-alpha,.8)),transparent 70%); }
-.memory-card { --pick-hit-light-alpha: .5; --pick-hit-glow-radius: 8px; --pick-hit-glow-alpha: .22; }
+.memory-card { --pick-hit-light-alpha: .4; --pick-hit-glow-radius: 6px; --pick-hit-glow-alpha: .16; }
+.memory-card.is-open::before { opacity: .65; }
 .picture-tile.is-found img { opacity: .38; }
 .memory-card.is-matched { background: var(--paper-lit); box-shadow: inset 0 0 0 2px #a3c89b; }
 .memory-card.is-matched img { opacity: .65; }

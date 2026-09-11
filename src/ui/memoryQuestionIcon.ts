@@ -1,2 +1,5 @@
-/** Shared, font-independent card-back symbol. The button supplies its own label. */
-export const MEMORY_QUESTION_ICON = `<svg class="memory-question-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M7 8a5 5 0 0 1 10 0c0 3-5 3-5 6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="19.5" r="1.5" fill="currentColor"/></svg>`;
+/** TAPtoTEN's SUM = ? uses its native UI font stack at weight 900.
+ * Keep the same glyph in a fixed SVG box so font metrics cannot resize cards.
+ * The button supplies its own accessible label.
+ */
+export const MEMORY_QUESTION_ICON = `<svg class="memory-question-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><text x="12" y="21" text-anchor="middle" font-family="'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif" font-weight="900" font-size="26" fill="currentColor">?</text></svg>`;

@@ -1,0 +1,118 @@
+{
+  "before": false,
+  "method": "Chromium mobile emulation, DPR 2, seeded random and controlled clock. CSS transitions completed before capture; match animation paused at 154ms.",
+  "cases": [
+    {
+      "width": 390,
+      "height": 844,
+      "side": 4,
+      "reflection": "0.65",
+      "glow": {
+        "gradient": "radial-gradient(rgba(255, 225, 130, 0.4), rgba(0, 0, 0, 0) 70%)",
+        "opacity": "0.65",
+        "shadow": "rgba(255, 181, 0, 0.16) 0px 0px 6px 0px",
+        "duration": "0.22s"
+      },
+      "matched": 16,
+      "geometryUnchanged": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "side": 5,
+      "reflection": "0.65",
+      "glow": {
+        "gradient": "radial-gradient(rgba(255, 225, 130, 0.4), rgba(0, 0, 0, 0) 70%)",
+        "opacity": "0.65",
+        "shadow": "rgba(255, 181, 0, 0.16) 0px 0px 6px 0px",
+        "duration": "0.22s"
+      },
+      "matched": 24,
+      "geometryUnchanged": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "side": 6,
+      "reflection": "0.65",
+      "glow": {
+        "gradient": "radial-gradient(rgba(255, 225, 130, 0.4), rgba(0, 0, 0, 0) 70%)",
+        "opacity": "0.65",
+        "shadow": "rgba(255, 181, 0, 0.16) 0px 0px 6px 0px",
+        "duration": "0.22s"
+      },
+      "matched": 36,
+      "geometryUnchanged": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "side": 7,
+      "reflection": "0.65",
+      "glow": {
+        "gradient": "radial-gradient(rgba(255, 225, 130, 0.4), rgba(0, 0, 0, 0) 70%)",
+        "opacity": "0.65",
+        "shadow": "rgba(255, 181, 0, 0.16) 0px 0px 6px 0px",
+        "duration": "0.22s"
+      },
+      "matched": 48,
+      "geometryUnchanged": true
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "side": 4,
+      "reflection": "0.65",
+      "glow": {
+        "gradient": "radial-gradient(rgba(255, 225, 130, 0.4), rgba(0, 0, 0, 0) 70%)",
+        "opacity": "0.65",
+        "shadow": "rgba(255, 181, 0, 0.16) 0px 0px 6px 0px",
+        "duration": "0.22s"
+      },
+      "matched": 16,
+      "geometryUnchanged": true
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "side": 5,
+      "reflection": "0.65",
+      "glow": {
+        "gradient": "radial-gradient(rgba(255, 225, 130, 0.4), rgba(0, 0, 0, 0) 70%)",
+        "opacity": "0.65",
+        "shadow": "rgba(255, 181, 0, 0.16) 0px 0px 6px 0px",
+        "duration": "0.22s"
+      },
+      "matched": 24,
+      "geometryUnchanged": true
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "side": 6,
+      "reflection": "0.65",
+      "glow": {
+        "gradient": "radial-gradient(rgba(255, 225, 130, 0.4), rgba(0, 0, 0, 0) 70%)",
+        "opacity": "0.65",
+        "shadow": "rgba(255, 181, 0, 0.16) 0px 0px 6px 0px",
+        "duration": "0.22s"
+      },
+      "matched": 36,
+      "geometryUnchanged": true
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "side": 7,
+      "reflection": "0.65",
+      "glow": {
+        "gradient": "radial-gradient(rgba(255, 225, 130, 0.4), rgba(0, 0, 0, 0) 70%)",
+        "opacity": "0.65",
+        "shadow": "rgba(255, 181, 0, 0.16) 0px 0px 6px 0px",
+        "duration": "0.22s"
+      },
+      "matched": 48,
+      "geometryUnchanged": true
+    }
+  ]
+}
