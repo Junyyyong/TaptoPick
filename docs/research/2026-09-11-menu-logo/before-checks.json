@@ -1,0 +1,48 @@
+[
+  {
+    "width": 390,
+    "height": 844,
+    "display": {
+      "src": "http://127.0.0.1:5189/assets/brand/TAPtoPICK-logo-01.webp",
+      "natural": [
+        990,
+        897
+      ],
+      "box": {
+        "x": 30,
+        "y": 60.953125,
+        "width": 330,
+        "height": 299,
+        "top": 60.953125,
+        "right": 360,
+        "bottom": 359.953125,
+        "left": 30
+      }
+    },
+    "startScreenReached": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "height": 568,
+    "display": {
+      "src": "http://127.0.0.1:5189/assets/brand/TAPtoPICK-logo-01.webp",
+      "natural": [
+        990,
+        897
+      ],
+      "box": {
+        "x": 67.078125,
+        "y": 32.875,
+        "width": 185.84375,
+        "height": 168.375,
+        "top": 32.875,
+        "right": 252.921875,
+        "bottom": 201.25,
+        "left": 67.078125
+      }
+    },
+    "startScreenReached": true,
+    "errors": []
+  }
+]

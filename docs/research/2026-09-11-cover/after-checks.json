@@ -1,0 +1,52 @@
+[
+  {
+    "width": 390,
+    "height": 844,
+    "display": {
+      "src": "http://127.0.0.1:5189/assets/brand/taptopick-cover-0911-01.webp",
+      "natural": [
+        1440,
+        2841
+      ],
+      "fit": "fill",
+      "position": "50% 50%",
+      "box": {
+        "x": 0,
+        "y": 37.28125,
+        "width": 390,
+        "height": 769.4375,
+        "top": 37.28125,
+        "right": 390,
+        "bottom": 806.71875,
+        "left": 0
+      }
+    },
+    "menuReached": true,
+    "errors": []
+  },
+  {
+    "width": 320,
+    "height": 568,
+    "display": {
+      "src": "http://127.0.0.1:5189/assets/brand/taptopick-cover-0911-01.webp",
+      "natural": [
+        1440,
+        2841
+      ],
+      "fit": "fill",
+      "position": "50% 50%",
+      "box": {
+        "x": 0,
+        "y": -31.6640625,
+        "width": 320,
+        "height": 631.328125,
+        "top": -31.6640625,
+        "right": 320,
+        "bottom": 599.6640625,
+        "left": 0
+      }
+    },
+    "menuReached": true,
+    "errors": []
+  }
+]
