@@ -1,5 +1,11 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-11 — 커버 최신 수정본 재교체](2026-09-11-cover-revision/README.md)
+
+- [2026-09-11 — 로고 최신 수정본 재교체](2026-09-11-logo-revision/README.md)
+
+- [2026-09-11 — 새 로고 교체와 TALK 크기 비교](2026-09-11-logo-talk-size/README.md)
+
 - [2026-09-11 — 메인화면 TAPtoTEST 로고 교체](2026-09-11-menu-logo/README.md)
 
 - [2026-09-11 — 커버 이미지 교체](2026-09-11-cover/README.md)
