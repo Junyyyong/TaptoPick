@@ -3,6 +3,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const assert=require('node:assert/strict');
 const before=process.argv.includes('--before');
+const phase=before?'before':process.argv.includes('--refined')?'refined':'after';
 (async()=>{
   const browser=await chromium.launch({headless:true,executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
   const report={before,method:'Chromium mobile emulation, DPR 2, controlled clock; actual mode buttons and START.',cases:[]};
@@ -18,7 +19,17 @@ const before=process.argv.includes('--before');
         const svg=page.locator('#screen-mode-intro svg').last();
         const box=await svg.boundingBox();assert(box.width>0&&box.x>=0&&box.x+box.width<=width);
         assert.equal(await svg.getAttribute('aria-hidden'),'true');
-        if(width===390)await page.screenshot({path:path.join(__dirname,`${before?'before':'after'}-${mode}.png`),animations:'disabled'});
+        if(phase==='refined'&&mode==='memory'){
+          assert.equal(await svg.locator('[data-card="front"] circle').count(),2);
+          assert.equal(await svg.locator('[data-card="front"] circle[r="15"]').count(),0);
+          const geometry=await svg.evaluate(root=>{
+            const star=root.querySelector('[data-card="back"] path').getBBox();
+            const back=root.querySelector('[data-card="back"] rect').getBBox();
+            const front=root.querySelector('[data-card="front"] rect').getBBox();
+            return {centered:Math.abs(star.x+star.width/2-(back.x+back.width/2))<.01,overlapped:star.x<front.x&&star.x+star.width>front.x,opaque:root.querySelector('[data-card="front"] rect').getAttribute('fill')!=='none'};
+          });assert.deepEqual(geometry,{centered:true,overlapped:true,opaque:true});
+        }
+        if(width===390)await page.screenshot({path:path.join(__dirname,`${phase}-${mode}.png`),animations:'disabled'});
         await page.locator('#btn-mode-intro-start').click();
         assert.equal(await page.locator('#picture-board button').count(),mode==='unit'?49:mode==='montage'?4:16);
         report.cases.push({width,height,mode,box});
@@ -26,6 +37,6 @@ const before=process.argv.includes('--before');
       }
       assert.deepEqual(errors,[]);await page.close();
     }
-    fs.writeFileSync(path.join(__dirname,`${before?'before':'after'}-checks.json`),JSON.stringify(report,null,2)+'\n');console.log(report);
+    fs.writeFileSync(path.join(__dirname,`${phase}-checks.json`),JSON.stringify(report,null,2)+'\n');console.log(report);
   }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
