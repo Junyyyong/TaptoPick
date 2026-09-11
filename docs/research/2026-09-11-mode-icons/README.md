@@ -16,7 +16,7 @@
 | Puzzle | ![그리드](before-unit.png) | ![퍼즐 조각](after-unit.png) |
 | Memory | ![별 카드](before-memory.png) | ![별 뒷면과 미소 앞면](after-memory.png) |
 
-Montage의 [변경 전](before-montage.png)·[변경 후](after-montage.png) 화면은 픽셀 단위로 동일하다.
+Montage의 [변경 전](before-montage.png)·[변경 후](after-montage.png)도 함께 보관했다. 돋보기·미소 SVG 소스는 그대로 유지했다. 화면 캡처는 렌더링 시점 차이가 있어 픽셀 단위 동일성을 보장하지 않는다.
 
 ## 검증
 
