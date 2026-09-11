@@ -1,0 +1,72 @@
+{
+  "before": true,
+  "method": "Chromium mobile emulation, DPR 2, controlled clock; actual mode buttons and START.",
+  "cases": [
+    {
+      "width": 390,
+      "height": 844,
+      "mode": "unit",
+      "box": {
+        "x": 152,
+        "y": 354.6875,
+        "width": 86,
+        "height": 86
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "mode": "montage",
+      "box": {
+        "x": 152,
+        "y": 354.6875,
+        "width": 86,
+        "height": 86
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "mode": "memory",
+      "box": {
+        "x": 152,
+        "y": 354.6875,
+        "width": 86,
+        "height": 86
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "mode": "unit",
+      "box": {
+        "x": 129,
+        "y": 231.953125,
+        "width": 62,
+        "height": 62
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "mode": "montage",
+      "box": {
+        "x": 129,
+        "y": 231.953125,
+        "width": 62,
+        "height": 62
+      }
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "mode": "memory",
+      "box": {
+        "x": 129,
+        "y": 231.953125,
+        "width": 62,
+        "height": 62
+      }
+    }
+  ]
+}
