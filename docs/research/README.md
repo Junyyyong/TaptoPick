@@ -1,5 +1,7 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-14 — Settings 전체화면 전환](2026-09-14-settings-screen/README.md)
+
 - [2026-09-14 — 몽타주 오답 후 정답 빛 안내](2026-09-14-montage-answer-hint/README.md)
 
 - [2026-09-14 — 몽타주 제시 이미지 테두리](2026-09-14-montage-frame/README.md)

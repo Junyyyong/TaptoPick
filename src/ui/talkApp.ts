@@ -51,6 +51,8 @@ export class TalkApp {
   private readonly help = el("help-layer");
   private readonly helpTitle = el("help-title");
   private readonly helpBody = el("help-body");
+  private readonly settings = el("screen-settings");
+  private readonly settingsBody = el("settings-body");
 
   private preferences: TalkPreferences = loadTalkPreferences();
   private menuMusicState: MusicPlaybackState = "idle";
@@ -111,6 +113,7 @@ export class TalkApp {
       if (!this.intro.classList.contains("hidden")) this.startMode(this.introMode);
     });
     document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !this.settings.classList.contains("hidden")) this.closeSettings();
       if (event.key === "Escape" && !this.intro.classList.contains("hidden")) this.closeModeIntro();
     });
     el("btn-back").addEventListener("click", () => this.showTitle());
@@ -118,6 +121,7 @@ export class TalkApp {
     el("btn-again").addEventListener("click", () => this.showModeIntro(this.mode));
     el("btn-result-menu").addEventListener("click", () => this.showTitle());
     el("btn-title-settings").addEventListener("click", () => this.showSettings());
+    el("btn-settings-back").addEventListener("click", () => this.closeSettings());
     el("btn-help-close").addEventListener("click", () => this.closeHelp());
     this.musicPrompt.addEventListener("click", () => this.music.unlock());
     document.addEventListener("pointerdown", () => { this.cheer.unlock(); feedback.unlock(); this.music.unlock(); }, { capture: true });
@@ -142,6 +146,7 @@ export class TalkApp {
   }
 
   private showTitle(): void {
+    this.settings.classList.add("hidden");
     this.intro.classList.add("hidden");
     this.clearPresentation();
     this.music.setScene("silent");
@@ -780,22 +785,32 @@ export class TalkApp {
   }
 
   private showSettings(): void {
-    this.openHelp("Settings", `<div class="switch-list"><button class="switch-row" data-setting="sound"><span class="switch-text"><b>Sound effects</b><small>Play sounds for picks and completed games.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.soundOn}"><i class="switch-knob"></i></span></button><button class="switch-row" data-setting="haptics"><span class="switch-text"><b>Haptics</b><small>Use touch feedback on supported devices.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.hapticsOn}"><i class="switch-knob"></i></span></button></div>`);
-    const musicRow = document.createElement("button");
-    musicRow.className = "switch-row";
-    musicRow.dataset.setting = "music";
-    musicRow.innerHTML = `<span class="switch-text"><b>Background music</b><small>Different tunes for the menu and games.</small></span><span class="switch" role="switch" aria-checked="${this.preferences.musicOn}"><i class="switch-knob"></i></span>`;
-    this.helpBody.querySelector(".switch-list")!.append(musicRow);
-    this.helpBody.querySelectorAll<HTMLButtonElement>("[data-setting]").forEach((button) => {
+    this.title.classList.add("hidden");
+    this.settings.classList.remove("hidden");
+    this.settingsBody.innerHTML = `<div class="switch-list">${[
+      ["music", "Music", "Menu and game background music", this.preferences.musicOn],
+      ["sound", "Sound", "Button sounds and finish sounds", this.preferences.soundOn],
+      ["haptics", "Vibration", "Short feedback when you tap", this.preferences.hapticsOn],
+    ].map(([key, label, description, on]) => `<div class="switch-row"><span class="switch-text"><b>${label}</b><small>${description}</small></span><button class="switch" data-setting="${key}" role="switch" aria-label="${label}" aria-checked="${on}"><i class="switch-knob"></i></button></div>`).join("")}</div>`;
+    this.settingsBody.querySelectorAll<HTMLButtonElement>("[data-setting]").forEach((button) => {
       button.addEventListener("click", () => {
         if (button.dataset.setting === "sound") this.preferences.soundOn = !this.preferences.soundOn;
         if (button.dataset.setting === "haptics") this.preferences.hapticsOn = !this.preferences.hapticsOn;
         if (button.dataset.setting === "music") this.preferences.musicOn = !this.preferences.musicOn;
         saveTalkPreferences(this.preferences);
         this.applyPreferences();
-        this.showSettings();
+        const enabled = button.dataset.setting === "sound" ? this.preferences.soundOn
+          : button.dataset.setting === "haptics" ? this.preferences.hapticsOn : this.preferences.musicOn;
+        button.setAttribute("aria-checked", String(enabled));
       });
     });
+    this.updateMusicScene();
+    el("btn-settings-back").focus();
+  }
+
+  private closeSettings(): void {
+    this.showTitle();
+    el("btn-title-settings").focus();
   }
 
   private applyPreferences(): void {
@@ -809,7 +824,7 @@ export class TalkApp {
   private updateMusicScene(): void {
     this.music.setScene(document.hidden ? "silent"
       : this.active && !this.paused ? "game"
-      : !this.title.classList.contains("hidden") || !this.intro.classList.contains("hidden") ? "menu" : "silent");
+      : !this.title.classList.contains("hidden") || !this.intro.classList.contains("hidden") || !this.settings.classList.contains("hidden") ? "menu" : "silent");
     this.updateMusicPrompt();
   }
 
