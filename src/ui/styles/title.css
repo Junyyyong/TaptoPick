@@ -73,6 +73,11 @@
 
 .brand-block {
   text-align: center;
+  /* Match TEN's logo-area height without resizing PICK's artwork. */
+  height: calc(min(68vw, 250px) * 725.7594137 / 618.4357745);
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
 }
 
 .brand-wordmark,
@@ -237,6 +242,7 @@
  * are the screen's job, and it is the only thing here with room to spare.
  */
 @media (max-height: 700px) {
+  .brand-block { height: calc(min(58vw, 215px) * 725.7594137 / 618.4357745); }
   .brand-mark {
     width: min(76.56vw, 284px);
   }
@@ -251,6 +257,7 @@
 }
 
 @media (max-height: 580px) {
+  .brand-block { height: calc(min(44vw, 165px) * 725.7594137 / 618.4357745); }
   .brand-mark {
     width: min(58.08vw, 218px);
   }

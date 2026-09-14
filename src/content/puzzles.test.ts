@@ -9,7 +9,7 @@ import { APP_CONFIG } from "../config/app";
 
 describe("Puzzle content", () => {
   it("uses the three approved single-word mode names", () => {
-    expect(Object.values(PICK_MODES).map(mode => mode.title)).toEqual(["Puzzle", "Montage", "Memory"]);
+    expect(Object.values(PICK_MODES).map(mode => mode.title)).toEqual(["PUZZLE", "MONTAGE", "MEMORY"]);
   });
   it("keeps the original carrot alongside four new nine-piece artworks", () => {
     expect(UNIT_TARGET_CHARACTERS).toHaveLength(12);

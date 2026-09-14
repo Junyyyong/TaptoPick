@@ -1,5 +1,7 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-14 — TEN 기준 메인 버튼 배치·대문자 제목](2026-09-14-menu-position/README.md)
+
 - [2026-09-14 — Settings 전체화면 전환](2026-09-14-settings-screen/README.md)
 
 - [2026-09-14 — 몽타주 오답 후 정답 빛 안내](2026-09-14-montage-answer-hint/README.md)
