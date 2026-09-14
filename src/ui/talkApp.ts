@@ -299,6 +299,9 @@ export class TalkApp {
         button.append(door);
       }
       this.montageButtons.set(tile.id, button);
+      button.addEventListener("animationend", (event) => {
+        if (event.animationName.startsWith("montage-answer-")) button.classList.remove("is-answer-hint");
+      });
       let pressedVersion = -1;
       button.addEventListener("pointerdown", () => { pressedVersion = this.montagePointerVersion; });
       button.addEventListener("click", (event) => {
@@ -308,8 +311,18 @@ export class TalkApp {
         if (!tile.exact) {
           this.flashWrong(button);
           this.wrongPick();
+          if (this.active) {
+            const answer = this.montageTiles.find((candidate) => candidate.exact);
+            const answerButton = answer && this.montageButtons.get(answer.id);
+            if (answerButton) {
+              answerButton.classList.remove("is-answer-hint");
+              void answerButton.offsetWidth;
+              answerButton.classList.add("is-answer-hint");
+            }
+          }
           return;
         }
+        button.classList.remove("is-answer-hint");
         const result = this.montage.correct(this.lives);
         if (result.bonus) {
           this.updateChances("gain");
@@ -549,6 +562,7 @@ export class TalkApp {
 
   private renderImagePreview(src: string, alt: string): void {
     const image = document.createElement("img");
+    image.className = "montage-target-image";
     image.src = src;
     image.alt = alt;
     this.targetPreview.replaceChildren(image);

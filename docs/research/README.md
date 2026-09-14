@@ -1,5 +1,9 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-14 — 몽타주 오답 후 정답 빛 안내](2026-09-14-montage-answer-hint/README.md)
+
+- [2026-09-14 — 몽타주 제시 이미지 테두리](2026-09-14-montage-frame/README.md)
+
 - [2026-09-11 — 커버 최신 수정본 재교체](2026-09-11-cover-revision/README.md)
 
 - [2026-09-11 — 로고 최신 수정본 재교체](2026-09-11-logo-revision/README.md)
