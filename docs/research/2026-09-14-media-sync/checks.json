@@ -1,0 +1,28 @@
+{
+  "events": [
+    {
+      "name": "video",
+      "time": 956.8999999761581
+    },
+    {
+      "name": "audio",
+      "time": 957
+    },
+    {
+      "name": "audio",
+      "time": 1212.300000011921
+    },
+    {
+      "name": "video",
+      "time": 1490.8999999761581
+    },
+    {
+      "name": "audio",
+      "time": 1491
+    }
+  ],
+  "drift": 0.048122000000000054,
+  "resumedDrift": 0.03577600000000003,
+  "pausedTogether": true,
+  "stopped": true
+}

@@ -1,5 +1,7 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-14 — 완료 영상·음원 시작 동기화](2026-09-14-media-sync/README.md)
+
 - [2026-09-14 — TALK 스타일 음악 안내 복원](2026-09-14-music-prompt-restore/README.md)
 
 - [2026-09-14 — TEN 기준 메인 버튼 배치·대문자 제목](2026-09-14-menu-position/README.md)

@@ -1,5 +1,6 @@
 import { el } from "../dom";
 import { APP_CONFIG } from "../../config/app";
+import { MediaSync } from "../mediaSync";
 
 /**
  * The beat between the last move and the results panel.
@@ -117,6 +118,8 @@ export class Cheer {
   private readonly scoreLabel = el<HTMLParagraphElement>("cheer-score-label");
   private readonly scoreEl = el<HTMLParagraphElement>("cheer-score");
   private readonly sound = el<HTMLAudioElement>("cheer-sound");
+  private readonly sync = new MediaSync(this.clip, this.sound);
+  private mediaVersion = 0;
   private timer: number | undefined;
   private timerAction?: () => void;
   private timerDeadline = 0;
@@ -154,12 +157,13 @@ export class Cheer {
    * not the web layer's.
    */
   unlock(): void {
-    if (this.primed) return;
+    if (this.primed || this.done) return;
     this.primed = true;
+    const version = this.mediaVersion;
     this.sound.src = SILENCE;
     const started = this.sound.play() as Promise<void> | undefined;
     void started
-      ?.then(() => this.sound.pause())
+      ?.then(() => { if (version === this.mediaVersion && !this.done) this.sound.pause(); })
       .catch(() => {
         this.primed = false;
       });
@@ -198,6 +202,9 @@ export class Cheer {
   }
 
   private begin(headline: string, score: number, text: string, then: () => void, pick: Clip | null, scoreLabel = "SCORE"): void {
+    this.mediaVersion++;
+    this.sync.stop();
+    this.clip.pause();
     this.word.textContent = text;
     this.headline.textContent = headline;
     this.scoreLabel.textContent = scoreLabel;
@@ -243,14 +250,11 @@ export class Cheer {
     this.clip.classList.remove("hidden");
     // Muted and inline, so this is allowed without a gesture; a refusal still
     // lands on `finish` rather than stalling the run.
-    void start(this.clip, videoFor(pick)).catch(() => this.finish());
-
-    // The two tracks are the same length and both start here, which is as
-    // close to in step as two elements get. Sound is a courtesy: if it will
-    // not play, the picture carries on regardless.
-    if (pick.sound && this.soundOn) {
-      void start(this.sound, pick.sound).catch(() => undefined);
-    }
+    const version = this.mediaVersion;
+    this.sync.start(Boolean(pick.sound) && this.soundOn);
+    void start(this.clip, videoFor(pick)).catch(() => {
+      if (version === this.mediaVersion) this.finish();
+    });
 
     this.schedule(() => this.hold(), CLIP_CAP_MS);
   }
@@ -263,12 +267,14 @@ export class Cheer {
     if (!this.done) return;
     window.clearTimeout(this.timer);
     this.timerAction = undefined;
-    this.sound.pause();
+    this.sync.stop();
     this.root.classList.add("cheer-hold");
   }
 
   /** Takes it off screen at once — for a run left before it finished. */
   stop(): void {
+    this.mediaVersion++;
+    this.sync.stop();
     window.clearTimeout(this.timer);
     this.timerAction = undefined;
     this.resumeMedia = false;
@@ -284,6 +290,7 @@ export class Cheer {
   /** Follows the sound switch in settings; the picture always plays. */
   setSound(on: boolean): void {
     this.soundOn = on;
+    this.sync.setEnabled(on && Boolean(this.pick?.sound));
     if (!on) this.sound.pause();
   }
 
@@ -300,11 +307,8 @@ export class Cheer {
       const action = this.timerAction;
       if (action) this.schedule(action, this.timerRemaining);
       if (this.resumeMedia) {
-        void this.clip.play().catch(() => this.hold());
-        if (this.soundOn && this.pick?.sound) {
-          try { this.sound.currentTime = this.clip.currentTime; } catch { /* Media may not be ready. */ }
-          void this.sound.play().catch(() => {});
-        }
+        const version = this.mediaVersion;
+        void this.clip.play().catch(() => { if (version === this.mediaVersion) this.hold(); });
       }
       this.resumeMedia = false;
     }
@@ -322,6 +326,7 @@ export class Cheer {
   }
 
   private hush(): void {
+    this.sync.suspend();
     this.clip.pause();
     this.sound.pause();
   }
@@ -329,6 +334,8 @@ export class Cheer {
   private finish(): void {
     const then = this.done;
     if (!then) return;
+    this.mediaVersion++;
+    this.sync.stop();
     this.done = undefined;
     window.clearTimeout(this.timer);
     this.timerAction = undefined;
