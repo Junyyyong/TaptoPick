@@ -4,7 +4,7 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 
 ## 자주 수정할 곳
 
-- 메인 게임명은 PUZZLE / MONTAGE / MEMORY로 표시한다. 메인 버튼 위치는 TEN의 로고 영역 높이에 맞추되 PICK 로고 자체 너비는 보존한다. title.css의 brand-block 높이와 반응형 조건이 그 기준이다. 음악 안내는 Settings와 같은 하단 줄이며 별도 빈 공간을 예약하지 않는다.
+- 메인 게임명은 PUZZLE / MONTAGE / MEMORY로 표시한다. 메인 버튼 위치는 TEN의 로고 영역 높이에 맞추되 PICK 로고 자체 너비는 보존한다. title.css의 brand-block 높이와 반응형 조건이 그 기준이다. 음악 안내는 TALK처럼 스피커 아이콘과 함께 Settings 아래에 절대 배치해 버튼 위치를 밀지 않는다. 높이 580px 이하에서는 안내 영역을 36px로 줄여 화면 안에 유지한다.
 
 - Settings는 `index.html`의 `screen-settings` 독립 화면이다. TEN처럼 뒤로가기·중앙 제목·스크롤 가능한 설정 목록으로 구성하며 `talkApp.ts`의 showSettings/closeSettings에서 전환한다. 메뉴 음악을 유지하고 Escape/뒤로가기는 메뉴 Settings 버튼으로 포커스를 돌려준다. 게임 일시정지는 기존 help 팝업을 유지한다.
 

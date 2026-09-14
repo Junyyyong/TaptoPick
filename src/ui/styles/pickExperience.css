@@ -1,8 +1,13 @@
 /* Reversible game-feel experiment. Does not change board geometry or input rules. */
-.title-music-slot { display: contents; }
+.title-links { position: relative; }
+.title-music-slot { position: absolute; top: calc(100% + 2px); left: 50%; transform: translateX(-50%); display: flex; justify-content: center; width: max-content; height: 44px; }
 .title-music-prompt { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 4px 14px; color: var(--ink-soft); font: 700 13px/1.2 "TAP Sans KR",sans-serif; background: none; border: 0; border-radius: 12px; cursor: pointer; }
 .title-music-prompt.hidden { display: none; }
 .title-music-prompt:focus-visible { outline: 2px solid var(--cool); outline-offset: 1px; }
+@media (max-height: 580px) {
+  .title-music-slot { height: 36px; }
+  .title-music-prompt { min-height: 36px; }
+}
 .picture-tile.is-pick-hit { animation: pick-hit 220ms cubic-bezier(.2,.8,.2,1); }
 .picture-tile.is-pick-hit::before { background: radial-gradient(ellipse,rgba(255,225,130,var(--pick-hit-light-alpha,.8)),transparent 70%); }
 .memory-card { --pick-hit-light-alpha: .4; --pick-hit-glow-radius: 6px; --pick-hit-glow-alpha: .16; }
