@@ -4,6 +4,8 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 
 ## 자주 수정할 곳
 
+- 2026-09-16 현재 표시 이름은 PUZZLE / PORTRAIT / POSITION이다. 내부 모드 ID `unit` / `montage` / `memory`는 저장 기록과 호환되도록 유지한다. 아래 이전 이름 설명은 동일 게임을 가리킨다.
+
 - 완료 영상의 별도 음원 동기화는 `ui/mediaSync.ts`에서 영상 playing 신호를 기준으로 관리한다. waiting/pause/seeking 때 소리를 멈추고 재개·timeupdate에서 120ms 넘는 오차를 보정한다. Cheer 종료 시 stop으로 늦게 도착한 오디오 이벤트를 차단한다. 메뉴·게임 배경음악과는 별개다.
 
 - 메인 게임명은 PUZZLE / MONTAGE / MEMORY로 표시한다. 메인 버튼 위치는 TEN의 로고 영역 높이에 맞추되 PICK 로고 자체 너비는 보존한다. title.css의 brand-block 높이와 반응형 조건이 그 기준이다. 음악 안내는 TALK처럼 스피커 아이콘과 함께 Settings 아래에 절대 배치해 버튼 위치를 밀지 않는다. 높이 580px 이하에서는 안내 영역을 36px로 줄여 화면 안에 유지한다.

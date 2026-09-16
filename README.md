@@ -1,5 +1,7 @@
 # TAP to PICK
 
+2026-09-16: 현재 게임 이름은 **PUZZLE / PORTRAIT / POSITION**입니다. 아래 기존 설명의 Montage는 PORTRAIT, Memory는 POSITION을 뜻하며 게임 규칙은 동일합니다.
+
 2026-09-08 사용자 승인으로 정답 반응·완성 연출·개인 기록·배경음악을 `main`에 반영했습니다. 이전 버전은 복구 태그에 보관되어 있습니다. [변경 범위와 복구 방법](docs/EXPERIMENT-game-feel.md)을 참고하세요.
 
 대기화면에는 탭댄스 느낌의 경쾌한 **Tap Parade**(136 BPM·D장조·4/4박자·약 42.35초), 게임에는 기존 **Pick Garden**을 사용합니다. 짧은 합성 탭 타격음·밝은 피아노·워킹 베이스가 스윙 리듬을 만듭니다. 인트로는 무음이며 첫 게임선택화면에서 자동 재생을 시도합니다. 브라우저가 소리를 차단하면 하단의 **Tap for music**이나 로고 등 메뉴 영역을 터치해 게임에 들어가지 않고 음악을 시작할 수 있습니다. Settings의 Background music에서 함께 끌 수 있으며 기존 꺼짐 설정을 우선합니다. [탭댄스 메뉴곡 연구기록](docs/research/2026-09-08-tap-menu-music/README.md)
