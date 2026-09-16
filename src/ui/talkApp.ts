@@ -174,7 +174,7 @@ export class TalkApp {
     this.introMode = mode;
     el("mode-intro-title").textContent = PICK_MODES[mode].title.toUpperCase();
     el("mode-intro-mark").innerHTML = PICK_INTRO_ICONS[mode];
-    el("mode-intro-note").textContent = PICK_MODES[mode].note;
+    el("mode-intro-note").textContent = PICK_MODES[mode].description;
     this.result.classList.add("hidden");
     this.help.classList.add("hidden");
     this.title.classList.add("hidden");

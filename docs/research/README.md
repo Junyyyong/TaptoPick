@@ -1,5 +1,7 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-16 — START 화면 설명 통일](2026-09-16-intro-description/README.md)
+
 - [2026-09-16 — PORTRAIT·POSITION 이름 변경](2026-09-16-mode-names/README.md)
 
 - [2026-09-14 — 완료 영상·음원 시작 동기화](2026-09-14-media-sync/README.md)
