@@ -1,5 +1,7 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-17 — TRY AGAIN 공통 notbad 영상](2026-09-17-notbad/README.md)
+
 - [2026-09-16 — START 화면 설명 통일](2026-09-16-intro-description/README.md)
 
 - [2026-09-16 — PORTRAIT·POSITION 이름 변경](2026-09-16-mode-names/README.md)

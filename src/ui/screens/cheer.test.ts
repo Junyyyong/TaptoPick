@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { characterClipFor, failureClip, poolFor, randomClipFor } from "./cheer";
+import { characterClipFor, failureClip, outcomeClip, poolFor, randomClipFor } from "./cheer";
 
 describe("score-based celebration clips", () => {
   it("offers all six celebration clips at every score band", () => {
@@ -25,9 +25,9 @@ describe("score-based celebration clips", () => {
   });
 
   it("keeps Tipi out of the random celebration pool", () => {
-    expect(failureClip().video).toMatch(/movie\/tipi\.webm$/);
-    expect(failureClip().iosVideo).toMatch(/movie\/tipi\.mp4$/);
-    expect(failureClip().sound).toMatch(/movie\/tipi\.mp3$/);
+    expect(failureClip().video).toMatch(/movie\/notbad\.webm$/);
+    expect(failureClip().iosVideo).toMatch(/movie\/notbad\.mp4$/);
+    expect(failureClip().sound).toMatch(/movie\/notbad\.mp3$/);
     expect(poolFor(1000).every((clip) => !clip.video.includes("tipi"))).toBe(true);
     expect(poolFor(1000).some((clip) => /movie\/1\.webm$/.test(clip.video))).toBe(true);
   });
@@ -54,5 +54,14 @@ describe("score-based celebration clips", () => {
 
   it("falls back cleanly for an unknown character", () => {
     expect(characterClipFor("unknown", 1000)).toBeNull();
+  });
+
+  it.each(["tepee", "jaepi", "haepi", undefined])("uses notbad for every failed outcome (%s)", (characterId) => {
+    expect(outcomeClip(false, characterId, 1000)).toEqual(failureClip());
+  });
+
+  it("preserves character and random success videos", () => {
+    expect(outcomeClip(true, "tepee", 1000)?.video).toMatch(/movie\/tipi\.webm$/);
+    expect(poolFor(1000)).toContainEqual(outcomeClip(true, undefined, 1000));
   });
 });

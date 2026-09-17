@@ -4,6 +4,8 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 
 ## 자주 수정할 곳
 
+- 2026-09-17: 세 게임의 실패(TRY AGAIN) 영상은 `movie/notbad.webm`/`notbad.mp4` + `notbad.mp3` 공통이다. `config/app.ts`의 failureCelebration과 Cheer의 outcomeClip에서 선택한다. 아래 과거 티피·마지막 캐릭터 실패 영상 설명보다 이 규칙이 우선한다. 성공 영상은 기존 선택 방식을 유지한다.
+
 - 2026-09-16 현재 표시 이름은 PUZZLE / PORTRAIT / POSITION이다. 내부 모드 ID `unit` / `montage` / `memory`는 저장 기록과 호환되도록 유지한다. 아래 이전 이름 설명은 동일 게임을 가리킨다.
 
 - 완료 영상의 별도 음원 동기화는 `ui/mediaSync.ts`에서 영상 playing 신호를 기준으로 관리한다. waiting/pause/seeking 때 소리를 멈추고 재개·timeupdate에서 120ms 넘는 오차를 보정한다. Cheer 종료 시 stop으로 늦게 도착한 오디오 이벤트를 차단한다. 메뉴·게임 배경음악과는 별개다.

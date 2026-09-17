@@ -59,6 +59,11 @@ export function failureClip(): Clip {
   return APP_CONFIG.assets.failureCelebration;
 }
 
+export function outcomeClip(won: boolean, characterId: string | undefined, score: number): Clip | null {
+  if (!won) return failureClip();
+  return characterId ? characterClipFor(characterId, score) : randomClipFor(score);
+}
+
 /**
  * Four milliseconds of nothing, as a file.
  *
@@ -194,7 +199,7 @@ export class Cheer {
 
   /** PICK already held the completed board. Go directly to the character clip. */
   playOutcome(headline: string, value: number, then: () => void, characterId: string | undefined, won: boolean): void {
-    const clip = characterId ? characterClipFor(characterId, value) : randomClipFor(value);
+    const clip = outcomeClip(won, characterId, value);
     this.begin(headline, value, won ? "NICE PICK!" : "TRY AGAIN", then, clip);
     window.clearTimeout(this.timer);
     this.root.classList.toggle("is-unsuccessful", !won);

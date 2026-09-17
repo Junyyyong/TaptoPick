@@ -38,7 +38,9 @@ const TIPI_MOVIE = {
 } as const;
 
 const FAILURE_MOVIE = {
-  ...TIPI_MOVIE,
+  video: new URL("../../movie/notbad.webm", import.meta.url).href,
+  iosVideo: new URL("../../movie/notbad.mp4", import.meta.url).href,
+  sound: new URL("../../movie/notbad.mp3", import.meta.url).href,
   layout: "compact",
 } as const;
 

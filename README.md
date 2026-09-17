@@ -1,5 +1,7 @@
 # TAP to PICK
 
+2026-09-17: 모든 게임의 실패(`TRY AGAIN`) 영상은 **notbad**로 통일했습니다. 아래 과거 설명의 실패 영상 선택은 이 규칙으로 대체하며 성공 영상은 유지합니다.
+
 2026-09-16: 현재 게임 이름은 **PUZZLE / PORTRAIT / POSITION**입니다. 아래 기존 설명의 Montage는 PORTRAIT, Memory는 POSITION을 뜻하며 게임 규칙은 동일합니다.
 
 2026-09-08 사용자 승인으로 정답 반응·완성 연출·개인 기록·배경음악을 `main`에 반영했습니다. 이전 버전은 복구 태그에 보관되어 있습니다. [변경 범위와 복구 방법](docs/EXPERIMENT-game-feel.md)을 참고하세요.
