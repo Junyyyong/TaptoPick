@@ -201,7 +201,7 @@ export class Cheer {
   /** PICK already held the completed board. Go directly to the character clip. */
   playOutcome(headline: string, value: number, then: () => void, characterId: string | undefined, won: boolean, recordBreak = false): void {
     const clip = outcomeClip(won, characterId, value, recordBreak);
-    this.begin(headline, value, won ? "NICE PICK!" : "TRY AGAIN", then, clip);
+    this.begin(headline, value, won ? "Great" : "TRY AGAIN", then, clip);
     window.clearTimeout(this.timer);
     this.root.classList.toggle("is-unsuccessful", !won);
     this.dance();
