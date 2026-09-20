@@ -1,5 +1,13 @@
 # TAP to PICK 연구·개발 기록
 
+- [2026-09-20 — POSITION 결과별 영상·최고기록 OH MY GOD](2026-09-20-position-movies/README.md)
+
+- [2026-09-20 — 태피 Unbelievable 영상 교체](2026-09-20-unbelievable/README.md)
+
+- [2026-09-20 — POSITION 3단계·현재 및 최고 기록 표시](2026-09-20-position-stages/README.md)
+
+- [2026-09-20 — 결과 화면 안내 문구 정리](2026-09-20-result-cleanup/README.md)
+
 - [2026-09-20 — PORTRAIT 새 이미지·단계별 난이도·중복 제거](2026-09-20-portrait-difficulty/README.md)
 
 - [2026-09-17 — TRY AGAIN 공통 notbad 영상](2026-09-17-notbad/README.md)

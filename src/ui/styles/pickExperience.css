@@ -40,7 +40,6 @@
 .result-best span { color: var(--ink-soft); font-size: 10px; letter-spacing: .12em; }
 #result-detail { font-size: 13px; line-height: 1.6; }
 #result-next-goal { font-size: 14px; line-height: 1.5; font-weight: 700; }
-.result-storage-note { font-size: 10px; color: var(--ink-soft); }
 .is-new-best .result-kicker { color: var(--hot); font-weight: 800; }
 .is-new-best .result-best { background: #ffb50012; }
 @media (max-height: 650px) {

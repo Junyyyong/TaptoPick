@@ -10,7 +10,8 @@ import { Cheer } from "./screens/cheer";
 import { loadTalkPreferences, saveTalkPreferences, type TalkPreferences } from "./talkPreferences";
 import { SceneMusic } from "./sceneMusic";
 import type { MusicPlaybackState } from "./backgroundMusic";
-import { savePickResult, type RunSummary } from "./pickRecords";
+import { savePickResult, isMemoryRecordBreak, type RunSummary } from "./pickRecords";
+import { MEMORY_FACE_CHARACTERS } from "../content/puzzles";
 import { renderPickResult } from "./pickResultView";
 import { PICK_MODES, type PickMode as Mode } from "../content/pickModes";
 import { PICK_INTRO_ICONS } from "./pickIntroIcons";
@@ -88,6 +89,7 @@ export class TalkApp {
   private montageNoticeUntil = 0;
   private montageNextAt?: number;
   private memoryRun?: MemoryRun;
+  private lastMemoryCharacter?: string;
   private memoryUpdatedAt = 0;
   private readonly memoryButtons = new Map<number, HTMLButtonElement>();
 
@@ -207,6 +209,7 @@ export class TalkApp {
     this.montageNoticeUntil = 0;
     this.montageNextAt = undefined;
     this.memoryRun = undefined;
+    this.lastMemoryCharacter = undefined;
     this.memoryButtons.clear();
     this.cheer.stop();
     this.result.classList.add("hidden");
@@ -457,6 +460,7 @@ export class TalkApp {
     if (pick === "ignored") return;
     if (pick === "first") feedback.tap();
     if (pick === "match") {
+      this.lastMemoryCharacter = MEMORY_FACE_CHARACTERS[card.src];
       const run = this.memoryRun!;
       this.correctPick([...run.openIds].map(id => this.memoryButtons.get(id)!));
       if (run.matchedPairs === run.stage.pairs) {
@@ -658,7 +662,7 @@ export class TalkApp {
   private finishMemory(): void {
     const run = this.memoryRun!;
     if (run.phase === "lost") {
-      this.finishGame("TIME UP", `Stage ${run.stageIndex + 1}/${MEMORY_STAGES.length} · ${run.stage.size}×${run.stage.size}\n${run.matchedPairs} / ${run.stage.pairs} pairs found. Try again from 4×4!`, 0);
+      this.finishGame("TIME UP", `Stage ${run.stageIndex + 1}/${MEMORY_STAGES.length} · ${run.stage.size}×${run.stage.size}\n${run.matchedPairs} / ${run.stage.pairs} pairs found. Try again from 2×2!`, 0);
       return;
     }
     const score = timeScore(run.totalElapsedMs, run.mistakes, 8000);
@@ -676,6 +680,7 @@ export class TalkApp {
     const memory = this.memoryRun;
     const summary: RunSummary = {
       mode: this.mode, won, score,
+      ...(this.mode === "memory" ? { memoryVersion: 2 as const } : {}),
       elapsedMs: this.mode === "memory" ? memory!.totalElapsedMs : this.elapsedMs,
       mistakes: this.mode === "memory" ? memory!.mistakes : this.mistakes,
       found: this.mode === "unit" ? this.unitFound.size : this.mode === "montage" ? this.montage.found : memory!.matchedPairs,
@@ -696,7 +701,8 @@ export class TalkApp {
     const video = (): void => {
       if (version !== this.runVersion) return;
       if (document.hidden) { this.pendingVideo = video; return; }
-      this.cheer.playOutcome(headline, metric === "found" ? 1000 : score, showResult, celebrationCharacterId, won);
+      this.cheer.playOutcome(headline, metric === "found" ? 1000 : score, showResult,
+        this.mode === "memory" ? this.lastMemoryCharacter : celebrationCharacterId, won, isMemoryRecordBreak(record));
     };
     if (won) {
       this.game.classList.add("is-complete-moment");

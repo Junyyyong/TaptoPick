@@ -1,10 +1,9 @@
 import { createMemoryBoard, type MemoryCard, type Random } from "./game";
 
 export const MEMORY_STAGES = [
+  { size: 2, pairs: 2, limitMs: 60_000 },
   { size: 4, pairs: 8, limitMs: 60_000 },
-  { size: 5, pairs: 12, limitMs: 60_000 },
   { size: 6, pairs: 18, limitMs: 90_000 },
-  { size: 7, pairs: 24, limitMs: 120_000 },
 ] as const;
 
 type Phase = "preview" | "playing" | "resolving" | "won" | "lost";

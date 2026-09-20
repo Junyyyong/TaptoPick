@@ -16,17 +16,16 @@ function clearStage(run: MemoryRun): void {
   }
 }
 
-describe("four-stage memory run", () => {
+describe("three-stage memory run", () => {
   it("defines the requested board sizes, pair counts, and per-stage deadlines", () => {
     expect(MEMORY_STAGES).toEqual([
+      { size: 2, pairs: 2, limitMs: 60_000 },
       { size: 4, pairs: 8, limitMs: 60_000 },
-      { size: 5, pairs: 12, limitMs: 60_000 },
       { size: 6, pairs: 18, limitMs: 90_000 },
-      { size: 7, pairs: 24, limitMs: 120_000 },
     ]);
   });
 
-  it("clears all four boards in order, resetting the preview and timer each stage", () => {
+  it("clears all three boards in order, resetting the preview and timer each stage", () => {
     const run = makeRun();
     MEMORY_STAGES.forEach((stage, index) => {
       expect(run.stageIndex).toBe(index);
@@ -38,7 +37,7 @@ describe("four-stage memory run", () => {
       clearStage(run);
     });
     expect(run.phase).toBe("won");
-    expect(run.matchedPairs).toBe(24);
+    expect(run.matchedPairs).toBe(18);
     const total = run.totalElapsedMs;
     run.advance(100_000);
     expect(run.totalElapsedMs).toBe(total);
@@ -57,7 +56,7 @@ describe("four-stage memory run", () => {
     expect(run.remainingMs).toBe(59_000);
   });
 
-  it.each([0, 1, 2, 3])("ends the run when stage %i reaches its deadline", (stageIndex) => {
+  it.each([0, 1, 2])("ends the run when stage %i reaches its deadline", (stageIndex) => {
     const run = makeRun();
     for (let i = 0; i < stageIndex; i++) clearStage(run);
     run.advance(3_000);
@@ -83,7 +82,7 @@ describe("four-stage memory run", () => {
     expect([...run.matchedIds].sort()).toEqual([first.id, second.id].sort());
     run.advance(250);
     expect(run.choose(first.id)).toBe("ignored");
-    expect(run.choose(run.cards.find((card) => card.free)!.id)).toBe("ignored");
+    expect(run.choose(-1)).toBe("ignored");
     clearStage(run);
     expect(run.stageIndex).toBe(2);
   });
@@ -110,7 +109,7 @@ describe("four-stage memory run", () => {
   it("honors the last correct pair before a deadline despite its reveal animation", () => {
     const run = makeRun();
     run.advance(3_000);
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 1; i++) {
       const first = run.cards.find((card) => !card.free && !run.matchedIds.has(card.id))!;
       const pair = run.cards.filter((card) => card.src === first.src && !run.matchedIds.has(card.id)).slice(0, 2);
       pair.forEach((card) => run.choose(card.id));

@@ -10,9 +10,9 @@ const CELEBRATION_MOVIES = [
     sound: new URL("../../movie/4.mp3", import.meta.url).href,
   },
   {
-    video: new URL("../../movie/taepi.webm", import.meta.url).href,
-    iosVideo: new URL("../../movie/taepi.mp4", import.meta.url).href,
-    sound: new URL("../../movie/taepi.mp3", import.meta.url).href,
+    video: new URL("../../Unbelievable.webm", import.meta.url).href,
+    iosVideo: new URL("../../Unbelievable.mp4", import.meta.url).href,
+    sound: new URL("../../Unbelievable.mp3", import.meta.url).href,
   },
   {
     video: new URL("../../movie/hupi.webm", import.meta.url).href,
@@ -76,6 +76,12 @@ export const APP_CONFIG = {
     celebrationVideo: CELEBRATION_MOVIES[0]!.video,
     celebrationAudio: CELEBRATION_MOVIES[0]!.sound,
     failureCelebration: FAILURE_MOVIE,
+    recordCelebration: {
+      video: new URL("../../OH MY GOD.webm", import.meta.url).href,
+      iosVideo: new URL("../../OH MY GOD.mp4", import.meta.url).href,
+      sound: new URL("../../OH MY GOD.mp3", import.meta.url).href,
+      layout: "hero",
+    },
     characterCelebrations: CHARACTER_CELEBRATIONS,
     celebrations: [
       { at: 1400, layout: "hero", clips: CELEBRATION_MOVIES },

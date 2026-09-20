@@ -4,6 +4,10 @@ TAP to PICK은 TAPtoTALK의 화면 감각과 폰트를 유지하면서 이미지
 
 ## 자주 수정할 곳
 
+- 2026-09-20 POSITION 영상은 실패 notbad, 일반 완주 마지막 정답 페어의 캐릭터, 이전 완주 시간 경신 OH MY GOD다. 첫 완주·동률은 일반 영상. `MEMORY_FACE_CHARACTERS`가 얼굴을 영상 ID로 연결하고 `isMemoryRecordBreak`가 경신 여부를 판단한다. 태피는 Unbelievable로 교체했다. 아래 과거 랜덤 영상 설명보다 이 규칙을 우선한다.
+
+- 2026-09-20: POSITION은 MEMORY_STAGES의 2×2/4×4/6×6(60/60/90초), 총 3단계다. 결과의 단계 수는 배열 길이를 사용한다. 새 기록은 memoryVersion=2를 저장하고 memory:2x2-4x4-6x6 키를 사용해 기존 memory 기록을 보존·분리한다. 완주 시 현재/최고 시간, 미완주 시 단계·쌍 수를 표시한다. PORTRAIT는 현재/최고 찾은 수를 표시한다. 점수·오답 수·기기 저장 안내는 결과에서 생략한다.
+
 - 2026-09-17: 세 게임의 실패(TRY AGAIN) 영상은 `movie/notbad.webm`/`notbad.mp4` + `notbad.mp3` 공통이다. `config/app.ts`의 failureCelebration과 Cheer의 outcomeClip에서 선택한다. 아래 과거 티피·마지막 캐릭터 실패 영상 설명보다 이 규칙이 우선한다. 성공 영상은 기존 선택 방식을 유지한다.
 
 - 2026-09-16 현재 표시 이름은 PUZZLE / PORTRAIT / POSITION이다. 내부 모드 ID `unit` / `montage` / `memory`는 저장 기록과 호환되도록 유지한다. 아래 이전 이름 설명은 동일 게임을 가리킨다.

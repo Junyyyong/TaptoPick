@@ -59,8 +59,9 @@ export function failureClip(): Clip {
   return APP_CONFIG.assets.failureCelebration;
 }
 
-export function outcomeClip(won: boolean, characterId: string | undefined, score: number): Clip | null {
+export function outcomeClip(won: boolean, characterId: string | undefined, score: number, recordBreak = false): Clip | null {
   if (!won) return failureClip();
+  if (recordBreak) return APP_CONFIG.assets.recordCelebration;
   return characterId ? characterClipFor(characterId, score) : randomClipFor(score);
 }
 
@@ -198,8 +199,8 @@ export class Cheer {
   }
 
   /** PICK already held the completed board. Go directly to the character clip. */
-  playOutcome(headline: string, value: number, then: () => void, characterId: string | undefined, won: boolean): void {
-    const clip = outcomeClip(won, characterId, value);
+  playOutcome(headline: string, value: number, then: () => void, characterId: string | undefined, won: boolean, recordBreak = false): void {
+    const clip = outcomeClip(won, characterId, value, recordBreak);
     this.begin(headline, value, won ? "NICE PICK!" : "TRY AGAIN", then, clip);
     window.clearTimeout(this.timer);
     this.root.classList.toggle("is-unsuccessful", !won);

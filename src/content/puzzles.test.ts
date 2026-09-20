@@ -6,6 +6,7 @@ import { createUnitBoard } from "../core/pick/game";
 import { createProgressiveMontageBoard } from "../core/pick/montage";
 import { PICK_MODES } from "./pickModes";
 import { APP_CONFIG } from "../config/app";
+import { MEMORY_FACE_CHARACTERS } from "./puzzles";
 
 describe("Puzzle content", () => {
   it("uses the three approved single-word mode names", () => {
@@ -76,6 +77,7 @@ describe("Puzzle content", () => {
   });
 
   it("uses only the seven preloaded original faces for memory, with no variations", () => {
+    expect(MEMORY_FACES.map(src => MEMORY_FACE_CHARACTERS[src])).toEqual(["haepi", "bbogles", "tapee", "tepee", "hupi", "jaepi", "pino"]);
     expect(MEMORY_FACES).toHaveLength(7);
     expect(new Set(MEMORY_FACES).size).toBe(7);
     expect(MEMORY_FACES.every(face => face.includes("/optimized/montage/"))).toBe(true);

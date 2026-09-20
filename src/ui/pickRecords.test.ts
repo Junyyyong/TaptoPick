@@ -28,6 +28,29 @@ beforeEach(() => { vi.resetModules(); });
 afterEach(() => { vi.unstubAllGlobals(); });
 
 describe("TAPtoPICK local result records", () => {
+  it("awards the memory record movie only for a faster subsequent completion", async () => {
+    mockStorage();
+    const { savePickResult, isMemoryRecordBreak } = await import("./pickRecords");
+    const run = memory({ won: true, stage: 3, found: 18, total: 18, elapsedMs: 30000, memoryVersion: 2 });
+    expect(isMemoryRecordBreak(savePickResult(run))).toBe(false);
+    expect(isMemoryRecordBreak(savePickResult(run))).toBe(false);
+    expect(isMemoryRecordBreak(savePickResult({ ...run, elapsedMs: 31000 }))).toBe(false);
+    expect(isMemoryRecordBreak(savePickResult({ ...run, elapsedMs: 29000 }))).toBe(true);
+    expect(isMemoryRecordBreak(savePickResult({ ...run, won: false, found: 17, elapsedMs: 10000 }))).toBe(false);
+  });
+  it("separates new three-stage memory records from the preserved four-stage best", async () => {
+    const { entries } = mockStorage();
+    const { savePickResult, PICK_RECORDS_STORAGE_KEY } = await import("./pickRecords");
+    const legacy = memory({ won: true, stage: 4, found: 24, total: 24 });
+    savePickResult(legacy);
+    const current = memory({ won: true, stage: 3, found: 18, total: 18, elapsedMs: 30000, memoryVersion: 2 });
+    expect(savePickResult(current)).toMatchObject({ isNewBest: true, best: current });
+    expect(savePickResult({ ...current, elapsedMs: 31000 }).isNewBest).toBe(false);
+    expect(savePickResult({ ...current, elapsedMs: 29000 }).isNewBest).toBe(true);
+    const stored = JSON.parse(entries.get(PICK_RECORDS_STORAGE_KEY)!).bestByKey;
+    expect(stored.memory).toEqual(legacy);
+    expect(stored["memory:2x2-4x4-6x6"].elapsedMs).toBe(29000);
+  });
   it("stores a first completion and only improves unit time, not a tie or slower run", async () => {
     const { entries } = mockStorage();
     const { savePickResult, PICK_RECORDS_STORAGE_KEY } = await import("./pickRecords");

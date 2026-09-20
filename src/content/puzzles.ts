@@ -163,6 +163,8 @@ export const MEMORY_FACES = PORTRAIT_MEMBERS.map(([id]) => {
   return answer;
 });
 
+export const MEMORY_FACE_CHARACTERS = Object.fromEntries(MEMORY_FACES.map((src, index) => [src, PORTRAIT_MEMBERS[index]![0]]));
+
 export const GAME_IMAGE_URLS = [
   ...MEMORY_FACES,
   ...UNIT_PIECE_SOURCES.map((character) => character.preview),

@@ -9,6 +9,7 @@ export interface RunSummary {
   stage: number;
   score: number;
   characterId?: string;
+  memoryVersion?: 2;
 }
 
 export interface ResultRecord {
@@ -20,6 +21,12 @@ export interface ResultRecord {
 }
 
 export const PICK_RECORDS_STORAGE_KEY = "taptopick.records.v1";
+/** A first completion establishes the baseline; only a faster later completion earns the special movie. */
+export function isMemoryRecordBreak(record: ResultRecord): boolean {
+  return record.summary.mode === "memory" && record.summary.won && record.isNewBest
+    && record.previousBest?.won === true
+    && record.summary.elapsedMs < record.previousBest.elapsedMs;
+}
 const sessionBests = new Map<string, RunSummary>();
 const MAX_RECORDS = 512;
 const MAX_STORED_LENGTH = 128_000;
@@ -34,6 +41,7 @@ function isInteger(value: unknown, minimum: number, maximum: number): value is n
 
 function isRunSummary(value: unknown): value is RunSummary {
   if (!isObject(value)) return false;
+  if (value.memoryVersion !== undefined && value.memoryVersion !== 2) return false;
   if (value.mode !== "unit" && value.mode !== "montage" && value.mode !== "memory") return false;
   if (typeof value.won !== "boolean") return false;
   if (typeof value.elapsedMs !== "number" || !Number.isFinite(value.elapsedMs)
@@ -57,6 +65,7 @@ function copySummary(summary: RunSummary): RunSummary {
     total: summary.total,
     stage: summary.stage,
     score: summary.score,
+    ...(summary.memoryVersion === undefined ? {} : { memoryVersion: summary.memoryVersion }),
     ...(summary.characterId === undefined ? {} : { characterId: summary.characterId }),
   };
 }
@@ -65,7 +74,7 @@ function recordKey(summary: RunSummary): string {
   // A twelve-piece puzzle should not compete with a nine-piece puzzle.
   return summary.mode === "unit"
     ? `unit:${summary.characterId ?? "unknown"}:${summary.total}`
-    : summary.mode;
+    : summary.mode === "memory" && summary.memoryVersion === 2 ? "memory:2x2-4x4-6x6" : summary.mode;
 }
 
 /** Positive means candidate is better; zero means tied or not comparable. */
