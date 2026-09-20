@@ -1,7 +1,7 @@
 import { APP_CONFIG } from "../config/app";
 import { ALL_PIECES, MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_MS, MONTAGE_CHARACTERS, PICTURE_PIECES_SCORE_BANDS, PUZZLE_CHARACTERS, UNIT_TARGET_CHARACTERS, type MontageCharacter, type PuzzleCharacter } from "../content/puzzles";
 import { RandomIndexCycle, createUnitBoard, PICK_MISTAKE_LIMIT, tieredTimeScore, timeScore, type MemoryCard, type MontageTile } from "../core/pick/game";
-import { MontageProgress, PickLives, createStagedMontageBoard, montageMotion, planMontageSwap } from "../core/pick/montage";
+import { MontageProgress, PickLives, createProgressiveMontageBoard, montageMotion, planMontageSwap } from "../core/pick/montage";
 import { MEMORY_STAGES, MemoryRun } from "../core/pick/memory";
 import { el } from "./dom";
 import { MEMORY_QUESTION_ICON } from "./memoryQuestionIcon";
@@ -282,10 +282,7 @@ export class TalkApp {
     this.montagePointerVersion += 1;
     this.montageCharacter = MONTAGE_CHARACTERS[this.montageCharacterOrder.next()]!;
     const stage = this.montage.stage;
-    const pool = stage.difficulty === "easy" ? this.montageCharacter.easyVariations
-      : stage.difficulty === "hard" ? this.montageCharacter.hardVariations
-      : this.montageCharacter.variations.map((_, index) => index);
-    this.montageTiles = createStagedMontageBoard(stage.side, pool);
+    this.montageTiles = createProgressiveMontageBoard(stage.side, this.montageCharacter);
     this.setBoardSize(stage.side, true);
     this.targetCharacterName.textContent = this.montageCharacter.displayName;
     this.renderImagePreview(this.montageCharacter.answer, `${this.montageCharacter.displayName} exact montage`);

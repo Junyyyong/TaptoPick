@@ -43,11 +43,25 @@ export class MontageProgress {
 export function createStagedMontageBoard(
   side: number, variations: readonly number[], random: Random = Math.random,
 ): MontageTile[] {
-  if (!variations.length) throw new Error("Montage needs wrong candidates");
-  const pool = shuffle(variations, random);
+  if (![2, 3, 4, 5].includes(side)) throw new Error("Unsupported portrait board size");
+  const pool = shuffle([...new Set(variations)], random);
+  if (pool.length < side * side - 1) throw new Error("Montage needs enough distinct wrong candidates");
   return shuffle(Array.from({ length: side * side }, (_, id) => ({
-    id, exact: id === 0, variationIndex: id === 0 ? -1 : pool[(id - 1) % pool.length]!,
+    id, exact: id === 0, variationIndex: id === 0 ? -1 : pool[id - 1]!,
   })), random);
+}
+
+export function createProgressiveMontageBoard(side: number, pools: {
+  easyVariations: readonly number[]; mediumVariations: readonly number[]; hardVariations: readonly number[];
+}, random: Random = Math.random): MontageTile[] {
+  const counts = ({ 2: [3, 0, 0], 3: [5, 3, 0], 4: [3, 12, 0], 5: [5, 15, 4] } as Record<number, number[]>)[side];
+  if (!counts) throw new Error("Unsupported portrait board size");
+  const selected = [pools.easyVariations, pools.mediumVariations, pools.hardVariations].flatMap((pool, i) => {
+    const unique = [...new Set(pool)];
+    if (unique.length < counts[i]!) throw new Error("Insufficient portrait difficulty pool");
+    return shuffle(unique, random).slice(0, counts[i]);
+  });
+  return createStagedMontageBoard(side, selected, random);
 }
 
 export function planMontageSwap(tiles: readonly MontageTile[], random: Random = Math.random): { tiles: MontageTile[]; ids: number[] } {

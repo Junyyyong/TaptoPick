@@ -18,6 +18,7 @@ export interface MontageCharacter {
   answer: string;
   variations: readonly string[];
   easyVariations: readonly number[];
+  mediumVariations: readonly number[];
   hardVariations: readonly number[];
 }
 
@@ -53,13 +54,13 @@ const pieceModules = import.meta.glob<string>(
 const unitPreviewModules = import.meta.glob<string>("/optimized/unit/*.webp", { eager: true, query: "?url", import: "default" });
 const montageModules = import.meta.glob<string>(
   [
-    "/optimized/montage/haepi/*.webp",
-    "/optimized/montage/bbogles/*.webp",
-    "/optimized/montage/tapee/*.webp",
-    "/optimized/montage/tepee/*.webp",
-    "/optimized/montage/hupi/*.webp",
-    "/optimized/montage/jaepi/*.webp",
-    "/optimized/montage/pino/*.webp",
+    "/optimized/montage/haepi/answer.webp",
+    "/optimized/montage/bbogles/answer.webp",
+    "/optimized/montage/tapee/answer.webp",
+    "/optimized/montage/tepee/answer.webp",
+    "/optimized/montage/hupi/answer.webp",
+    "/optimized/montage/jaepi/answer.webp",
+    "/optimized/montage/pino/answer.webp",
   ],
   { eager: true, query: "?url", import: "default" },
 );
@@ -135,57 +136,35 @@ export const MEMORY_REVEAL_DELAY_MS = {
   mismatch: 450,
 } as const;
 
-// Approved exclusions apply to every stage; keep the source files for future reference.
-const MONTAGE_EXCLUDED: Record<string, readonly number[]> = {
-  haepi: [23], bbogles: [15], tapee: [1,17], tepee: [20],
-  hupi: [], jaepi: [11], pino: [1,17],
-};
+const PORTRAIT_MEMBERS = [
+  ["haepi", "Hapee"], ["bbogles", "Bbogles"], ["tapee", "Tapee"],
+  ["tepee", "Tepee"], ["hupi", "Hooopee"], ["jaepi", "Zapee"], ["pino", "PinoPan"],
+] as const;
 
-// Filename numbers, visually reviewed: introductory shape changes vs subtler details.
-// The first 2x2 stage excludes color-only, mirrored, and 3D-render substitutions.
-const MONTAGE_DIFFICULTY: Record<string, { easy: number[]; hard: number[] }> = {
-  haepi: { easy: [16,17,20,22,27], hard: [8,9,10,11,12,13,14,15,24] },
-  bbogles: { easy: [1,8,11,19], hard: [5,6,7,9,12,13,17,18,20] },
-  tapee: { easy: [7,10,13,14,18,19,20], hard: [2,3,8,11,12,15] },
-  tepee: { easy: [6,7,11,12,14,15,18], hard: [4,5,8,9,13,19] },
-  hupi: { easy: [10,12,13,16], hard: [5,6,9,14,15,17,18] },
-  jaepi: { easy: [5,6,14,15], hard: [3,4,9,12,13,16] },
-  pino: { easy: [9,10,12,16], hard: [5,6,8,11,13,14,15] },
-};
+const portraitModules = import.meta.glob<string>("/optimized/portrait/*/*.webp", { eager: true, query: "?url", import: "default" });
 
-function montageCharacter(id: string, name: string, expectedVariations: number): MontageCharacter {
-  const basePath = `/optimized/montage/${id}`;
-  const answer = montageModules[`${basePath}/answer.webp`];
-  const sourceEntries = Object.entries(montageModules)
-    .filter(([path]) => path.startsWith(`${basePath}/variation-`))
-    .sort(([a], [b]) => natural.compare(a, b));
-  const entries = sourceEntries.filter(([path]) =>
-    !MONTAGE_EXCLUDED[id]!.includes(Number(path.match(/variation-(\d+)\.webp$/)?.[1])),
-  );
-  const variations = entries.map(([, url]) => url);
-  const indicesFor = (numbers: number[]) => numbers.map((number) => {
-    const index = entries.findIndex(([path]) => Number(path.match(/variation-(\d+)\.webp$/)?.[1]) === number);
-    if (index < 0) throw new Error(`Missing difficulty variation ${id}/${number}`);
-    return index;
-  });
+// The upload's numbering defines difficulty; older exclusions do not apply here.
+export const MONTAGE_CHARACTERS = PORTRAIT_MEMBERS.map(([id, name]) => {
+  const base = `/optimized/portrait/${id}`;
+  const answer = portraitModules[`${base}/answer.webp`];
+  const variations = Array.from({ length: 24 }, (_, index) => portraitModules[`${base}/variation-${index + 1}.webp`]!);
+  if (!answer || variations.some(url => !url)) throw new Error(`Missing portrait images: ${id}`);
+  return { id, name, displayName: bilingualName(name), answer, variations,
+    easyVariations: [0, 1, 2, 3, 4],
+    mediumVariations: Array.from({ length: 15 }, (_, index) => index + 5),
+    hardVariations: [20, 21, 22, 23],
+  } satisfies MontageCharacter;
+});
 
-  if (!answer || sourceEntries.length !== expectedVariations) {
-    throw new Error(`Montage requires one ${name} answer and ${expectedVariations} variations`);
-  }
-  return { id, name, displayName: bilingualName(name), answer, variations, easyVariations: indicesFor(MONTAGE_DIFFICULTY[id]!.easy), hardVariations: indicesFor(MONTAGE_DIFFICULTY[id]!.hard) };
-}
-
-export const MONTAGE_CHARACTERS: readonly MontageCharacter[] = [
-  montageCharacter("haepi", "Hapee", 20),
-  montageCharacter("bbogles", "Bbogles", 20),
-  montageCharacter("tapee", "Tapee", 20),
-  montageCharacter("tepee", "Tepee", 20),
-  montageCharacter("hupi", "Hooopee", 18),
-  montageCharacter("jaepi", "Zapee", 16),
-  montageCharacter("pino", "PinoPan", 18),
-];
+// Preserve POSITION's original faces independently of PORTRAIT's new artwork.
+export const MEMORY_FACES = PORTRAIT_MEMBERS.map(([id]) => {
+  const answer = montageModules[`/optimized/montage/${id}/answer.webp`];
+  if (!answer) throw new Error(`Missing memory face: ${id}`);
+  return answer;
+});
 
 export const GAME_IMAGE_URLS = [
+  ...MEMORY_FACES,
   ...UNIT_PIECE_SOURCES.map((character) => character.preview),
   ...MONTAGE_CHARACTERS.map((character) => character.answer),
   ...ALL_PIECES.map((piece) => piece.src),
@@ -193,5 +172,4 @@ export const GAME_IMAGE_URLS = [
 ] as const;
 
 // Memory uses only the seven original faces, never montage variations.
-export const MEMORY_FACES = MONTAGE_CHARACTERS.map((character) => character.answer);
 export const MEMORY_PREVIEW_MS = 3_000;

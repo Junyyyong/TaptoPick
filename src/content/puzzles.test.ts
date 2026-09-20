@@ -3,7 +3,7 @@ import { GAME_IMAGE_URLS, MEMORY_FACES, MEMORY_PREVIEW_MS, MEMORY_REVEAL_DELAY_M
 import { tieredTimeScore } from "../core/pick/game";
 import { ALL_PIECES, PUZZLE_CHARACTERS, UNIT_TARGET_CHARACTERS } from "./puzzles";
 import { createUnitBoard } from "../core/pick/game";
-import { createStagedMontageBoard } from "../core/pick/montage";
+import { createProgressiveMontageBoard } from "../core/pick/montage";
 import { PICK_MODES } from "./pickModes";
 import { APP_CONFIG } from "../config/app";
 
@@ -78,69 +78,56 @@ describe("Puzzle content", () => {
   it("uses only the seven preloaded original faces for memory, with no variations", () => {
     expect(MEMORY_FACES).toHaveLength(7);
     expect(new Set(MEMORY_FACES).size).toBe(7);
-    expect(MEMORY_FACES).toEqual(MONTAGE_CHARACTERS.map((character) => character.answer));
+    expect(MEMORY_FACES.every(face => face.includes("/optimized/montage/"))).toBe(true);
     expect(MEMORY_FACES.every((face) => !face.includes("variation"))).toBe(true);
     expect(MEMORY_PREVIEW_MS).toBe(3_000);
-    MONTAGE_CHARACTERS.forEach((character) => expect(MEMORY_FACES).toContain(character.answer));
+    MONTAGE_CHARACTERS.forEach((character) => expect(MEMORY_FACES).not.toContain(character.answer));
     MEMORY_FACES.forEach((face) => expect(GAME_IMAGE_URLS).toContain(face));
   });
 
   it("provides answer and distinct wrong variations for each montage character", () => {
     expect(MONTAGE_CHARACTERS.map((character) => [character.id, character.name, character.variations.length])).toEqual([
-      ["haepi", "Hapee", 19],
-      ["bbogles", "Bbogles", 19],
-      ["tapee", "Tapee", 18],
-      ["tepee", "Tepee", 19],
-      ["hupi", "Hooopee", 18],
-      ["jaepi", "Zapee", 15],
-      ["pino", "PinoPan", 16],
+      ["haepi", "Hapee", 24],
+      ["bbogles", "Bbogles", 24],
+      ["tapee", "Tapee", 24],
+      ["tepee", "Tepee", 24],
+      ["hupi", "Hooopee", 24],
+      ["jaepi", "Zapee", 24],
+      ["pino", "PinoPan", 24],
     ]);
     MONTAGE_CHARACTERS.forEach((character) => {
       expect(character.easyVariations.length).toBeGreaterThanOrEqual(3);
-      expect(character.hardVariations.length).toBeGreaterThanOrEqual(5);
+      expect(character.hardVariations.length).toBe(4);
       expect(character.easyVariations.every((index) => !character.hardVariations.includes(index))).toBe(true);
       expect([...character.easyVariations, ...character.hardVariations].every((index) => index >= 0 && index < character.variations.length)).toBe(true);
       expect(character.answer).toMatch(/answer.*\.webp/);
       expect(new Set(character.variations)).toHaveLength(character.variations.length);
       expect(character.variations).not.toContain(character.answer);
-      expect([character.answer, ...character.variations].every((url) => url.includes(`/optimized/montage/${character.id}/`))).toBe(true);
+      expect([character.answer, ...character.variations].every((url) => url.includes(`/optimized/portrait/${character.id}/`))).toBe(true);
     });
   });
 
   it("exposes every active game image once for splash-screen preloading", () => {
-    expect(GAME_IMAGE_URLS).toHaveLength(263);
+    expect(GAME_IMAGE_URLS).toHaveLength(314);
     expect(new Set(GAME_IMAGE_URLS)).toHaveLength(GAME_IMAGE_URLS.length);
     expect(GAME_IMAGE_URLS.every((url) => url.includes(".webp"))).toBe(true);
   });
 
-  it("excludes the eight approved back views and upside-down faces from every stage and preload", () => {
-    const excluded: Record<string, number[]> = { haepi:[23], bbogles:[15], tapee:[1,17], tepee:[20], hupi:[], jaepi:[11], pino:[1,17] };
+  it("uses numbered difficulty tiers without duplicates for every character and stage", () => {
     for (const character of MONTAGE_CHARACTERS) {
-      const forbidden = (url: string) => url.includes(`/montage/${character.id}/`) && excluded[character.id]!.includes(Number(url.match(/variation-(\d+)\.webp/)?.[1]));
-      expect(character.variations.some(forbidden)).toBe(false);
-      expect(GAME_IMAGE_URLS.some(forbidden)).toBe(false);
-      for (const pool of [character.easyVariations, character.variations.map((_, i) => i), character.hardVariations]) {
-        for (const side of [2,3,4,5]) {
-          const board = createStagedMontageBoard(side, pool, () => 0.42);
+      expect(character.variations.map(url => Number(url.match(/variation-(\d+)\.webp/)?.[1]))).toEqual(Array.from({length:24},(_,i)=>i+1));
+      for (const [side, easy, medium, hard] of [[2,3,0,0],[3,5,3,0],[4,3,12,0],[5,5,15,4]]) {
+        for (const seed of [0, .1, .42, .8, .9999]) {
+          const board = createProgressiveMontageBoard(side!, character, () => seed);
+          const wrong = board.filter(tile => !tile.exact).map(tile => tile.variationIndex);
+          expect(board).toHaveLength(side! * side!);
           expect(board.filter(tile => tile.exact)).toHaveLength(1);
-          expect(board.filter(tile => !tile.exact).every(tile => !forbidden(character.variations[tile.variationIndex]!))).toBe(true);
+          expect(new Set(wrong).size).toBe(wrong.length);
+          expect(wrong.filter(i => character.easyVariations.includes(i))).toHaveLength(easy!);
+          expect(wrong.filter(i => character.mediumVariations.includes(i))).toHaveLength(medium!);
+          expect(wrong.filter(i => character.hardVariations.includes(i))).toHaveLength(hard!);
         }
       }
-    }
-  });
-
-  it("uses visually reviewed shape changes for all seven introductory 2x2 pools", () => {
-    const shapes: Record<string, number[]> = {
-      haepi:[16,17,20,22,27], bbogles:[1,8,11,19], tapee:[7,10,13,14,18,19,20],
-      tepee:[6,7,11,12,14,15,18], hupi:[10,12,13,16], jaepi:[5,6,14,15], pino:[9,10,12,16],
-    };
-    for (const character of MONTAGE_CHARACTERS) {
-      const numbers = character.easyVariations.map(index => Number(character.variations[index]!.match(/variation-(\d+)\.webp/)?.[1]));
-      expect(numbers).toEqual(shapes[character.id]);
-      const board = createStagedMontageBoard(2, character.easyVariations, () => 0.42);
-      expect(board).toHaveLength(4);
-      expect(board.filter(tile => tile.exact)).toHaveLength(1);
-      expect(new Set(board.filter(tile => !tile.exact).map(tile => tile.variationIndex)).size).toBe(3);
     }
   });
 });

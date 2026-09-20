@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { MontageProgress, PickLives, MONTAGE_STAGES, createStagedMontageBoard, montageMotion, planMontageSwap } from "./montage";
+import { MontageProgress, PickLives, MONTAGE_STAGES, createProgressiveMontageBoard, createStagedMontageBoard, montageMotion, planMontageSwap } from "./montage";
 
 describe("montage stages and lives", () => {
   it("requires 3, 5, 5, 5 correct picks and wins only after all 18", () => {
@@ -44,11 +44,28 @@ describe("montage stages and lives", () => {
     expect(new MontageProgress().stage.side).toBe(2);
   });
   it.each([2,3,4,5])("uses only the selected difficulty pool with one answer on size %i", (side) => {
-    const board = createStagedMontageBoard(side, [2,7,9], () => .4);
+    const board = createStagedMontageBoard(side, Array.from({length:24},(_,i)=>i), () => .4);
     expect(board).toHaveLength(side*side);
     expect(new Set(board.map((t)=>t.id)).size).toBe(side*side);
     expect(board.filter((t)=>t.exact)).toHaveLength(1);
-    expect(board.filter((t)=>!t.exact).every((t)=>[2,7,9].includes(t.variationIndex))).toBe(true);
+    expect(board.filter((t)=>!t.exact).every((t)=>t.variationIndex >= 0 && t.variationIndex < 24)).toBe(true);
+  });
+  it("rejects pools that would require duplicate images", () => {
+    expect(() => createStagedMontageBoard(3, [1,2,3])).toThrow(/distinct/);
+    expect(() => createStagedMontageBoard(2, [1,1,2])).toThrow(/distinct/);
+  });
+  it("checks difficulty pools and leaves source ordering unchanged", () => {
+    const pools = {
+      easyVariations: [0,1,2,3,4],
+      mediumVariations: Array.from({length:15},(_,i)=>i+5),
+      hardVariations: [20,21,22,23],
+    };
+    const original = JSON.stringify(pools);
+    const board = createProgressiveMontageBoard(5, pools);
+    expect(new Set(board.map(tile => tile.variationIndex)).size).toBe(25);
+    expect(JSON.stringify(pools)).toBe(original);
+    expect(() => createProgressiveMontageBoard(5, {...pools, hardVariations: [20]})).toThrow(/Insufficient/);
+    expect(() => createProgressiveMontageBoard(7, pools)).toThrow(/Unsupported/);
   });
   it("closes doors before swapping, holds them shut, then reopens", () => {
     expect(montageMotion(5999)).toEqual({phase:"ready",cycle:0,closure:0});
@@ -61,7 +78,7 @@ describe("montage stages and lives", () => {
     expect(montageMotion(13200)).toEqual({phase:"closed",cycle:1,closure:1});
   });
   it("swaps exactly two different pictures and leaves the other 23 untouched", () => {
-    const board = createStagedMontageBoard(5,[1,2,3]);
+    const board = createStagedMontageBoard(5,Array.from({length:24},(_,i)=>i));
     for (const value of [0, .2, .5, .9999]) {
       const plan = planMontageSwap(board,()=>value);
       const changed = plan.tiles.filter((tile,index)=>tile.id!==board[index]!.id);
@@ -73,7 +90,7 @@ describe("montage stages and lives", () => {
     }
   });
   it("does not force the answer to move each time and never mutates the original board", () => {
-    const board = createStagedMontageBoard(5,[1,2,3],()=>.9999);
+    const board = createStagedMontageBoard(5,Array.from({length:24},(_,i)=>i),()=>.9999);
     const original = [...board];
     const plan = planMontageSwap(board,()=>.5);
     expect(plan.ids).not.toContain(0);
